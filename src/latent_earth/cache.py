@@ -82,8 +82,15 @@ class PredictionCache:
                     # Validate compatibility if specified
                     if self.strict_validation:
                         if self.expected_provider and pred.provider and pred.provider != self.expected_provider:
-                            incompatible_count += 1
-                            continue
+                            aliases = [
+                                {"fastino_glide", "glide", "fastinoglide"},
+                                {"fastino", "fastino_gliner", "gliner"},
+                                {"openrouter", "openrouter_d1", "liquid", "liquid_d1"},
+                            ]
+                            matched = any(self.expected_provider in grp and pred.provider in grp for grp in aliases)
+                            if not matched:
+                                incompatible_count += 1
+                                continue
                         if self.expected_prompt_version and pred.prompt_version and pred.prompt_version != self.expected_prompt_version:
                             incompatible_count += 1
                             continue

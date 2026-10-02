@@ -91,7 +91,11 @@ async def async_run(args: argparse.Namespace) -> None:
 
     if args.provider:
         config.provider.name = args.provider
-        if not args.model and args.provider in ("openrouter", "openrouter_d1", "openrouterd1", "liquid", "liquid_d1"):
+        if not args.model and args.provider in ("fastino", "glide", "fastino_glide"):
+            config.provider.model = "fastino/glide"
+        elif not args.model and args.provider in ("gliner", "fastino_gliner"):
+            config.provider.model = "fastino/GLiNER-2.5-Decide"
+        elif not args.model and args.provider in ("openrouter", "openrouter_d1", "openrouterd1", "liquid", "liquid_d1"):
             config.provider.model = "liquid/d1"
         elif not args.model and args.provider == "mock":
             config.provider.model = "mock-earth-v1"
@@ -138,6 +142,9 @@ async def async_run(args: argparse.Namespace) -> None:
     estimated_cost = None
     if config.provider.name == "jev":
         estimated_cost = estimate_jev_cost(len(expected_coords))
+    elif config.provider.name in ("fastino", "gliner", "fastino_gliner"):
+        cost_usd = len(expected_coords) * 0.0000035
+        estimated_cost = f"~${cost_usd:.4f} USD (Fastino GLiNER-2.5-Decide)"
     elif config.provider.name in ("openrouter", "openrouter_d1", "openrouterd1", "liquid", "liquid_d1"):
         cost_usd = len(expected_coords) * 0.0000036
         estimated_cost = f"~${cost_usd:.4f} USD ($0.04/1M input tokens on OpenRouter)"
@@ -510,7 +517,7 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--coastal-threshold", type=float, help="Distance threshold for coastal band evaluation (km, or degrees if < 15).")
     run_parser.add_argument("--coastal-threshold-km", type=float, default=100.0, help="Geodesic distance threshold in kilometers for coastal band evaluation (default: 100.0 km).")
     run_parser.add_argument("--limit", type=int, help="Limit number of queries (for smoke test / dev).")
-    run_parser.add_argument("--provider", choices=["jev", "openrouter", "openrouter_d1", "openrouterd1", "liquid", "liquid_d1", "mock", "openai_compatible"], help="Provider name.")
+    run_parser.add_argument("--provider", choices=["jev", "fastino", "glide", "fastino_glide", "gliner", "fastino_gliner", "openrouter", "openrouter_d1", "openrouterd1", "liquid", "liquid_d1", "mock", "openai_compatible"], help="Provider name.")
     run_parser.add_argument("--model", help="Model name.")
     run_parser.add_argument("--concurrency", type=int, help="Concurrent request limit.")
     run_parser.add_argument("--batch-size", type=int, help="Batch size for runner.")

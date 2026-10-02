@@ -197,3 +197,85 @@ async def test_openrouter_d1_provider():
     assert pred.model == "liquid/d1-20260930"
     await provider.close()
 
+
+@pytest.mark.asyncio
+async def test_fastino_provider():
+    from latent_earth.providers.fastino import FastinoProvider
+
+    coord = Coordinate(latitude=45.0, longitude=-73.0)
+
+    async def mock_post(*args, **kwargs):
+        payload = kwargs.get("json", {})
+        assert "schema" in payload
+        assert "classifications" in payload["schema"]
+        return httpx.Response(
+            200,
+            json={
+                "id": "chatcmpl-test",
+                "model": "fastino/GLiNER-2.5-Decide",
+                "choices": [
+                    {
+                        "index": 0,
+                        "message": {
+                            "role": "assistant",
+                            "content": '{"surface_type": {"label": "land", "confidence": 0.99968}}',
+                        },
+                        "finish_reason": "stop",
+                    }
+                ],
+            },
+        )
+
+    provider = FastinoProvider(api_key="fast_sk_test")
+    with patch.object(httpx.AsyncClient, "post", side_effect=mock_post):
+        pred = await provider.predict_coordinate(coord)
+
+    assert pred.is_land is True
+    assert pred.probability_land == 0.99968
+    assert pred.provider == "fastino"
+    assert pred.model == "fastino/GLiNER-2.5-Decide"
+    await provider.close()
+
+
+@pytest.mark.asyncio
+async def test_fastino_glide_provider():
+    from latent_earth.providers.fastino_glide import FastinoGlideProvider
+
+    coord = Coordinate(latitude=50.0, longitude=10.0)
+
+    async def mock_post(*args, **kwargs):
+        payload = kwargs.get("json", {})
+        assert payload["model"] == "fastino/glide"
+        assert "questions" in payload
+        assert payload["questions"]["is_land"]["type"] == "choice"
+        return httpx.Response(
+            200,
+            json={
+                "model": "glide",
+                "answers": {
+                    "is_land": {
+                        "type": "choice",
+                        "choice": "land",
+                        "confidence": 0.5758,
+                        "probabilities": {
+                            "land": 0.7879,
+                            "water": 0.2121,
+                        },
+                    }
+                },
+                "usage": {"input_tokens": 137, "output_tokens": 1},
+            },
+        )
+
+    provider = FastinoGlideProvider(api_key="fast_sk_test")
+    with patch.object(httpx.AsyncClient, "post", side_effect=mock_post):
+        pred = await provider.predict_coordinate(coord)
+
+    assert pred.is_land is True
+    assert pred.probability_land == 0.7879
+    assert pred.provider == "fastino_glide"
+    assert pred.model == "glide"
+    await provider.close()
+
+
+

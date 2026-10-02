@@ -1,0 +1,201 @@
+{
+  "benchmark": "512-point stratified benchmark",
+  "parent_benchmark": "Japan/Korea 0.5-degree frozen benchmark (2,112 coordinates)",
+  "metadata": {
+    "name": "japan_korea_stratified_512",
+    "parent_grid": "japan_korea_0.5deg_2112pts",
+    "sample_size": 512,
+    "sampling_method": "deterministic_stratified_random",
+    "random_seed": 42,
+    "bbox": {
+      "lat_min": 24.0,
+      "lat_max": 46.0,
+      "lon_min": 122.0,
+      "lon_max": 146.0
+    },
+    "coastal_threshold_km": 100.0,
+    "ground_truth": "Natural Earth 1:10m Land",
+    "strata_targets": {
+      "coastal_land": 71,
+      "interior_land": 48,
+      "coastal_water": 169,
+      "open_water": 224
+    },
+    "strata_achieved": {
+      "coastal_land": 71,
+      "interior_land": 48,
+      "coastal_water": 169,
+      "open_water": 224
+    }
+  },
+  "metrics": {
+    "jev": {
+      "model": "jev-latest",
+      "total_points": 512,
+      "grid_accuracy": 0.332,
+      "area_weighted_accuracy": 0.3202,
+      "grid_brier": 0.3543,
+      "area_weighted_brier": 0.3586,
+      "coastal_accuracy": 0.3417,
+      "coastal_brier": 0.3635,
+      "land_precision": 0.2581,
+      "land_recall": 1.0,
+      "f1": 0.4103,
+      "tp": 119,
+      "tn": 51,
+      "fp": 342,
+      "fn": 0,
+      "confusion_matrix": {
+        "true_positive_land": 119,
+        "true_negative_water": 51,
+        "false_positive_land": 342,
+        "false_negative_water": 0
+      }
+    },
+    "liquid_d1": {
+      "model": "liquid/d1",
+      "total_points": 512,
+      "grid_accuracy": 0.3418,
+      "area_weighted_accuracy": 0.3323,
+      "grid_brier": 0.405,
+      "area_weighted_brier": 0.4068,
+      "coastal_accuracy": 0.3542,
+      "coastal_brier": 0.4241,
+      "land_precision": 0.261,
+      "land_recall": 1.0,
+      "f1": 0.4139,
+      "tp": 119,
+      "tn": 56,
+      "fp": 337,
+      "fn": 0,
+      "confusion_matrix": {
+        "true_positive_land": 119,
+        "true_negative_water": 56,
+        "false_positive_land": 337,
+        "false_negative_water": 0
+      }
+    },
+    "fastino_glide": {
+      "model": "fastino/glide",
+      "total_points": 512,
+      "grid_accuracy": 0.9395,
+      "area_weighted_accuracy": 0.9416,
+      "grid_brier": 0.0847,
+      "area_weighted_brier": 0.0835,
+      "coastal_accuracy": 0.8833,
+      "coastal_brier": 0.1179,
+      "land_precision": 0.8667,
+      "land_recall": 0.8739,
+      "f1": 0.8703,
+      "tp": 104,
+      "tn": 377,
+      "fp": 16,
+      "fn": 15,
+      "confusion_matrix": {
+        "true_positive_land": 104,
+        "true_negative_water": 377,
+        "false_positive_land": 16,
+        "false_negative_water": 15
+      }
+    }
+  },
+  "pairwise_disagreements": {
+    "jev_vs_fastino_glide": {
+      "counts": {
+        "both_correct": 155,
+        "both_wrong": 16,
+        "jev_correct_fastino_glide_wrong": 15,
+        "fastino_glide_correct_jev_wrong": 326
+      },
+      "percentages": {
+        "both_correct": 30.27,
+        "both_wrong": 3.12,
+        "jev_correct_fastino_glide_wrong": 2.93,
+        "fastino_glide_correct_jev_wrong": 63.67
+      }
+    },
+    "liquid_d1_vs_fastino_glide": {
+      "counts": {
+        "both_correct": 160,
+        "both_wrong": 16,
+        "liquid_d1_correct_fastino_glide_wrong": 15,
+        "fastino_glide_correct_liquid_d1_wrong": 321
+      },
+      "percentages": {
+        "both_correct": 31.25,
+        "both_wrong": 3.12,
+        "liquid_d1_correct_fastino_glide_wrong": 2.93,
+        "fastino_glide_correct_liquid_d1_wrong": 62.7
+      }
+    },
+    "jev_vs_liquid_d1": {
+      "counts": {
+        "both_correct": 147,
+        "both_wrong": 314,
+        "jev_correct_liquid_d1_wrong": 23,
+        "liquid_d1_correct_jev_wrong": 28
+      },
+      "percentages": {
+        "both_correct": 28.71,
+        "both_wrong": 61.33,
+        "jev_correct_liquid_d1_wrong": 4.49,
+        "liquid_d1_correct_jev_wrong": 5.47
+      }
+    }
+  },
+  "sea_of_japan_inspection": {
+    "total_probes": 49,
+    "breakdown": {
+      "jev": {
+        "model": "jev-latest",
+        "total_soj_water_probes": 49,
+        "correct_water_count": 1,
+        "correct_water_pct": 2.04,
+        "false_land_count": 48,
+        "false_land_pct": 97.96
+      },
+      "liquid_d1": {
+        "model": "liquid/d1",
+        "total_soj_water_probes": 49,
+        "correct_water_count": 0,
+        "correct_water_pct": 0.0,
+        "false_land_count": 49,
+        "false_land_pct": 100.0
+      },
+      "fastino_glide": {
+        "model": "fastino/glide",
+        "total_soj_water_probes": 49,
+        "correct_water_count": 45,
+        "correct_water_pct": 91.84,
+        "false_land_count": 4,
+        "false_land_pct": 8.16
+      }
+    }
+  },
+  "provider_performance": {
+    "fastino_glide": {
+      "wall_clock_time_seconds": 41.96,
+      "queries_executed": 37,
+      "queries_cached": 475,
+      "total_benchmark_points": 512,
+      "retries_count": 0,
+      "failures_count": 0,
+      "latency_stats": {
+        "median_seconds": 6.9007,
+        "p90_seconds": 29.1813,
+        "p95_seconds": 47.7354,
+        "p99_seconds": 84.0125,
+        "min_seconds": 0.5656,
+        "max_seconds": 87.8339,
+        "sample_count": 485
+      },
+      "thinking_token_stats": {
+        "mean_tokens": 937.6,
+        "median_tokens": 463.0,
+        "p90_tokens": 2533.6,
+        "p95_tokens": 4071.7,
+        "sample_count": 512
+      }
+    }
+  }
+}

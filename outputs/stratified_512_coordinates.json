@@ -1,0 +1,3615 @@
+{
+  "metadata": {
+    "name": "japan_korea_stratified_512",
+    "parent_grid": "japan_korea_0.5deg_2112pts",
+    "sample_size": 512,
+    "sampling_method": "deterministic_stratified_random",
+    "random_seed": 42,
+    "bbox": {
+      "lat_min": 24.0,
+      "lat_max": 46.0,
+      "lon_min": 122.0,
+      "lon_max": 146.0
+    },
+    "coastal_threshold_km": 100.0,
+    "ground_truth": "Natural Earth 1:10m Land",
+    "strata_targets": {
+      "coastal_land": 71,
+      "interior_land": 48,
+      "coastal_water": 169,
+      "open_water": 224
+    },
+    "strata_achieved": {
+      "coastal_land": 71,
+      "interior_land": 48,
+      "coastal_water": 169,
+      "open_water": 224
+    }
+  },
+  "coordinates": {
+    "lat_+35.250_lon_+129.250": {
+      "latitude": 35.25,
+      "longitude": 129.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 0.5
+    },
+    "lat_+32.750_lon_+130.750": {
+      "latitude": 32.75,
+      "longitude": 130.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 12.39
+    },
+    "lat_+38.250_lon_+126.750": {
+      "latitude": 38.25,
+      "longitude": 126.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 46.11
+    },
+    "lat_+37.250_lon_+139.750": {
+      "latitude": 37.25,
+      "longitude": 139.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 94.7
+    },
+    "lat_+36.750_lon_+139.750": {
+      "latitude": 36.75,
+      "longitude": 139.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 82.69
+    },
+    "lat_+35.250_lon_+140.250": {
+      "latitude": 35.25,
+      "longitude": 140.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 11.86
+    },
+    "lat_+35.250_lon_+126.750": {
+      "latitude": 35.25,
+      "longitude": 126.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 28.55
+    },
+    "lat_+44.750_lon_+135.750": {
+      "latitude": 44.75,
+      "longitude": 135.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 38.16
+    },
+    "lat_+34.750_lon_+133.250": {
+      "latitude": 34.75,
+      "longitude": 133.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 34.9
+    },
+    "lat_+42.250_lon_+129.750": {
+      "latitude": 42.25,
+      "longitude": 129.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 32.8
+    },
+    "lat_+33.250_lon_+129.750": {
+      "latitude": 33.25,
+      "longitude": 129.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 8.68
+    },
+    "lat_+33.250_lon_+126.250": {
+      "latitude": 33.25,
+      "longitude": 126.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 2.43
+    },
+    "lat_+34.750_lon_+135.250": {
+      "latitude": 34.75,
+      "longitude": 135.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 5.46
+    },
+    "lat_+36.750_lon_+138.250": {
+      "latitude": 36.75,
+      "longitude": 138.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 45.67
+    },
+    "lat_+37.250_lon_+128.250": {
+      "latitude": 37.25,
+      "longitude": 128.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 83.27
+    },
+    "lat_+43.750_lon_+134.250": {
+      "latitude": 43.75,
+      "longitude": 134.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 61.59
+    },
+    "lat_+32.750_lon_+131.250": {
+      "latitude": 32.75,
+      "longitude": 131.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 46.56
+    },
+    "lat_+45.250_lon_+142.250": {
+      "latitude": 45.25,
+      "longitude": 142.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 1.68
+    },
+    "lat_+36.250_lon_+140.250": {
+      "latitude": 36.25,
+      "longitude": 140.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 28.38
+    },
+    "lat_+41.750_lon_+140.250": {
+      "latitude": 41.75,
+      "longitude": 140.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 12.47
+    },
+    "lat_+36.750_lon_+138.750": {
+      "latitude": 36.75,
+      "longitude": 138.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 65.42
+    },
+    "lat_+42.750_lon_+141.750": {
+      "latitude": 42.75,
+      "longitude": 141.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 14.88
+    },
+    "lat_+38.250_lon_+127.750": {
+      "latitude": 38.25,
+      "longitude": 127.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 66.1
+    },
+    "lat_+29.750_lon_+122.250": {
+      "latitude": 29.75,
+      "longitude": 122.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 0.89
+    },
+    "lat_+35.750_lon_+137.250": {
+      "latitude": 35.75,
+      "longitude": 137.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 80.43
+    },
+    "lat_+39.750_lon_+141.250": {
+      "latitude": 39.75,
+      "longitude": 141.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 61.83
+    },
+    "lat_+35.750_lon_+136.250": {
+      "latitude": 35.75,
+      "longitude": 136.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 13.62
+    },
+    "lat_+36.750_lon_+137.750": {
+      "latitude": 36.75,
+      "longitude": 137.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 27.07
+    },
+    "lat_+39.750_lon_+140.250": {
+      "latitude": 39.75,
+      "longitude": 140.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 16.54
+    },
+    "lat_+40.750_lon_+123.250": {
+      "latitude": 40.75,
+      "longitude": 123.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 84.71
+    },
+    "lat_+34.750_lon_+136.250": {
+      "latitude": 34.75,
+      "longitude": 136.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 25.45
+    },
+    "lat_+40.250_lon_+125.750": {
+      "latitude": 40.25,
+      "longitude": 125.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 78.37
+    },
+    "lat_+40.250_lon_+122.250": {
+      "latitude": 40.25,
+      "longitude": 122.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 12.2
+    },
+    "lat_+37.750_lon_+140.250": {
+      "latitude": 37.75,
+      "longitude": 140.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 62.12
+    },
+    "lat_+33.250_lon_+133.250": {
+      "latitude": 33.25,
+      "longitude": 133.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 1.09
+    },
+    "lat_+43.250_lon_+130.250": {
+      "latitude": 43.25,
+      "longitude": 130.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 72.16
+    },
+    "lat_+44.250_lon_+142.750": {
+      "latitude": 44.25,
+      "longitude": 142.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 40.19
+    },
+    "lat_+35.250_lon_+135.250": {
+      "latitude": 35.25,
+      "longitude": 135.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 22.74
+    },
+    "lat_+40.750_lon_+122.750": {
+      "latitude": 40.75,
+      "longitude": 122.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 46.08
+    },
+    "lat_+34.750_lon_+126.750": {
+      "latitude": 34.75,
+      "longitude": 126.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 10.08
+    },
+    "lat_+44.750_lon_+142.750": {
+      "latitude": 44.75,
+      "longitude": 142.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 1.94
+    },
+    "lat_+38.750_lon_+127.250": {
+      "latitude": 38.75,
+      "longitude": 127.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 49.39
+    },
+    "lat_+40.250_lon_+127.250": {
+      "latitude": 40.25,
+      "longitude": 127.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 56.41
+    },
+    "lat_+36.250_lon_+138.250": {
+      "latitude": 36.25,
+      "longitude": 138.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 95.0
+    },
+    "lat_+34.250_lon_+134.250": {
+      "latitude": 34.25,
+      "longitude": 134.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 4.6
+    },
+    "lat_+33.750_lon_+129.750": {
+      "latitude": 33.75,
+      "longitude": 129.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 1.43
+    },
+    "lat_+37.250_lon_+122.250": {
+      "latitude": 37.25,
+      "longitude": 122.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 19.11
+    },
+    "lat_+38.750_lon_+126.250": {
+      "latitude": 38.75,
+      "longitude": 126.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 53.19
+    },
+    "lat_+34.750_lon_+138.250": {
+      "latitude": 34.75,
+      "longitude": 138.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 0.95
+    },
+    "lat_+42.750_lon_+143.250": {
+      "latitude": 42.75,
+      "longitude": 143.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 31.24
+    },
+    "lat_+40.250_lon_+127.750": {
+      "latitude": 40.25,
+      "longitude": 127.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 31.57
+    },
+    "lat_+35.750_lon_+138.750": {
+      "latitude": 35.75,
+      "longitude": 138.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 66.81
+    },
+    "lat_+40.250_lon_+140.750": {
+      "latitude": 40.25,
+      "longitude": 140.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 62.59
+    },
+    "lat_+40.250_lon_+124.750": {
+      "latitude": 40.25,
+      "longitude": 124.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 33.07
+    },
+    "lat_+36.750_lon_+129.250": {
+      "latitude": 36.75,
+      "longitude": 129.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 19.56
+    },
+    "lat_+37.750_lon_+140.750": {
+      "latitude": 37.75,
+      "longitude": 140.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 21.49
+    },
+    "lat_+34.250_lon_+134.750": {
+      "latitude": 34.25,
+      "longitude": 134.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 2.42
+    },
+    "lat_+35.750_lon_+140.750": {
+      "latitude": 35.75,
+      "longitude": 140.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 6.12
+    },
+    "lat_+44.250_lon_+142.250": {
+      "latitude": 44.25,
+      "longitude": 142.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 44.52
+    },
+    "lat_+43.250_lon_+130.750": {
+      "latitude": 43.25,
+      "longitude": 130.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 61.14
+    },
+    "lat_+38.250_lon_+125.750": {
+      "latitude": 38.25,
+      "longitude": 125.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 26.31
+    },
+    "lat_+45.250_lon_+136.750": {
+      "latitude": 45.25,
+      "longitude": 136.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 7.81
+    },
+    "lat_+39.750_lon_+123.250": {
+      "latitude": 39.75,
+      "longitude": 123.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 0.14
+    },
+    "lat_+33.750_lon_+134.250": {
+      "latitude": 33.75,
+      "longitude": 134.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 17.25
+    },
+    "lat_+37.250_lon_+127.250": {
+      "latitude": 37.25,
+      "longitude": 127.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 33.71
+    },
+    "lat_+39.250_lon_+140.750": {
+      "latitude": 39.25,
+      "longitude": 140.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 65.28
+    },
+    "lat_+41.250_lon_+122.250": {
+      "latitude": 41.25,
+      "longitude": 122.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 42.74
+    },
+    "lat_+38.250_lon_+125.250": {
+      "latitude": 38.25,
+      "longitude": 125.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 18.45
+    },
+    "lat_+34.250_lon_+132.750": {
+      "latitude": 34.25,
+      "longitude": 132.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 1.91
+    },
+    "lat_+36.750_lon_+136.750": {
+      "latitude": 36.75,
+      "longitude": 136.75,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 4.18
+    },
+    "lat_+45.750_lon_+137.250": {
+      "latitude": 45.75,
+      "longitude": 137.25,
+      "stratum": "coastal_land",
+      "is_land": true,
+      "distance_to_coast_km": 18.08
+    },
+    "lat_+45.750_lon_+128.750": {
+      "latitude": 45.75,
+      "longitude": 128.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 375.21
+    },
+    "lat_+43.750_lon_+123.750": {
+      "latitude": 43.75,
+      "longitude": 123.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 342.95
+    },
+    "lat_+42.750_lon_+125.750": {
+      "latitude": 42.75,
+      "longitude": 125.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 316.28
+    },
+    "lat_+45.250_lon_+134.250": {
+      "latitude": 45.25,
+      "longitude": 134.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 159.69
+    },
+    "lat_+44.750_lon_+126.750": {
+      "latitude": 44.75,
+      "longitude": 126.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 406.25
+    },
+    "lat_+44.250_lon_+125.750": {
+      "latitude": 44.25,
+      "longitude": 125.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 475.02
+    },
+    "lat_+45.250_lon_+132.750": {
+      "latitude": 45.25,
+      "longitude": 132.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 217.48
+    },
+    "lat_+44.250_lon_+133.750": {
+      "latitude": 44.25,
+      "longitude": 133.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 129.6
+    },
+    "lat_+42.250_lon_+123.750": {
+      "latitude": 42.25,
+      "longitude": 123.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 209.77
+    },
+    "lat_+43.250_lon_+124.750": {
+      "latitude": 43.25,
+      "longitude": 124.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 351.48
+    },
+    "lat_+42.250_lon_+123.250": {
+      "latitude": 42.25,
+      "longitude": 123.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 180.74
+    },
+    "lat_+43.250_lon_+122.750": {
+      "latitude": 43.25,
+      "longitude": 122.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 260.79
+    },
+    "lat_+45.250_lon_+122.250": {
+      "latitude": 45.25,
+      "longitude": 122.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 473.64
+    },
+    "lat_+44.750_lon_+131.750": {
+      "latitude": 44.75,
+      "longitude": 131.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 157.02
+    },
+    "lat_+45.750_lon_+131.250": {
+      "latitude": 45.75,
+      "longitude": 131.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 271.91
+    },
+    "lat_+45.250_lon_+125.250": {
+      "latitude": 45.25,
+      "longitude": 125.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 576.8
+    },
+    "lat_+44.250_lon_+129.750": {
+      "latitude": 44.25,
+      "longitude": 129.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 189.27
+    },
+    "lat_+45.750_lon_+128.250": {
+      "latitude": 45.75,
+      "longitude": 128.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 393.12
+    },
+    "lat_+44.250_lon_+126.250": {
+      "latitude": 44.25,
+      "longitude": 126.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 402.78
+    },
+    "lat_+43.750_lon_+129.750": {
+      "latitude": 43.75,
+      "longitude": 129.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 140.81
+    },
+    "lat_+42.750_lon_+126.750": {
+      "latitude": 42.75,
+      "longitude": 126.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 318.25
+    },
+    "lat_+45.750_lon_+130.750": {
+      "latitude": 45.75,
+      "longitude": 130.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 281.22
+    },
+    "lat_+44.750_lon_+128.250": {
+      "latitude": 44.75,
+      "longitude": 128.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 302.19
+    },
+    "lat_+44.750_lon_+126.250": {
+      "latitude": 44.75,
+      "longitude": 126.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 438.44
+    },
+    "lat_+41.750_lon_+123.750": {
+      "latitude": 41.75,
+      "longitude": 123.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 177.03
+    },
+    "lat_+41.250_lon_+124.250": {
+      "latitude": 41.25,
+      "longitude": 124.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 128.3
+    },
+    "lat_+41.750_lon_+126.250": {
+      "latitude": 41.75,
+      "longitude": 126.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 240.32
+    },
+    "lat_+42.250_lon_+125.250": {
+      "latitude": 42.25,
+      "longitude": 125.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 250.11
+    },
+    "lat_+45.250_lon_+130.750": {
+      "latitude": 45.25,
+      "longitude": 130.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 228.97
+    },
+    "lat_+42.250_lon_+125.750": {
+      "latitude": 42.25,
+      "longitude": 125.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 268.72
+    },
+    "lat_+44.250_lon_+129.250": {
+      "latitude": 44.25,
+      "longitude": 129.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 209.31
+    },
+    "lat_+45.250_lon_+126.750": {
+      "latitude": 45.25,
+      "longitude": 126.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 445.36
+    },
+    "lat_+41.250_lon_+126.250": {
+      "latitude": 41.25,
+      "longitude": 126.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 195.89
+    },
+    "lat_+44.250_lon_+124.250": {
+      "latitude": 44.25,
+      "longitude": 124.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 410.89
+    },
+    "lat_+44.250_lon_+123.750": {
+      "latitude": 44.25,
+      "longitude": 123.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 393.06
+    },
+    "lat_+45.250_lon_+133.750": {
+      "latitude": 45.25,
+      "longitude": 133.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 192.36
+    },
+    "lat_+44.750_lon_+122.750": {
+      "latitude": 44.75,
+      "longitude": 122.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 423.23
+    },
+    "lat_+44.750_lon_+130.750": {
+      "latitude": 44.75,
+      "longitude": 130.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 178.75
+    },
+    "lat_+43.250_lon_+123.250": {
+      "latitude": 43.25,
+      "longitude": 123.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 275.22
+    },
+    "lat_+44.750_lon_+133.750": {
+      "latitude": 44.75,
+      "longitude": 133.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 162.57
+    },
+    "lat_+36.250_lon_+138.750": {
+      "latitude": 36.25,
+      "longitude": 138.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 113.01
+    },
+    "lat_+41.750_lon_+126.750": {
+      "latitude": 41.75,
+      "longitude": 126.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 216.93
+    },
+    "lat_+45.750_lon_+129.250": {
+      "latitude": 45.75,
+      "longitude": 129.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 358.68
+    },
+    "lat_+43.250_lon_+125.250": {
+      "latitude": 43.25,
+      "longitude": 125.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 357.63
+    },
+    "lat_+43.750_lon_+127.250": {
+      "latitude": 43.75,
+      "longitude": 127.25,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 302.65
+    },
+    "lat_+45.750_lon_+122.750": {
+      "latitude": 45.75,
+      "longitude": 122.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 533.0
+    },
+    "lat_+43.250_lon_+128.750": {
+      "latitude": 43.25,
+      "longitude": 128.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 168.64
+    },
+    "lat_+44.250_lon_+130.750": {
+      "latitude": 44.25,
+      "longitude": 130.75,
+      "stratum": "interior_land",
+      "is_land": true,
+      "distance_to_coast_km": 132.86
+    },
+    "lat_+29.750_lon_+130.250": {
+      "latitude": 29.75,
+      "longitude": 130.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 32.32
+    },
+    "lat_+37.750_lon_+130.250": {
+      "latitude": 37.75,
+      "longitude": 130.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 55.84
+    },
+    "lat_+24.250_lon_+123.750": {
+      "latitude": 24.25,
+      "longitude": 123.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 3.25
+    },
+    "lat_+33.250_lon_+125.750": {
+      "latitude": 33.25,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 38.71
+    },
+    "lat_+38.750_lon_+138.250": {
+      "latitude": 38.75,
+      "longitude": 138.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 51.75
+    },
+    "lat_+30.750_lon_+122.250": {
+      "latitude": 30.75,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 17.21
+    },
+    "lat_+39.250_lon_+122.750": {
+      "latitude": 39.25,
+      "longitude": 122.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 1.7
+    },
+    "lat_+27.250_lon_+129.250": {
+      "latitude": 27.25,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 56.12
+    },
+    "lat_+43.250_lon_+141.250": {
+      "latitude": 43.25,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 7.19
+    },
+    "lat_+33.750_lon_+135.250": {
+      "latitude": 33.75,
+      "longitude": 135.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 3.51
+    },
+    "lat_+44.250_lon_+140.250": {
+      "latitude": 44.25,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 85.21
+    },
+    "lat_+45.750_lon_+141.250": {
+      "latitude": 45.75,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 36.68
+    },
+    "lat_+42.750_lon_+135.750": {
+      "latitude": 42.75,
+      "longitude": 135.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 97.52
+    },
+    "lat_+31.250_lon_+129.250": {
+      "latitude": 31.25,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 19.35
+    },
+    "lat_+29.750_lon_+122.750": {
+      "latitude": 29.75,
+      "longitude": 122.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 35.53
+    },
+    "lat_+35.750_lon_+132.250": {
+      "latitude": 35.75,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 48.94
+    },
+    "lat_+29.750_lon_+140.250": {
+      "latitude": 29.75,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 80.4
+    },
+    "lat_+40.250_lon_+139.250": {
+      "latitude": 40.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 47.03
+    },
+    "lat_+39.750_lon_+139.250": {
+      "latitude": 39.75,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 43.77
+    },
+    "lat_+24.250_lon_+122.250": {
+      "latitude": 24.25,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 48.9
+    },
+    "lat_+42.250_lon_+144.250": {
+      "latitude": 42.25,
+      "longitude": 144.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 67.38
+    },
+    "lat_+34.250_lon_+137.250": {
+      "latitude": 34.25,
+      "longitude": 137.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 32.41
+    },
+    "lat_+38.250_lon_+142.250": {
+      "latitude": 38.25,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 58.39
+    },
+    "lat_+24.750_lon_+125.250": {
+      "latitude": 24.75,
+      "longitude": 125.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 0.71
+    },
+    "lat_+27.250_lon_+142.250": {
+      "latitude": 27.25,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 8.87
+    },
+    "lat_+35.250_lon_+139.250": {
+      "latitude": 35.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 4.17
+    },
+    "lat_+33.750_lon_+140.250": {
+      "latitude": 33.75,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 58.94
+    },
+    "lat_+32.750_lon_+125.750": {
+      "latitude": 32.75,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 68.95
+    },
+    "lat_+25.750_lon_+131.750": {
+      "latitude": 25.75,
+      "longitude": 131.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 47.12
+    },
+    "lat_+32.750_lon_+126.250": {
+      "latitude": 32.75,
+      "longitude": 126.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 49.67
+    },
+    "lat_+41.750_lon_+130.750": {
+      "latitude": 41.75,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 58.28
+    },
+    "lat_+26.250_lon_+131.750": {
+      "latitude": 26.25,
+      "longitude": 131.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 54.41
+    },
+    "lat_+26.750_lon_+124.250": {
+      "latitude": 26.75,
+      "longitude": 124.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 99.51
+    },
+    "lat_+38.250_lon_+139.250": {
+      "latitude": 38.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 16.88
+    },
+    "lat_+26.250_lon_+124.750": {
+      "latitude": 26.25,
+      "longitude": 124.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 43.05
+    },
+    "lat_+39.750_lon_+142.250": {
+      "latitude": 39.75,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 20.67
+    },
+    "lat_+27.750_lon_+141.750": {
+      "latitude": 27.75,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 32.5
+    },
+    "lat_+28.250_lon_+122.250": {
+      "latitude": 28.25,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 59.07
+    },
+    "lat_+38.250_lon_+128.750": {
+      "latitude": 38.25,
+      "longitude": 128.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 13.81
+    },
+    "lat_+40.750_lon_+141.750": {
+      "latitude": 40.75,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 27.38
+    },
+    "lat_+30.250_lon_+123.250": {
+      "latitude": 30.25,
+      "longitude": 123.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 46.97
+    },
+    "lat_+33.250_lon_+127.250": {
+      "latitude": 33.25,
+      "longitude": 127.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 35.13
+    },
+    "lat_+39.750_lon_+129.250": {
+      "latitude": 39.75,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 70.79
+    },
+    "lat_+42.750_lon_+134.750": {
+      "latitude": 42.75,
+      "longitude": 134.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 52.28
+    },
+    "lat_+37.250_lon_+124.250": {
+      "latitude": 37.25,
+      "longitude": 124.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 70.62
+    },
+    "lat_+31.750_lon_+128.250": {
+      "latitude": 31.75,
+      "longitude": 128.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 27.72
+    },
+    "lat_+45.250_lon_+140.750": {
+      "latitude": 45.25,
+      "longitude": 140.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 22.13
+    },
+    "lat_+31.250_lon_+130.750": {
+      "latitude": 31.25,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 2.91
+    },
+    "lat_+34.250_lon_+126.250": {
+      "latitude": 34.25,
+      "longitude": 126.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 12.61
+    },
+    "lat_+36.250_lon_+141.750": {
+      "latitude": 36.25,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 97.85
+    },
+    "lat_+45.250_lon_+142.750": {
+      "latitude": 45.25,
+      "longitude": 142.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 29.01
+    },
+    "lat_+37.250_lon_+137.250": {
+      "latitude": 37.25,
+      "longitude": 137.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 4.99
+    },
+    "lat_+39.250_lon_+138.750": {
+      "latitude": 39.25,
+      "longitude": 138.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 68.45
+    },
+    "lat_+37.750_lon_+129.250": {
+      "latitude": 37.75,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 18.18
+    },
+    "lat_+27.750_lon_+130.250": {
+      "latitude": 27.75,
+      "longitude": 130.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 64.91
+    },
+    "lat_+32.750_lon_+132.250": {
+      "latitude": 32.75,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 22.22
+    },
+    "lat_+32.250_lon_+128.750": {
+      "latitude": 32.25,
+      "longitude": 128.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 35.74
+    },
+    "lat_+26.250_lon_+122.250": {
+      "latitude": 26.25,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 70.41
+    },
+    "lat_+34.750_lon_+129.250": {
+      "latitude": 34.75,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 13.15
+    },
+    "lat_+24.750_lon_+126.250": {
+      "latitude": 24.75,
+      "longitude": 126.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 80.66
+    },
+    "lat_+42.250_lon_+134.250": {
+      "latitude": 42.25,
+      "longitude": 134.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 75.13
+    },
+    "lat_+41.250_lon_+130.750": {
+      "latitude": 41.25,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 80.26
+    },
+    "lat_+32.250_lon_+132.250": {
+      "latitude": 32.25,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 55.26
+    },
+    "lat_+43.250_lon_+139.250": {
+      "latitude": 43.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 82.85
+    },
+    "lat_+31.750_lon_+140.750": {
+      "latitude": 31.75,
+      "longitude": 140.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 75.0
+    },
+    "lat_+24.250_lon_+125.750": {
+      "latitude": 24.25,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 62.24
+    },
+    "lat_+26.250_lon_+125.750": {
+      "latitude": 26.25,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 95.55
+    },
+    "lat_+25.750_lon_+132.250": {
+      "latitude": 25.75,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 94.74
+    },
+    "lat_+32.250_lon_+131.750": {
+      "latitude": 32.25,
+      "longitude": 131.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 15.54
+    },
+    "lat_+26.250_lon_+124.250": {
+      "latitude": 26.25,
+      "longitude": 124.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 50.22
+    },
+    "lat_+25.250_lon_+125.250": {
+      "latitude": 25.25,
+      "longitude": 125.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 34.8
+    },
+    "lat_+34.750_lon_+124.250": {
+      "latitude": 34.75,
+      "longitude": 124.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 85.38
+    },
+    "lat_+42.750_lon_+145.750": {
+      "latitude": 42.75,
+      "longitude": 145.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 49.86
+    },
+    "lat_+39.250_lon_+128.250": {
+      "latitude": 39.25,
+      "longitude": 128.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 43.01
+    },
+    "lat_+32.250_lon_+140.750": {
+      "latitude": 32.25,
+      "longitude": 140.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 94.31
+    },
+    "lat_+33.250_lon_+139.250": {
+      "latitude": 33.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 41.67
+    },
+    "lat_+44.750_lon_+137.750": {
+      "latitude": 44.75,
+      "longitude": 137.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 84.22
+    },
+    "lat_+31.750_lon_+129.750": {
+      "latitude": 31.75,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 0.69
+    },
+    "lat_+43.750_lon_+145.750": {
+      "latitude": 43.75,
+      "longitude": 145.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 14.15
+    },
+    "lat_+28.250_lon_+129.750": {
+      "latitude": 28.25,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 16.88
+    },
+    "lat_+41.750_lon_+138.750": {
+      "latitude": 41.75,
+      "longitude": 138.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 55.22
+    },
+    "lat_+41.750_lon_+142.250": {
+      "latitude": 41.75,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 60.39
+    },
+    "lat_+38.250_lon_+124.250": {
+      "latitude": 38.25,
+      "longitude": 124.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 39.07
+    },
+    "lat_+32.750_lon_+127.250": {
+      "latitude": 32.75,
+      "longitude": 127.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 72.96
+    },
+    "lat_+42.250_lon_+144.750": {
+      "latitude": 42.25,
+      "longitude": 144.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 74.9
+    },
+    "lat_+36.750_lon_+130.750": {
+      "latitude": 36.75,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 79.12
+    },
+    "lat_+30.750_lon_+140.250": {
+      "latitude": 30.75,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 29.22
+    },
+    "lat_+26.750_lon_+131.750": {
+      "latitude": 26.75,
+      "longitude": 131.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 98.65
+    },
+    "lat_+26.750_lon_+141.250": {
+      "latitude": 26.75,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 64.15
+    },
+    "lat_+37.250_lon_+130.750": {
+      "latitude": 37.25,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 24.95
+    },
+    "lat_+35.250_lon_+125.250": {
+      "latitude": 35.25,
+      "longitude": 125.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 59.42
+    },
+    "lat_+44.250_lon_+136.750": {
+      "latitude": 44.25,
+      "longitude": 136.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 53.86
+    },
+    "lat_+36.750_lon_+132.750": {
+      "latitude": 36.75,
+      "longitude": 132.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 64.95
+    },
+    "lat_+37.750_lon_+141.750": {
+      "latitude": 37.75,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 59.34
+    },
+    "lat_+25.750_lon_+128.750": {
+      "latitude": 25.75,
+      "longitude": 128.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 97.61
+    },
+    "lat_+26.750_lon_+141.750": {
+      "latitude": 26.75,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 36.09
+    },
+    "lat_+25.750_lon_+141.250": {
+      "latitude": 25.75,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 33.18
+    },
+    "lat_+36.750_lon_+125.250": {
+      "latitude": 36.75,
+      "longitude": 125.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 71.35
+    },
+    "lat_+34.750_lon_+129.750": {
+      "latitude": 34.75,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 25.37
+    },
+    "lat_+27.250_lon_+140.750": {
+      "latitude": 27.25,
+      "longitude": 140.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 11.81
+    },
+    "lat_+32.750_lon_+132.750": {
+      "latitude": 32.75,
+      "longitude": 132.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 0.67
+    },
+    "lat_+30.750_lon_+141.250": {
+      "latitude": 30.75,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 93.34
+    },
+    "lat_+42.250_lon_+141.750": {
+      "latitude": 42.25,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 34.6
+    },
+    "lat_+40.250_lon_+129.750": {
+      "latitude": 40.25,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 60.41
+    },
+    "lat_+37.750_lon_+125.250": {
+      "latitude": 37.75,
+      "longitude": 125.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 1.03
+    },
+    "lat_+28.750_lon_+128.250": {
+      "latitude": 28.75,
+      "longitude": 128.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 97.66
+    },
+    "lat_+37.250_lon_+123.750": {
+      "latitude": 37.25,
+      "longitude": 123.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 95.34
+    },
+    "lat_+30.750_lon_+129.250": {
+      "latitude": 30.75,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 19.91
+    },
+    "lat_+44.250_lon_+137.250": {
+      "latitude": 44.25,
+      "longitude": 137.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 87.44
+    },
+    "lat_+37.750_lon_+137.250": {
+      "latitude": 37.75,
+      "longitude": 137.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 24.59
+    },
+    "lat_+32.750_lon_+133.250": {
+      "latitude": 32.75,
+      "longitude": 133.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 20.88
+    },
+    "lat_+26.250_lon_+128.750": {
+      "latitude": 26.25,
+      "longitude": 128.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 65.83
+    },
+    "lat_+37.750_lon_+122.250": {
+      "latitude": 37.75,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 23.66
+    },
+    "lat_+40.750_lon_+142.250": {
+      "latitude": 40.75,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 58.37
+    },
+    "lat_+42.250_lon_+133.750": {
+      "latitude": 42.25,
+      "longitude": 133.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 63.0
+    },
+    "lat_+25.750_lon_+126.750": {
+      "latitude": 25.75,
+      "longitude": 126.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 61.44
+    },
+    "lat_+40.250_lon_+139.750": {
+      "latitude": 40.25,
+      "longitude": 139.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 21.34
+    },
+    "lat_+24.750_lon_+123.250": {
+      "latitude": 24.75,
+      "longitude": 123.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 39.03
+    },
+    "lat_+26.750_lon_+131.250": {
+      "latitude": 26.75,
+      "longitude": 131.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 88.43
+    },
+    "lat_+32.250_lon_+140.250": {
+      "latitude": 32.25,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 49.58
+    },
+    "lat_+30.250_lon_+123.750": {
+      "latitude": 30.25,
+      "longitude": 123.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 94.18
+    },
+    "lat_+42.250_lon_+142.250": {
+      "latitude": 42.25,
+      "longitude": 142.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 12.01
+    },
+    "lat_+42.750_lon_+134.250": {
+      "latitude": 42.75,
+      "longitude": 134.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 29.12
+    },
+    "lat_+38.250_lon_+136.750": {
+      "latitude": 38.25,
+      "longitude": 136.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 90.46
+    },
+    "lat_+31.750_lon_+129.250": {
+      "latitude": 31.75,
+      "longitude": 129.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 39.71
+    },
+    "lat_+36.750_lon_+122.750": {
+      "latitude": 36.75,
+      "longitude": 122.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 26.83
+    },
+    "lat_+42.750_lon_+145.250": {
+      "latitude": 42.75,
+      "longitude": 145.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 32.84
+    },
+    "lat_+30.250_lon_+122.750": {
+      "latitude": 30.25,
+      "longitude": 122.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 8.13
+    },
+    "lat_+35.750_lon_+135.750": {
+      "latitude": 35.75,
+      "longitude": 135.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 13.08
+    },
+    "lat_+24.250_lon_+123.250": {
+      "latitude": 24.25,
+      "longitude": 123.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 32.67
+    },
+    "lat_+36.250_lon_+132.250": {
+      "latitude": 36.25,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 66.3
+    },
+    "lat_+44.250_lon_+140.750": {
+      "latitude": 44.25,
+      "longitude": 140.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 47.01
+    },
+    "lat_+37.750_lon_+130.750": {
+      "latitude": 37.75,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 25.25
+    },
+    "lat_+33.750_lon_+125.750": {
+      "latitude": 33.75,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 55.73
+    },
+    "lat_+42.250_lon_+138.750": {
+      "latitude": 42.25,
+      "longitude": 138.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 55.53
+    },
+    "lat_+38.250_lon_+141.250": {
+      "latitude": 38.25,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 10.55
+    },
+    "lat_+29.750_lon_+128.750": {
+      "latitude": 29.75,
+      "longitude": 128.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 77.04
+    },
+    "lat_+41.750_lon_+144.250": {
+      "latitude": 41.75,
+      "longitude": 144.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 84.32
+    },
+    "lat_+33.750_lon_+132.250": {
+      "latitude": 33.75,
+      "longitude": 132.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 1.86
+    },
+    "lat_+31.750_lon_+139.250": {
+      "latitude": 31.75,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 82.3
+    },
+    "lat_+44.750_lon_+143.250": {
+      "latitude": 44.75,
+      "longitude": 143.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 27.21
+    },
+    "lat_+40.250_lon_+142.750": {
+      "latitude": 40.25,
+      "longitude": 142.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 73.8
+    },
+    "lat_+42.250_lon_+133.250": {
+      "latitude": 42.25,
+      "longitude": 133.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 49.29
+    },
+    "lat_+34.250_lon_+127.250": {
+      "latitude": 34.25,
+      "longitude": 127.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 0.08
+    },
+    "lat_+25.750_lon_+131.250": {
+      "latitude": 25.75,
+      "longitude": 131.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 7.64
+    },
+    "lat_+41.750_lon_+131.250": {
+      "latitude": 41.75,
+      "longitude": 131.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 75.45
+    },
+    "lat_+38.250_lon_+129.750": {
+      "latitude": 38.25,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 86.98
+    },
+    "lat_+38.750_lon_+139.250": {
+      "latitude": 38.75,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 28.74
+    },
+    "lat_+45.250_lon_+140.250": {
+      "latitude": 45.25,
+      "longitude": 140.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 59.78
+    },
+    "lat_+45.750_lon_+144.250": {
+      "latitude": 45.75,
+      "longitude": 144.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 70.27
+    },
+    "lat_+42.750_lon_+132.750": {
+      "latitude": 42.75,
+      "longitude": 132.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 4.85
+    },
+    "lat_+39.250_lon_+123.250": {
+      "latitude": 39.25,
+      "longitude": 123.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 18.54
+    },
+    "lat_+26.250_lon_+141.250": {
+      "latitude": 26.25,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 88.43
+    },
+    "lat_+30.750_lon_+130.750": {
+      "latitude": 30.75,
+      "longitude": 130.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 8.6
+    },
+    "lat_+44.750_lon_+137.250": {
+      "latitude": 44.75,
+      "longitude": 137.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 53.87
+    },
+    "lat_+42.750_lon_+144.250": {
+      "latitude": 42.75,
+      "longitude": 144.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 25.04
+    },
+    "lat_+32.250_lon_+139.250": {
+      "latitude": 32.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 52.68
+    },
+    "lat_+36.750_lon_+125.750": {
+      "latitude": 36.75,
+      "longitude": 125.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 28.0
+    },
+    "lat_+27.750_lon_+129.750": {
+      "latitude": 27.75,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 54.2
+    },
+    "lat_+32.750_lon_+129.750": {
+      "latitude": 32.75,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 3.92
+    },
+    "lat_+25.250_lon_+141.250": {
+      "latitude": 25.25,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 18.96
+    },
+    "lat_+26.250_lon_+141.750": {
+      "latitude": 26.25,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 58.85
+    },
+    "lat_+36.750_lon_+141.750": {
+      "latitude": 36.75,
+      "longitude": 141.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 74.4
+    },
+    "lat_+34.250_lon_+128.250": {
+      "latitude": 34.25,
+      "longitude": 128.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 40.01
+    },
+    "lat_+33.250_lon_+124.750": {
+      "latitude": 33.25,
+      "longitude": 124.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 95.22
+    },
+    "lat_+31.250_lon_+139.250": {
+      "latitude": 31.25,
+      "longitude": 139.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 78.3
+    },
+    "lat_+44.750_lon_+141.250": {
+      "latitude": 44.75,
+      "longitude": 141.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 34.49
+    },
+    "lat_+32.750_lon_+122.250": {
+      "latitude": 32.75,
+      "longitude": 122.25,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 90.39
+    },
+    "lat_+41.250_lon_+129.750": {
+      "latitude": 41.25,
+      "longitude": 129.75,
+      "stratum": "coastal_water",
+      "is_land": false,
+      "distance_to_coast_km": 0.35
+    },
+    "lat_+30.250_lon_+124.250": {
+      "latitude": 30.25,
+      "longitude": 124.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 142.02
+    },
+    "lat_+26.250_lon_+134.750": {
+      "latitude": 26.25,
+      "longitude": 134.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 344.08
+    },
+    "lat_+36.750_lon_+124.250": {
+      "latitude": 36.75,
+      "longitude": 124.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 119.76
+    },
+    "lat_+35.750_lon_+124.250": {
+      "latitude": 35.75,
+      "longitude": 124.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 143.9
+    },
+    "lat_+28.750_lon_+135.750": {
+      "latitude": 28.75,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 519.25
+    },
+    "lat_+30.750_lon_+144.750": {
+      "latitude": 30.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 421.86
+    },
+    "lat_+28.750_lon_+143.750": {
+      "latitude": 28.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 196.79
+    },
+    "lat_+39.250_lon_+133.250": {
+      "latitude": 39.25,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 253.72
+    },
+    "lat_+25.250_lon_+129.250": {
+      "latitude": 25.25,
+      "longitude": 129.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 171.19
+    },
+    "lat_+24.250_lon_+131.250": {
+      "latitude": 24.25,
+      "longitude": 131.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 173.78
+    },
+    "lat_+30.750_lon_+145.250": {
+      "latitude": 30.75,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 453.07
+    },
+    "lat_+34.750_lon_+142.750": {
+      "latitude": 34.75,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 200.9
+    },
+    "lat_+32.750_lon_+143.250": {
+      "latitude": 32.75,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 317.66
+    },
+    "lat_+25.750_lon_+129.250": {
+      "latitude": 25.75,
+      "longitude": 129.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 140.35
+    },
+    "lat_+25.250_lon_+129.750": {
+      "latitude": 25.25,
+      "longitude": 129.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 160.34
+    },
+    "lat_+32.250_lon_+137.750": {
+      "latitude": 32.25,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 190.19
+    },
+    "lat_+27.750_lon_+122.750": {
+      "latitude": 27.75,
+      "longitude": 122.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 125.84
+    },
+    "lat_+31.750_lon_+136.250": {
+      "latitude": 31.75,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 192.26
+    },
+    "lat_+28.250_lon_+136.250": {
+      "latitude": 28.25,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 464.58
+    },
+    "lat_+26.250_lon_+135.250": {
+      "latitude": 26.25,
+      "longitude": 135.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 393.87
+    },
+    "lat_+29.250_lon_+140.250": {
+      "latitude": 29.25,
+      "longitude": 140.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 135.75
+    },
+    "lat_+43.750_lon_+137.250": {
+      "latitude": 43.75,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 120.07
+    },
+    "lat_+25.250_lon_+126.750": {
+      "latitude": 25.25,
+      "longitude": 126.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 116.77
+    },
+    "lat_+43.250_lon_+138.250": {
+      "latitude": 43.25,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 147.33
+    },
+    "lat_+27.750_lon_+145.750": {
+      "latitude": 27.75,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 350.35
+    },
+    "lat_+29.750_lon_+128.250": {
+      "latitude": 29.75,
+      "longitude": 128.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 112.74
+    },
+    "lat_+28.750_lon_+124.750": {
+      "latitude": 28.75,
+      "longitude": 124.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 244.86
+    },
+    "lat_+26.750_lon_+132.250": {
+      "latitude": 26.75,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 128.43
+    },
+    "lat_+30.750_lon_+132.750": {
+      "latitude": 30.75,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 151.4
+    },
+    "lat_+41.250_lon_+131.750": {
+      "latitude": 41.25,
+      "longitude": 131.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 144.93
+    },
+    "lat_+32.250_lon_+143.250": {
+      "latitude": 32.25,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 316.19
+    },
+    "lat_+37.750_lon_+144.750": {
+      "latitude": 37.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 289.36
+    },
+    "lat_+28.750_lon_+136.750": {
+      "latitude": 28.75,
+      "longitude": 136.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 393.84
+    },
+    "lat_+34.250_lon_+144.250": {
+      "latitude": 34.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 348.29
+    },
+    "lat_+40.250_lon_+143.750": {
+      "latitude": 40.25,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 155.9
+    },
+    "lat_+35.750_lon_+144.750": {
+      "latitude": 35.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 350.14
+    },
+    "lat_+32.250_lon_+126.750": {
+      "latitude": 32.25,
+      "longitude": 126.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 110.37
+    },
+    "lat_+24.250_lon_+130.750": {
+      "latitude": 24.25,
+      "longitude": 130.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 180.72
+    },
+    "lat_+36.250_lon_+144.750": {
+      "latitude": 36.25,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 359.8
+    },
+    "lat_+40.750_lon_+133.750": {
+      "latitude": 40.75,
+      "longitude": 133.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 220.86
+    },
+    "lat_+32.750_lon_+125.250": {
+      "latitude": 32.75,
+      "longitude": 125.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 103.59
+    },
+    "lat_+28.750_lon_+135.250": {
+      "latitude": 28.75,
+      "longitude": 135.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 488.9
+    },
+    "lat_+36.250_lon_+142.750": {
+      "latitude": 36.25,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 178.62
+    },
+    "lat_+25.750_lon_+133.750": {
+      "latitude": 25.75,
+      "longitude": 133.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 243.7
+    },
+    "lat_+26.250_lon_+136.250": {
+      "latitude": 26.25,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 471.95
+    },
+    "lat_+28.250_lon_+135.750": {
+      "latitude": 28.25,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 507.88
+    },
+    "lat_+25.750_lon_+139.750": {
+      "latitude": 25.75,
+      "longitude": 139.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 156.55
+    },
+    "lat_+25.750_lon_+135.250": {
+      "latitude": 25.75,
+      "longitude": 135.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 393.72
+    },
+    "lat_+38.750_lon_+145.250": {
+      "latitude": 38.75,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 287.26
+    },
+    "lat_+32.750_lon_+124.750": {
+      "latitude": 32.75,
+      "longitude": 124.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 144.77
+    },
+    "lat_+26.750_lon_+130.250": {
+      "latitude": 26.75,
+      "longitude": 130.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 136.38
+    },
+    "lat_+28.250_lon_+139.750": {
+      "latitude": 28.25,
+      "longitude": 139.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 157.56
+    },
+    "lat_+28.750_lon_+123.250": {
+      "latitude": 28.75,
+      "longitude": 123.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 131.85
+    },
+    "lat_+34.250_lon_+140.750": {
+      "latitude": 34.25,
+      "longitude": 140.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 104.8
+    },
+    "lat_+27.250_lon_+144.750": {
+      "latitude": 27.25,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 249.33
+    },
+    "lat_+38.250_lon_+143.250": {
+      "latitude": 38.25,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 145.75
+    },
+    "lat_+29.250_lon_+137.250": {
+      "latitude": 29.25,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 324.85
+    },
+    "lat_+27.250_lon_+138.250": {
+      "latitude": 27.25,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 259.29
+    },
+    "lat_+37.250_lon_+142.250": {
+      "latitude": 37.25,
+      "longitude": 142.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 108.02
+    },
+    "lat_+35.250_lon_+142.750": {
+      "latitude": 35.25,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 177.59
+    },
+    "lat_+41.750_lon_+137.250": {
+      "latitude": 41.75,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 175.74
+    },
+    "lat_+31.750_lon_+135.750": {
+      "latitude": 31.75,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 186.68
+    },
+    "lat_+31.250_lon_+145.250": {
+      "latitude": 31.25,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 494.97
+    },
+    "lat_+28.250_lon_+125.750": {
+      "latitude": 28.25,
+      "longitude": 125.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 227.92
+    },
+    "lat_+24.750_lon_+135.250": {
+      "latitude": 24.75,
+      "longitude": 135.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 416.13
+    },
+    "lat_+25.250_lon_+142.750": {
+      "latitude": 25.25,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 147.45
+    },
+    "lat_+41.250_lon_+144.250": {
+      "latitude": 41.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 112.88
+    },
+    "lat_+30.250_lon_+143.750": {
+      "latitude": 30.25,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 321.87
+    },
+    "lat_+40.750_lon_+144.750": {
+      "latitude": 40.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 181.82
+    },
+    "lat_+28.250_lon_+143.750": {
+      "latitude": 28.25,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 168.58
+    },
+    "lat_+24.750_lon_+131.750": {
+      "latitude": 24.75,
+      "longitude": 131.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 128.59
+    },
+    "lat_+24.250_lon_+128.250": {
+      "latitude": 24.25,
+      "longitude": 128.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 210.37
+    },
+    "lat_+29.250_lon_+132.250": {
+      "latitude": 29.25,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 176.03
+    },
+    "lat_+39.750_lon_+131.750": {
+      "latitude": 39.75,
+      "longitude": 131.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 210.7
+    },
+    "lat_+26.250_lon_+134.250": {
+      "latitude": 26.25,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 294.36
+    },
+    "lat_+35.250_lon_+144.250": {
+      "latitude": 35.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 310.27
+    },
+    "lat_+28.250_lon_+134.750": {
+      "latitude": 28.25,
+      "longitude": 134.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 425.04
+    },
+    "lat_+26.750_lon_+134.250": {
+      "latitude": 26.75,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 305.28
+    },
+    "lat_+38.750_lon_+144.750": {
+      "latitude": 38.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 246.0
+    },
+    "lat_+30.750_lon_+134.750": {
+      "latitude": 30.75,
+      "longitude": 134.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 280.95
+    },
+    "lat_+32.750_lon_+123.750": {
+      "latitude": 32.75,
+      "longitude": 123.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 192.55
+    },
+    "lat_+37.750_lon_+145.750": {
+      "latitude": 37.75,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 366.88
+    },
+    "lat_+30.250_lon_+145.750": {
+      "latitude": 30.25,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 453.27
+    },
+    "lat_+32.750_lon_+142.250": {
+      "latitude": 32.75,
+      "longitude": 142.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 225.06
+    },
+    "lat_+45.250_lon_+138.750": {
+      "latitude": 45.25,
+      "longitude": 138.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 103.75
+    },
+    "lat_+25.750_lon_+137.750": {
+      "latitude": 25.75,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 351.02
+    },
+    "lat_+25.250_lon_+132.250": {
+      "latitude": 25.25,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 118.43
+    },
+    "lat_+37.250_lon_+144.250": {
+      "latitude": 37.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 261.12
+    },
+    "lat_+26.250_lon_+145.750": {
+      "latitude": 26.25,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 357.43
+    },
+    "lat_+32.250_lon_+144.250": {
+      "latitude": 32.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 407.84
+    },
+    "lat_+24.750_lon_+127.250": {
+      "latitude": 24.75,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 153.25
+    },
+    "lat_+43.750_lon_+138.250": {
+      "latitude": 43.75,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 176.95
+    },
+    "lat_+33.250_lon_+144.250": {
+      "latitude": 33.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 412.45
+    },
+    "lat_+32.750_lon_+124.250": {
+      "latitude": 32.75,
+      "longitude": 124.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 165.56
+    },
+    "lat_+26.250_lon_+145.250": {
+      "latitude": 26.25,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 308.0
+    },
+    "lat_+30.750_lon_+125.250": {
+      "latitude": 30.75,
+      "longitude": 125.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 235.34
+    },
+    "lat_+26.250_lon_+132.750": {
+      "latitude": 26.25,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 146.43
+    },
+    "lat_+24.750_lon_+130.250": {
+      "latitude": 24.75,
+      "longitude": 130.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 153.87
+    },
+    "lat_+28.750_lon_+139.750": {
+      "latitude": 28.75,
+      "longitude": 139.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 198.51
+    },
+    "lat_+29.750_lon_+125.750": {
+      "latitude": 29.75,
+      "longitude": 125.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 289.7
+    },
+    "lat_+40.250_lon_+133.750": {
+      "latitude": 40.25,
+      "longitude": 133.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 275.3
+    },
+    "lat_+24.750_lon_+129.250": {
+      "latitude": 24.75,
+      "longitude": 129.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 211.16
+    },
+    "lat_+29.250_lon_+144.750": {
+      "latitude": 29.25,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 309.08
+    },
+    "lat_+41.750_lon_+132.750": {
+      "latitude": 41.75,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 107.23
+    },
+    "lat_+37.250_lon_+133.250": {
+      "latitude": 37.25,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 100.78
+    },
+    "lat_+28.250_lon_+124.750": {
+      "latitude": 28.25,
+      "longitude": 124.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 261.2
+    },
+    "lat_+36.250_lon_+144.250": {
+      "latitude": 36.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 326.37
+    },
+    "lat_+25.750_lon_+133.250": {
+      "latitude": 25.75,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 193.8
+    },
+    "lat_+29.250_lon_+142.750": {
+      "latitude": 29.25,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 179.81
+    },
+    "lat_+39.750_lon_+136.250": {
+      "latitude": 39.75,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 262.15
+    },
+    "lat_+32.750_lon_+141.750": {
+      "latitude": 32.75,
+      "longitude": 141.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 179.11
+    },
+    "lat_+30.250_lon_+133.250": {
+      "latitude": 30.25,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 214.39
+    },
+    "lat_+34.750_lon_+142.250": {
+      "latitude": 34.75,
+      "longitude": 142.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 163.78
+    },
+    "lat_+39.250_lon_+132.250": {
+      "latitude": 39.25,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 222.75
+    },
+    "lat_+26.750_lon_+129.750": {
+      "latitude": 26.75,
+      "longitude": 129.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.1
+    },
+    "lat_+27.750_lon_+138.750": {
+      "latitude": 27.75,
+      "longitude": 138.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 216.96
+    },
+    "lat_+26.750_lon_+134.750": {
+      "latitude": 26.75,
+      "longitude": 134.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 353.27
+    },
+    "lat_+26.750_lon_+145.250": {
+      "latitude": 26.75,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 301.15
+    },
+    "lat_+30.250_lon_+136.250": {
+      "latitude": 30.25,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 356.01
+    },
+    "lat_+24.250_lon_+139.250": {
+      "latitude": 24.25,
+      "longitude": 139.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 213.38
+    },
+    "lat_+27.250_lon_+122.250": {
+      "latitude": 27.25,
+      "longitude": 122.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 115.64
+    },
+    "lat_+38.750_lon_+136.750": {
+      "latitude": 38.75,
+      "longitude": 136.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 143.06
+    },
+    "lat_+29.250_lon_+131.750": {
+      "latitude": 29.25,
+      "longitude": 131.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 145.91
+    },
+    "lat_+39.750_lon_+137.750": {
+      "latitude": 39.75,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 165.82
+    },
+    "lat_+30.250_lon_+135.750": {
+      "latitude": 30.25,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 352.98
+    },
+    "lat_+36.250_lon_+145.750": {
+      "latitude": 36.25,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 432.58
+    },
+    "lat_+38.750_lon_+135.750": {
+      "latitude": 38.75,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 177.65
+    },
+    "lat_+28.250_lon_+124.250": {
+      "latitude": 28.25,
+      "longitude": 124.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 262.45
+    },
+    "lat_+28.250_lon_+137.250": {
+      "latitude": 28.25,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 374.04
+    },
+    "lat_+26.750_lon_+133.250": {
+      "latitude": 26.75,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 211.96
+    },
+    "lat_+37.750_lon_+143.750": {
+      "latitude": 37.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 199.03
+    },
+    "lat_+25.750_lon_+135.750": {
+      "latitude": 25.75,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 443.78
+    },
+    "lat_+29.750_lon_+137.750": {
+      "latitude": 29.75,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 258.9
+    },
+    "lat_+24.750_lon_+128.750": {
+      "latitude": 24.75,
+      "longitude": 128.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 180.69
+    },
+    "lat_+31.250_lon_+133.750": {
+      "latitude": 31.25,
+      "longitude": 133.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 176.77
+    },
+    "lat_+27.750_lon_+131.250": {
+      "latitude": 27.75,
+      "longitude": 131.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 136.85
+    },
+    "lat_+27.250_lon_+136.250": {
+      "latitude": 27.25,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 457.34
+    },
+    "lat_+31.250_lon_+123.750": {
+      "latitude": 31.25,
+      "longitude": 123.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 108.36
+    },
+    "lat_+29.250_lon_+140.750": {
+      "latitude": 29.25,
+      "longitude": 140.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 142.1
+    },
+    "lat_+28.750_lon_+138.250": {
+      "latitude": 28.75,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 275.99
+    },
+    "lat_+27.750_lon_+134.250": {
+      "latitude": 27.75,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 353.11
+    },
+    "lat_+27.750_lon_+131.750": {
+      "latitude": 27.75,
+      "longitude": 131.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 181.75
+    },
+    "lat_+24.250_lon_+138.750": {
+      "latitude": 24.25,
+      "longitude": 138.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 262.78
+    },
+    "lat_+36.250_lon_+130.750": {
+      "latitude": 36.25,
+      "longitude": 130.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 107.74
+    },
+    "lat_+27.250_lon_+132.750": {
+      "latitude": 27.25,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 202.65
+    },
+    "lat_+30.250_lon_+125.750": {
+      "latitude": 30.25,
+      "longitude": 125.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 286.17
+    },
+    "lat_+29.250_lon_+127.250": {
+      "latitude": 29.25,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 180.6
+    },
+    "lat_+28.250_lon_+144.750": {
+      "latitude": 28.25,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 261.29
+    },
+    "lat_+25.250_lon_+127.250": {
+      "latitude": 25.25,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 100.69
+    },
+    "lat_+39.250_lon_+137.750": {
+      "latitude": 39.25,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 121.12
+    },
+    "lat_+29.250_lon_+141.250": {
+      "latitude": 29.25,
+      "longitude": 141.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 162.95
+    },
+    "lat_+35.750_lon_+122.250": {
+      "latitude": 35.75,
+      "longitude": 122.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 119.22
+    },
+    "lat_+31.750_lon_+137.750": {
+      "latitude": 31.75,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 204.76
+    },
+    "lat_+30.250_lon_+126.250": {
+      "latitude": 30.25,
+      "longitude": 126.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 277.52
+    },
+    "lat_+36.750_lon_+144.750": {
+      "latitude": 36.75,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 327.2
+    },
+    "lat_+32.250_lon_+137.250": {
+      "latitude": 32.25,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 187.54
+    },
+    "lat_+29.250_lon_+131.250": {
+      "latitude": 29.25,
+      "longitude": 131.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 126.26
+    },
+    "lat_+24.250_lon_+142.750": {
+      "latitude": 24.25,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.98
+    },
+    "lat_+41.750_lon_+136.750": {
+      "latitude": 41.75,
+      "longitude": 136.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 217.03
+    },
+    "lat_+28.250_lon_+134.250": {
+      "latitude": 28.25,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 386.53
+    },
+    "lat_+26.750_lon_+145.750": {
+      "latitude": 26.75,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 350.49
+    },
+    "lat_+33.250_lon_+143.250": {
+      "latitude": 33.25,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 315.08
+    },
+    "lat_+44.250_lon_+137.750": {
+      "latitude": 44.25,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 119.03
+    },
+    "lat_+39.750_lon_+133.250": {
+      "latitude": 39.75,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 303.41
+    },
+    "lat_+25.750_lon_+136.250": {
+      "latitude": 25.75,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 488.47
+    },
+    "lat_+33.750_lon_+143.750": {
+      "latitude": 33.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 340.98
+    },
+    "lat_+30.750_lon_+127.250": {
+      "latitude": 30.75,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 172.21
+    },
+    "lat_+29.250_lon_+138.250": {
+      "latitude": 29.25,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 240.57
+    },
+    "lat_+38.750_lon_+132.750": {
+      "latitude": 38.75,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 184.49
+    },
+    "lat_+28.750_lon_+142.750": {
+      "latitude": 28.75,
+      "longitude": 142.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.41
+    },
+    "lat_+30.750_lon_+128.250": {
+      "latitude": 30.75,
+      "longitude": 128.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 113.27
+    },
+    "lat_+34.250_lon_+141.250": {
+      "latitude": 34.25,
+      "longitude": 141.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.54
+    },
+    "lat_+31.750_lon_+138.750": {
+      "latitude": 31.75,
+      "longitude": 138.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 122.83
+    },
+    "lat_+40.250_lon_+132.250": {
+      "latitude": 40.25,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 275.26
+    },
+    "lat_+29.750_lon_+139.250": {
+      "latitude": 29.75,
+      "longitude": 139.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.62
+    },
+    "lat_+33.250_lon_+141.250": {
+      "latitude": 33.25,
+      "longitude": 141.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 129.28
+    },
+    "lat_+27.250_lon_+131.250": {
+      "latitude": 27.25,
+      "longitude": 131.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 143.78
+    },
+    "lat_+28.250_lon_+127.250": {
+      "latitude": 28.25,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 105.17
+    },
+    "lat_+41.250_lon_+132.750": {
+      "latitude": 41.25,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 161.85
+    },
+    "lat_+38.250_lon_+132.750": {
+      "latitude": 38.25,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 136.4
+    },
+    "lat_+38.750_lon_+137.250": {
+      "latitude": 38.75,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 112.84
+    },
+    "lat_+24.250_lon_+127.250": {
+      "latitude": 24.25,
+      "longitude": 127.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 190.24
+    },
+    "lat_+31.750_lon_+145.250": {
+      "latitude": 31.75,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 490.12
+    },
+    "lat_+32.250_lon_+138.250": {
+      "latitude": 32.25,
+      "longitude": 138.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 143.56
+    },
+    "lat_+41.250_lon_+144.750": {
+      "latitude": 41.25,
+      "longitude": 144.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 146.57
+    },
+    "lat_+38.250_lon_+144.250": {
+      "latitude": 38.25,
+      "longitude": 144.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 224.05
+    },
+    "lat_+36.750_lon_+123.750": {
+      "latitude": 36.75,
+      "longitude": 123.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 110.32
+    },
+    "lat_+27.250_lon_+134.750": {
+      "latitude": 27.25,
+      "longitude": 134.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 370.59
+    },
+    "lat_+29.750_lon_+125.250": {
+      "latitude": 29.75,
+      "longitude": 125.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 242.06
+    },
+    "lat_+30.750_lon_+125.750": {
+      "latitude": 30.75,
+      "longitude": 125.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 275.82
+    },
+    "lat_+39.250_lon_+137.250": {
+      "latitude": 39.25,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 148.46
+    },
+    "lat_+36.250_lon_+143.250": {
+      "latitude": 36.25,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 219.72
+    },
+    "lat_+29.250_lon_+130.750": {
+      "latitude": 29.25,
+      "longitude": 130.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 102.15
+    },
+    "lat_+34.750_lon_+143.750": {
+      "latitude": 34.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 282.6
+    },
+    "lat_+38.750_lon_+143.250": {
+      "latitude": 38.75,
+      "longitude": 143.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 122.17
+    },
+    "lat_+41.750_lon_+145.250": {
+      "latitude": 41.75,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 136.99
+    },
+    "lat_+26.250_lon_+129.250": {
+      "latitude": 26.25,
+      "longitude": 129.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 106.38
+    },
+    "lat_+45.750_lon_+139.250": {
+      "latitude": 45.75,
+      "longitude": 139.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 103.71
+    },
+    "lat_+31.750_lon_+136.750": {
+      "latitude": 31.75,
+      "longitude": 136.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 207.46
+    },
+    "lat_+28.750_lon_+140.250": {
+      "latitude": 28.75,
+      "longitude": 140.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 178.43
+    },
+    "lat_+40.250_lon_+135.750": {
+      "latitude": 40.25,
+      "longitude": 135.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 330.34
+    },
+    "lat_+30.250_lon_+134.250": {
+      "latitude": 30.25,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 297.52
+    },
+    "lat_+29.250_lon_+126.250": {
+      "latitude": 29.25,
+      "longitude": 126.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 246.88
+    },
+    "lat_+30.250_lon_+127.750": {
+      "latitude": 30.25,
+      "longitude": 127.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 173.95
+    },
+    "lat_+37.750_lon_+134.250": {
+      "latitude": 37.75,
+      "longitude": 134.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 177.94
+    },
+    "lat_+28.750_lon_+133.250": {
+      "latitude": 28.75,
+      "longitude": 133.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 285.49
+    },
+    "lat_+42.250_lon_+135.250": {
+      "latitude": 42.25,
+      "longitude": 135.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 121.16
+    },
+    "lat_+40.250_lon_+145.250": {
+      "latitude": 40.25,
+      "longitude": 145.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 251.39
+    },
+    "lat_+27.250_lon_+132.250": {
+      "latitude": 27.25,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 171.39
+    },
+    "lat_+30.250_lon_+142.250": {
+      "latitude": 30.25,
+      "longitude": 142.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 186.78
+    },
+    "lat_+41.750_lon_+132.250": {
+      "latitude": 41.75,
+      "longitude": 132.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 108.85
+    },
+    "lat_+29.750_lon_+136.250": {
+      "latitude": 29.75,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 411.04
+    },
+    "lat_+36.750_lon_+143.750": {
+      "latitude": 36.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 255.71
+    },
+    "lat_+26.750_lon_+143.750": {
+      "latitude": 26.75,
+      "longitude": 143.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 154.17
+    },
+    "lat_+34.750_lon_+122.250": {
+      "latitude": 34.75,
+      "longitude": 122.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 189.19
+    },
+    "lat_+33.250_lon_+122.250": {
+      "latitude": 33.25,
+      "longitude": 122.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 124.96
+    },
+    "lat_+28.750_lon_+136.250": {
+      "latitude": 28.75,
+      "longitude": 136.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 436.76
+    },
+    "lat_+30.250_lon_+132.750": {
+      "latitude": 30.25,
+      "longitude": 132.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 167.44
+    },
+    "lat_+32.250_lon_+145.750": {
+      "latitude": 32.25,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 551.79
+    },
+    "lat_+24.250_lon_+126.750": {
+      "latitude": 24.25,
+      "longitude": 126.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 142.46
+    },
+    "lat_+28.750_lon_+137.750": {
+      "latitude": 28.75,
+      "longitude": 137.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 312.84
+    },
+    "lat_+28.750_lon_+125.750": {
+      "latitude": 28.75,
+      "longitude": 125.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 279.15
+    },
+    "lat_+40.250_lon_+137.250": {
+      "latitude": 40.25,
+      "longitude": 137.25,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 210.63
+    },
+    "lat_+40.250_lon_+145.750": {
+      "latitude": 40.25,
+      "longitude": 145.75,
+      "stratum": "open_water",
+      "is_land": false,
+      "distance_to_coast_km": 310.38
+    }
+  }
+}
