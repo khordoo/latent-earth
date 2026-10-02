@@ -28,10 +28,10 @@ function getProbabilityColor(p: number | null): string {
 }
 
 function getUncertaintyColor(u: number): string {
-  if (u < 0.2) return '#090D16';
-  if (u < 0.4) return '#2E1065';
-  if (u < 0.6) return '#701A75';
-  if (u < 0.8) return '#C026D3';
+  if (u < 0.2) return '#1E3A8A';
+  if (u < 0.4) return '#4338CA';
+  if (u < 0.6) return '#7E22CE';
+  if (u < 0.75) return '#C026D3';
   if (u < 0.9) return '#EA580C';
   return '#FDE047';
 }

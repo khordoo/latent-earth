@@ -177,7 +177,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
             <div
               className="h-3 w-full rounded-md shadow-inner"
               style={{
-                background: 'linear-gradient(to right, #090D16, #2E1065, #701A75, #C026D3, #EA580C, #FDE047)',
+                background: 'linear-gradient(to right, #1E3A8A, #4338CA, #7E22CE, #C026D3, #EA580C, #FDE047)',
               }}
             />
             <div className="flex justify-between text-[10px] font-mono text-slate-400">
