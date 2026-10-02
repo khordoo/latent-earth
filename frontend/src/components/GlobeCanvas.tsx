@@ -198,14 +198,45 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // 3. Render Model Decision Grid Cells
+    // 3. Grid cell dimensions
     const halfStep = stepDegrees / 2.0;
+
+    // 3a. Render Unqueried Grid Cells (Neutral, very dark empty state distinct from predicted water)
+    if (visibleCount < points.length) {
+      ctx.beginPath();
+      for (let i = visibleCount; i < points.length; i++) {
+        const pt = points[i];
+        const lat = pt.latitude;
+        const lon = pt.longitude;
+
+        const cellPolygon = {
+          type: 'Polygon',
+          coordinates: [[
+            [lon - halfStep, lat + halfStep],
+            [lon + halfStep, lat + halfStep],
+            [lon + halfStep, lat - halfStep],
+            [lon - halfStep, lat - halfStep],
+            [lon - halfStep, lat + halfStep],
+          ]],
+        };
+        path(cellPolygon as any);
+      }
+      ctx.fillStyle = '#080C14'; // Neutral dark charcoal empty state
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.35)'; // Faint slate grid wireframe
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // 3b. Render Queried Model Decision Grid Cells
     const activePoints = points.slice(0, visibleCount);
+
 
     for (let i = 0; i < activePoints.length; i++) {
       const pt = activePoints[i];
       const lat = pt.latitude;
       const lon = pt.longitude;
+
 
       // Color selection
       let fillColor = '#1E293B';

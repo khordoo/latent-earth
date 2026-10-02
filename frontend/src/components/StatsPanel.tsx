@@ -1,5 +1,5 @@
-import React from 'react';
-import { Activity, BarChart2, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { Activity, BarChart2, CheckCircle2, AlertTriangle, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { RunData, RenderMode, RunSummary } from '../types';
 
 interface StatsPanelProps {
@@ -17,12 +17,46 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
   onSelectRun,
   renderMode,
 }) => {
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    return typeof window !== 'undefined' ? window.innerWidth < 1280 : false;
+  });
+
   if (!runData) return null;
 
   const metrics = runData.metrics;
 
+  if (isCollapsed) {
+    return (
+      <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 glass-panel px-3 py-2 rounded-xl flex items-center gap-2.5 shadow-2xl border border-slate-800 transition-all">
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => setIsCollapsed(false)}
+          title="Click to expand Experiment Panel"
+        >
+          <Activity className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="text-xs font-bold text-slate-200">Latent Earth</span>
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300 font-semibold">
+            {runData.total_coordinates.toLocaleString()} pts
+          </span>
+          {metrics && (
+            <span className="text-[10px] font-mono text-emerald-400 font-bold hidden sm:inline">
+              {Math.round(metrics.accuracy * 100)}% Acc
+            </span>
+          )}
+        </div>
+        <button
+          onClick={() => setIsCollapsed(false)}
+          className="p-1 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors"
+          title="Expand Panel"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="absolute top-5 left-5 z-20 w-80 glass-panel p-4 rounded-2xl flex flex-col gap-3.5 shadow-2xl border border-slate-800">
+    <div className="absolute top-4 left-4 sm:top-5 sm:left-5 z-20 w-72 sm:w-80 glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col gap-3.5 shadow-2xl border border-slate-800 transition-all max-h-[calc(100vh-6rem)] overflow-y-auto">
       {/* Title & Run Selector */}
       <div className="flex flex-col gap-1.5 border-b border-slate-800/80 pb-3">
         <div className="flex items-center justify-between">
@@ -30,10 +64,20 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
             <Activity className="w-3.5 h-3.5" />
             Latent Earth
           </span>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold uppercase">
-            {runData.provider}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold uppercase">
+              {runData.provider}
+            </span>
+            <button
+              onClick={() => setIsCollapsed(true)}
+              className="p-1 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors"
+              title="Collapse Panel"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+          </div>
         </div>
+
 
         {/* Run Selector Dropdown */}
         <select
