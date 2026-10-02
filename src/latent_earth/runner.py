@@ -140,6 +140,9 @@ class Runner:
                 try:
                     # Run batch concurrently using provider's concurrency semaphore
                     batch_preds = await self.provider.predict_coordinates(batch)
+                    for i, pred in enumerate(batch_preds):
+                        pred.sequence_index = completed_count + i
+
                     requests_sent += len(batch)
                     completed_count += len(batch_preds)
                     new_predictions.extend(batch_preds)

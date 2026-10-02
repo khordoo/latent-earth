@@ -123,13 +123,18 @@ def evaluate_predictions(
                     "confidence_in_error": round(confidence, 4),
                 })
 
+        pred.actual_land = actual_land
         if predicted_land and actual_land:
+            pred.error_category = "correct_land"
             tp += 1
         elif not predicted_land and not actual_land:
+            pred.error_category = "correct_water"
             tn += 1
         elif predicted_land and not actual_land:
+            pred.error_category = "false_land"
             fp += 1
         else:
+            pred.error_category = "false_water"
             fn += 1
 
     accuracy = (tp + tn) / total

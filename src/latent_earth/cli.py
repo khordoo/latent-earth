@@ -208,6 +208,63 @@ def cmd_evaluate(args: argparse.Namespace) -> None:
         print(f"Saved error map to {err_map_path}")
 
 
+
+def cmd_serve(args: argparse.Namespace) -> None:
+    """Launch FastAPI server to serve API and interactive frontend."""
+    import uvicorn
+    print(f"\nStarting Latent Earth Interactive Visualization Server at http://{args.host}:{args.port}")
+    print(f"Open http://{args.host}:{args.port} in your browser to view the interactive globe.\n")
+    uvicorn.run("latent_earth.api:app", host=args.host, port=args.port, reload=args.reload)
+
+
+def cmd_export(args: argparse.Namespace) -> None:
+    """Export predictions and evaluation into a self-contained frontend JSON bundle."""
+    input_path = Path(args.input)
+    if not input_path.exists():
+        sys.exit(f"Input file not found: {input_path}")
+
+    cache = PredictionCache(input_path, strict_validation=False)
+    preds = list(cache.load().values())
+    if not preds:
+        sys.exit("No valid predictions found in input file.")
+
+    step = args.step if args.step else infer_step_from_predictions(preds)
+    out_path = Path(args.output) if args.output else input_path.parent / f"{input_path.stem}_bundle.json"
+
+    eval_file = input_path.parent / f"{input_path.stem}_evaluation.json"
+    eval_data: dict[str, Any] | None = None
+    if eval_file.exists():
+        try:
+            with open(eval_file, "r", encoding="utf-8") as ef:
+                eval_data = json.load(ef)
+        except Exception:
+            pass
+
+    first_pred = preds[0]
+    points_data = [p.to_dict() for p in preds]
+
+    manifest = {
+        "run_id": input_path.stem,
+        "provider": first_pred.provider,
+        "model": first_pred.model,
+        "prompt_version": first_pred.prompt_version,
+        "step_degrees": step,
+        "convention": "cell_center",
+        "total_coordinates": len(preds),
+        "sampled_count": len(preds),
+        "created_at": first_pred.timestamp,
+        "metrics": eval_data.get("metrics") if eval_data else None,
+        "points": points_data,
+    }
+    if eval_data:
+        manifest["full_evaluation"] = eval_data
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2)
+
+    print(f"Exported frontend-ready bundle with {len(points_data):,} points to {out_path}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="latent-earth",
@@ -244,6 +301,18 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--output", help="Output JSON evaluation file path.")
     eval_parser.add_argument("--no-error-map", action="store_true", help="Do not render error map.")
 
+    # 'serve' subcommand
+    serve_parser = subparsers.add_parser("serve", help="Launch web visualization server.")
+    serve_parser.add_argument("--host", default="127.0.0.1", help="Host interface (default 127.0.0.1).")
+    serve_parser.add_argument("--port", type=int, default=8000, help="Port (default 8000).")
+    serve_parser.add_argument("--reload", action="store_true", help="Enable hot reloading.")
+
+    # 'export' subcommand
+    export_parser = subparsers.add_parser("export", help="Export JSONL run to frontend JSON bundle.")
+    export_parser.add_argument("--input", required=True, help="Input predictions JSONL file.")
+    export_parser.add_argument("--step", type=float, help="Grid step in degrees (optional, auto-inferred).")
+    export_parser.add_argument("--output", help="Output JSON bundle file path.")
+
     return parser
 
 
@@ -258,6 +327,10 @@ def main() -> None:
         cmd_render(args)
     elif args.command == "evaluate":
         cmd_evaluate(args)
+    elif args.command == "serve":
+        cmd_serve(args)
+    elif args.command == "export":
+        cmd_export(args)
 
 
 if __name__ == "__main__":

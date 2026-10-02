@@ -149,12 +149,40 @@ uv run latent-earth run \
 
 ---
 
+---
+
+## Interactive Web Visualization & 3D Globe
+
+The project includes an interactive web application featuring an **Orthographic 3D Globe** built with **FastAPI**, **React**, **TypeScript**, and **D3 Geo (Canvas)**.
+
+```bash
+# Launch the interactive server
+uv run latent-earth serve --port 8000
+```
+Open **`http://localhost:8000`** in your browser.
+
+### Key Interactive Features
+- **3D Circular Orthographic Globe:** Click and drag to rotate the globe, scroll wheel to zoom, and toggle smooth auto-rotation.
+- **2D Map Projections:** Switch instantly between Orthographic Globe, Equirectangular (Plate Carrée), and Mercator.
+- **High-Performance Canvas Rendering:** Effortlessly displays tens of thousands of coordinate cells with pixel-perfect clipping and color transitions.
+- **Interactive Layers & Render Modes:**
+  - `P(Land)`: Continuous oceanic-to-terrestrial probability gradient.
+  - `Binary`: Crisp decision boundaries ($P \ge 0.5$).
+  - `Uncertainty`: Heatmap highlighting ambiguous coordinates and coastlines ($P \approx 0.5$).
+  - `Ground Truth`: Natural Earth reference land vs. water overlay.
+  - `Error Overlay`: True Positives, True Negatives, False Land, and False Water.
+- **Experiment Sampling Playback:** Animate the model's decision process step-by-step with play/pause, scrub slider, and speed controls ($1\times$ to $200\times$).
+- **Hover Inspection Tooltip:** Inspect any coordinate on the globe for exact latitude/longitude, cardinal notation, $P(\text{land})$, decision, uncertainty, entropy, and ground truth classification.
+- **Run Switcher:** Instantly toggle between different runs (e.g. 10°, 4°, 2° experiments).
+
+---
+
 ## Ground-Truth Geographic Evaluation
 
 Evaluate the reconstructed map against official [Natural Earth 1:110m](https://www.naturalearthdata.com/) land polygons:
 
 ```bash
-uv run latent-earth evaluate --input outputs/jev_jev-latest_4deg_land-water-v1.jsonl
+uv run latent-earth evaluate --input outputs/mock_mock-earth-v1_10deg_mock-v1.jsonl
 ```
 
 Metrics computed:
