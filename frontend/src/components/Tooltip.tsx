@@ -143,6 +143,17 @@ export const Tooltip: React.FC<TooltipProps> = ({ point, mousePos }) => {
           <span className="font-bold text-amber-300">{uncertaintyStr}</span>
         </div>
 
+        {(point.distance_to_coastline_km !== undefined || point.distance_to_coastline !== undefined) && (
+          <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+            <span className="text-slate-400">Distance to coast</span>
+            <span className="font-bold text-slate-200">
+              {point.distance_to_coastline_km !== undefined
+                ? `${point.distance_to_coastline_km.toFixed(1)} km`
+                : `${(point.distance_to_coastline! * 111.0).toFixed(1)} km`}
+            </span>
+          </div>
+        )}
+
         {rawResponseStr && (
           <div className="flex justify-between items-center pt-0.5">
             <span className="text-slate-400">Raw response</span>

@@ -1,0 +1,22 @@
+{
+  "experiment": "latent-earth-v1",
+  "prompt_version": "land-water-v1",
+  "prompt_text": "Is this geographic coordinate located on land rather than water?",
+  "prompt_sha256": "7e0c3a4b62ac3e5521e0dd652352efe86352f2433ea8ea9602462968a012d39a",
+  "ground_truth_dataset": "Natural Earth 1:10m Land Polygons (Physical)",
+  "ground_truth_filename": "ne_10m_land.geojson",
+  "ground_truth_sha256": "1ac90796408bc6ad6911d69448485d3c4dbf2190370080368a09976e1c9f7416",
+  "coastal_band_km": 100.0,
+  "distance_algorithm": "WGS84 ellipsoidal geodesic (pyproj.Geod) with local aspect-ratio cosine refinement",
+  "baseline_model": "jev-latest",
+  "model_provider": "TypeSafe AI (System One)",
+  "temperature": 0.0,
+  "threshold": 0.5,
+  "grid_convention": "cell_center",
+  "git_commit_sha": "d7da239bd264f3b4e0615c64d4175c4c507b7dc0",
+  "persisted_runs": [
+    "outputs/jev_jev-latest_japan_korea_2deg_land-water-v1.jsonl",
+    "outputs/jev_jev-latest_japan_korea_1deg_land-water-v1.jsonl",
+    "outputs/jev_jev-latest_japan_korea_0_5deg_land-water-v1.jsonl"
+  ]
+}

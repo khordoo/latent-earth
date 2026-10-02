@@ -12,18 +12,26 @@ import matplotlib.colors as mcolors
 import numpy as np
 
 try:
-    from shapely.geometry import Point, shape
-    from shapely.ops import unary_union
+    from shapely.geometry import Point, box, shape
+    from shapely.ops import nearest_points, unary_union
     from shapely import prepare
+    import shapely.affinity
     HAS_SHAPELY = True
 except ImportError:
     HAS_SHAPELY = False
+
+try:
+    import pyproj
+    HAS_PYPROJ = True
+except ImportError:
+    HAS_PYPROJ = False
 
 from latent_earth.grid import get_latitudes, get_longitudes
 from latent_earth.models import Coordinate, Prediction
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_HIGH_RES_GEOJSON_PATH = Path(__file__).parent / "data" / "ne_10m_land.geojson"
 DEFAULT_GEOJSON_PATH = Path(__file__).parent / "data" / "ne_110m_land.geojson"
 
 
@@ -36,7 +44,13 @@ class GroundTruthEvaluator:
                 "Shapely is required for ground-truth evaluation. Install it with: uv add shapely"
             )
 
-        self.path = Path(geojson_path) if geojson_path else DEFAULT_GEOJSON_PATH
+        if geojson_path:
+            self.path = Path(geojson_path)
+        elif DEFAULT_HIGH_RES_GEOJSON_PATH.exists():
+            self.path = DEFAULT_HIGH_RES_GEOJSON_PATH
+        else:
+            self.path = DEFAULT_GEOJSON_PATH
+
         if not self.path.exists():
             raise FileNotFoundError(f"Natural Earth GeoJSON not found at: {self.path}")
 
@@ -51,7 +65,12 @@ class GroundTruthEvaluator:
         prepare(self.land_union)
         self.coastline = self.land_union.boundary
         prepare(self.coastline)
-        logger.info("Ground truth geometry and coastline prepared.")
+
+        if HAS_PYPROJ:
+            self.geod = pyproj.Geod(ellps="WGS84")
+        else:
+            self.geod = None
+        logger.info("Ground truth geometry and WGS84 geodesic coastline prepared (%s).", self.path.name)
 
     def is_land(self, lat: float, lon: float) -> bool:
         """Check whether a (latitude, longitude) coordinate intersects land ground truth."""
@@ -64,20 +83,66 @@ class GroundTruthEvaluator:
         pt = Point(lon, lat)
         return float(pt.distance(self.coastline))
 
-    def is_coastal(self, lat: float, lon: float, threshold_degrees: float = 1.0) -> bool:
-        """Check whether a coordinate is within threshold degrees of the coastline."""
-        return self.distance_to_coastline(lat, lon) <= threshold_degrees
+    def distance_to_coastline_km(self, lat: float, lon: float) -> float:
+        """Calculate exact WGS84 geodesic distance in kilometers to the coastline.
+
+        Combines initial spherical GEOS nearest-point query with local aspect-ratio
+        cosine refinement within 250km to eliminate Euclidean degree distortions at higher latitudes.
+        """
+        pt = Point(lon, lat)
+        np_pt = nearest_points(pt, self.coastline)[1]
+
+        if self.geod is None:
+            # Fallback to mean Earth radius spherical approximation
+            deg_dist = float(pt.distance(self.coastline))
+            return deg_dist * 111.139
+
+        _, _, d_meters = self.geod.inv(lon, lat, np_pt.x, np_pt.y)
+        d_km = d_meters / 1000.0
+
+        cos_lat = math.cos(math.radians(lat))
+        if d_km < 250.0 and abs(cos_lat - 1.0) > 0.02:
+            d_deg_lat = (d_km * 1.30) / 110.57
+            d_deg_lon = (d_km * 1.30) / (111.32 * max(0.05, cos_lat))
+            s_box = box(lon - d_deg_lon, lat - d_deg_lat, lon + d_deg_lon, lat + d_deg_lat)
+            local_c = self.coastline.intersection(s_box)
+            if not local_c.is_empty:
+                scaled_c = shapely.affinity.scale(local_c, xfact=cos_lat, yfact=1.0, origin=(lon, lat))
+                np_scaled = nearest_points(pt, scaled_c)[1]
+                unscaled_x = lon + (np_scaled.x - lon) / cos_lat
+                unscaled_y = np_scaled.y
+                _, _, refined_d_meters = self.geod.inv(lon, lat, unscaled_x, unscaled_y)
+                return refined_d_meters / 1000.0
+
+        return d_km
+
+    def is_coastal(
+        self,
+        lat: float,
+        lon: float,
+        threshold_km: float = 100.0,
+        threshold_degrees: float | None = None,
+    ) -> bool:
+        """Check whether a coordinate is within the coastal band threshold."""
+        if threshold_degrees is not None:
+            return self.distance_to_coastline(lat, lon) <= threshold_degrees
+        return self.distance_to_coastline_km(lat, lon) <= threshold_km
 
 
 def evaluate_predictions(
     predictions: Sequence[Prediction],
     evaluator: GroundTruthEvaluator | None = None,
     geojson_path: str | Path | None = None,
-    coastal_distance_degrees: float = 1.0,
+    coastal_distance_km: float = 100.0,
+    coastal_distance_degrees: float | None = None,
 ) -> dict[str, Any]:
-    """Calculate full evaluation metrics and error analysis, including area-weighting and coastal metrics."""
+    """Calculate full evaluation metrics and error analysis, including area-weighting and geodesic coastal metrics."""
     if evaluator is None:
         evaluator = GroundTruthEvaluator(geojson_path)
+
+    # Backward compatibility with degree thresholds
+    if coastal_distance_degrees is not None and coastal_distance_km == 100.0:
+        coastal_distance_km = coastal_distance_degrees * 111.0
 
     total = len(predictions)
     if total == 0:
@@ -101,7 +166,7 @@ def evaluate_predictions(
     weighted_log_loss_sum = 0.0
     has_probs = False
 
-    # Coastal metrics tracking
+    # Coastal metrics tracking (geodesic distance <= threshold_km)
     coastal_count = 0
     coastal_correct = 0
     coastal_brier_sum = 0.0
@@ -128,11 +193,12 @@ def evaluate_predictions(
         weight = max(0.0, math.cos(lat_rad))
         total_weight += weight
 
-        # Coastal proximity evaluation
-        dist_to_coast = evaluator.distance_to_coastline(lat, lon)
-        is_coastal_pt = dist_to_coast <= coastal_distance_degrees
+        # WGS84 geodesic coastal proximity evaluation in kilometers
+        dist_to_coast_km = evaluator.distance_to_coastline_km(lat, lon)
+        is_coastal_pt = dist_to_coast_km <= coastal_distance_km
         pred.is_coastal = is_coastal_pt
-        pred.distance_to_coastline = round(dist_to_coast, 4)
+        pred.distance_to_coastline_km = round(dist_to_coast_km, 2)
+        pred.distance_to_coastline = round(dist_to_coast_km, 2)
 
         is_correct = (predicted_land == actual_land)
 
@@ -170,7 +236,7 @@ def evaluate_predictions(
                 "uncertainty": pred.uncertainty,
                 "actual_land": actual_land,
                 "is_coastal": is_coastal_pt,
-                "distance_to_coastline": round(dist_to_coast, 4),
+                "distance_to_coastline_km": round(dist_to_coast_km, 2),
             })
 
             # Check if wrongly classified
@@ -183,6 +249,7 @@ def evaluate_predictions(
                     "predicted_land": predicted_land,
                     "actual_land": actual_land,
                     "is_coastal": is_coastal_pt,
+                    "distance_to_coastline_km": round(dist_to_coast_km, 2),
                     "confidence_in_error": round(confidence, 4),
                 })
 
@@ -251,9 +318,12 @@ def evaluate_predictions(
                 "count": len(b),
             })
 
+    coastal_deg_equiv = round(coastal_distance_km / 111.0, 3)
+
     results = {
         "total_evaluated": total,
-        "coastal_threshold_degrees": coastal_distance_degrees,
+        "coastal_threshold_km": coastal_distance_km,
+        "coastal_threshold_degrees": coastal_deg_equiv,
         "coastal_cell_count": coastal_count,
         "coastal_cell_fraction": round(coastal_count / total, 4),
         "metrics": {
@@ -286,7 +356,8 @@ def evaluate_predictions(
             "log_loss": round(weighted_log_loss, 4) if weighted_log_loss is not None else None,
         },
         "coastal_metrics": {
-            "coastal_distance_threshold_deg": coastal_distance_degrees,
+            "coastal_distance_threshold_km": coastal_distance_km,
+            "coastal_distance_threshold_deg": coastal_deg_equiv,
             "coastal_cell_count": coastal_count,
             "coastal_cell_fraction": round(coastal_count / total, 4),
             "accuracy": round(coastal_acc, 4) if coastal_acc is not None else None,
@@ -305,6 +376,219 @@ def evaluate_predictions(
         "most_uncertain": uncertain_coords[:20],
     }
     return results
+
+
+def compute_cross_resolution_agreement(
+    coarse_predictions: Sequence[Prediction | dict[str, Any]],
+    fine_predictions: Sequence[Prediction | dict[str, Any]],
+    coarse_step: float,
+    fine_step: float,
+    evaluator: GroundTruthEvaluator | None = None,
+) -> dict[str, Any]:
+    """Compute spatial and probabilistic agreement between coarse and fine nested grids.
+
+    In the cell_center quadtree hierarchy:
+    Each coarse parent cell of step S contains (S / s)^2 nested fine child cells of step s.
+    For example:
+    - 2.0° -> 1.0°: 4 child cells per parent (528 evaluations across 132 parents)
+    - 1.0° -> 0.5°: 4 child cells per parent (2,112 evaluations across 528 parents)
+    - 2.0° -> 0.5°: 16 grandchild cells per parent (2,112 evaluations across 132 parents)
+    """
+    if not coarse_predictions or not fine_predictions:
+        return {"error": "Empty predictions provided"}
+
+    if evaluator is None:
+        try:
+            evaluator = GroundTruthEvaluator()
+        except Exception:
+            evaluator = None
+
+    def to_item(p: Prediction | dict[str, Any]) -> dict[str, Any]:
+        if isinstance(p, dict):
+            return p
+        return p.to_dict()
+
+    coarse_items = [to_item(p) for p in coarse_predictions]
+    fine_items = [to_item(p) for p in fine_predictions]
+
+    # Index fine predictions by (lat, lon) rounded to 4 decimals
+    fine_by_coord: dict[tuple[float, float], dict[str, Any]] = {
+        (round(float(p["latitude"]), 4), round(float(p["longitude"]), 4)): p
+        for p in fine_items
+    }
+
+    subdiv = int(round(coarse_step / fine_step))
+    if subdiv <= 1:
+        raise ValueError(f"coarse_step ({coarse_step}) must be greater than fine_step ({fine_step})")
+
+    total_parents = len(coarse_items)
+    children_per_parent = subdiv * subdiv
+
+    total_child_evals = 0
+    agree_child_evals = 0
+    majority_agree_count = 0
+
+    both_land = 0
+    both_water = 0
+    parent_land_child_water = 0
+    parent_water_child_land = 0
+
+    # Ground-truth transition tracking
+    w_to_l_beneficial = 0  # Parent=water, child=land, GT is land
+    w_to_l_erroneous = 0   # Parent=water, child=land, GT is water (erroneous land expansion)
+    l_to_w_beneficial = 0  # Parent=land, child=water, GT is water (beneficial boundary refinement)
+    l_to_w_erroneous = 0   # Parent=land, child=water, GT is land (erroneous water hole)
+
+    coastal_child_evals = 0
+    coastal_agree_evals = 0
+    interior_child_evals = 0
+    interior_agree_evals = 0
+
+    prob_deltas: list[float] = []
+    parent_probs: list[float] = []
+    mean_child_probs: list[float] = []
+
+    half_coarse = coarse_step / 2.0
+    half_fine = fine_step / 2.0
+
+    for parent in coarse_items:
+        p_lat = float(parent["latitude"])
+        p_lon = float(parent["longitude"])
+        p_land = bool(parent["is_land"])
+        p_prob = parent.get("probability_land")
+        if p_prob is None:
+            p_prob = 1.0 if p_land else 0.0
+        p_coastal = parent.get("is_coastal")
+
+        # Find child cells strictly inside parent's spatial cell extent
+        children: list[dict[str, Any]] = []
+        for i in range(subdiv):
+            c_lat = (p_lat - half_coarse) + half_fine + i * fine_step
+            for j in range(subdiv):
+                c_lon = (p_lon - half_coarse) + half_fine + j * fine_step
+                child = fine_by_coord.get((round(c_lat, 4), round(c_lon, 4)))
+                if child:
+                    children.append(child)
+
+        c_lands = [bool(c["is_land"]) for c in children]
+        c_probs = [
+            float(c.get("probability_land") if c.get("probability_land") is not None else (1.0 if c["is_land"] else 0.0))
+            for c in children
+        ]
+
+        for idx_c, c_land in enumerate(c_lands):
+            child_dict = children[idx_c]
+            total_child_evals += 1
+            if c_land == p_land:
+                agree_child_evals += 1
+                if p_land:
+                    both_land += 1
+                else:
+                    both_water += 1
+            else:
+                c_lat_val = float(child_dict["latitude"])
+                c_lon_val = float(child_dict["longitude"])
+                c_gt = evaluator.is_land(c_lat_val, c_lon_val) if evaluator is not None else None
+
+                if p_land:
+                    parent_land_child_water += 1
+                    if c_gt is not None:
+                        if not c_gt:
+                            l_to_w_beneficial += 1
+                        else:
+                            l_to_w_erroneous += 1
+                else:
+                    parent_water_child_land += 1
+                    if c_gt is not None:
+                        if c_gt:
+                            w_to_l_beneficial += 1
+                        else:
+                            w_to_l_erroneous += 1
+
+            if p_coastal is not None:
+                if p_coastal:
+                    coastal_child_evals += 1
+                    if c_land == p_land:
+                        coastal_agree_evals += 1
+                else:
+                    interior_child_evals += 1
+                    if c_land == p_land:
+                        interior_agree_evals += 1
+
+        if c_lands:
+            land_votes = sum(1 for c in c_lands if c)
+            water_votes = len(c_lands) - land_votes
+            if land_votes > water_votes:
+                maj_decision = True
+            elif water_votes > land_votes:
+                maj_decision = False
+            else:
+                maj_decision = p_land
+
+            if maj_decision == p_land:
+                majority_agree_count += 1
+
+            mean_c_prob = sum(c_probs) / len(c_probs)
+            prob_deltas.append(abs(mean_c_prob - p_prob))
+            parent_probs.append(p_prob)
+            mean_child_probs.append(mean_c_prob)
+
+    child_agree_rate = agree_child_evals / total_child_evals if total_child_evals > 0 else 0.0
+    maj_agree_rate = majority_agree_count / total_parents if total_parents > 0 else 0.0
+    mean_delta = sum(prob_deltas) / len(prob_deltas) if prob_deltas else 0.0
+
+    n = len(parent_probs)
+    r = 0.0
+    if n > 1:
+        mean_p = sum(parent_probs) / n
+        mean_c = sum(mean_child_probs) / n
+        num = sum((p - mean_p) * (c - mean_c) for p, c in zip(parent_probs, mean_child_probs))
+        den = math.sqrt(sum((p - mean_p) ** 2 for p in parent_probs) * sum((c - mean_c) ** 2 for c in mean_child_probs))
+        r = num / den if den > 0 else 0.0
+
+    res = {
+        "coarse_resolution_deg": coarse_step,
+        "fine_resolution_deg": fine_step,
+        "subdivision_factor": subdiv,
+        "children_per_parent": children_per_parent,
+        "total_parents": total_parents,
+        "total_child_evaluations": total_child_evals,
+        "child_agreement_rate": round(child_agree_rate, 4),
+        "majority_agreement_rate": round(maj_agree_rate, 4),
+        "mean_probability_delta": round(mean_delta, 4),
+        "probability_correlation": round(r, 4),
+        "confusion_breakdown": {
+            "both_land": both_land,
+            "both_water": both_water,
+            "parent_land_child_water": parent_land_child_water,
+            "parent_water_child_land": parent_water_child_land,
+        },
+    }
+
+    if evaluator is not None:
+        res["transitions"] = {
+            "water_to_land": {
+                "total": parent_water_child_land,
+                "beneficial_refinement": w_to_l_beneficial,
+                "erroneous_expansion": w_to_l_erroneous,
+                "beneficial_pct": round(w_to_l_beneficial / parent_water_child_land * 100, 1) if parent_water_child_land > 0 else 0.0,
+                "erroneous_pct": round(w_to_l_erroneous / parent_water_child_land * 100, 1) if parent_water_child_land > 0 else 0.0,
+            },
+            "land_to_water": {
+                "total": parent_land_child_water,
+                "beneficial_refinement": l_to_w_beneficial,
+                "erroneous_reduction": l_to_w_erroneous,
+                "beneficial_pct": round(l_to_w_beneficial / parent_land_child_water * 100, 1) if parent_land_child_water > 0 else 0.0,
+                "erroneous_pct": round(l_to_w_erroneous / parent_land_child_water * 100, 1) if parent_land_child_water > 0 else 0.0,
+            }
+        }
+
+    if coastal_child_evals > 0:
+        res["coastal_child_agreement_rate"] = round(coastal_agree_evals / coastal_child_evals, 4)
+    if interior_child_evals > 0:
+        res["interior_child_agreement_rate"] = round(interior_agree_evals / interior_child_evals, 4)
+
+    return res
 
 
 def render_error_map(

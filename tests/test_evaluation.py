@@ -84,20 +84,28 @@ def test_evaluate_predictions_metrics(tmp_path: Path):
 def test_coastal_distance_and_metrics():
     evaluator = GroundTruthEvaluator()
 
-    # Tokyo bay coastal point
-    dist_tokyo = evaluator.distance_to_coastline(lat=35.5, lon=139.8)
+    # Tokyo coastal point (Tokyo center / harbor)
+    dist_tokyo = evaluator.distance_to_coastline(lat=35.68, lon=139.76)
     assert dist_tokyo < 0.5  # Very close to coastline
-    assert evaluator.is_coastal(lat=35.5, lon=139.8, threshold_degrees=1.0) is True
+    assert evaluator.is_coastal(lat=35.68, lon=139.76, threshold_degrees=1.0) is True
+
+    dist_tokyo_km = evaluator.distance_to_coastline_km(lat=35.68, lon=139.76)
+    assert dist_tokyo_km < 25.0
+    assert evaluator.is_coastal(lat=35.68, lon=139.76, threshold_km=100.0) is True
 
     # Deep Pacific Ocean point
     dist_pacific = evaluator.distance_to_coastline(lat=0.0, lon=-150.0)
-    assert dist_pacific > 10.0
+    assert dist_pacific > 5.0
     assert evaluator.is_coastal(lat=0.0, lon=-150.0, threshold_degrees=1.0) is False
+
+    dist_pacific_km = evaluator.distance_to_coastline_km(lat=0.0, lon=-150.0)
+    assert dist_pacific_km > 500.0
+    assert evaluator.is_coastal(lat=0.0, lon=-150.0, threshold_km=100.0) is False
 
     # Test predictions with coastal classification
     preds = [
         Prediction(
-            coordinate=Coordinate(35.5, 139.8),
+            coordinate=Coordinate(35.68, 139.76),
             probability_land=0.9,
             is_land=True,
             provider="test",
@@ -110,9 +118,59 @@ def test_coastal_distance_and_metrics():
         ),
     ]
 
-    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=1.0)
+    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_km=100.0)
     assert results["coastal_cell_count"] == 1
     assert results["coastal_cell_fraction"] == 0.5
     assert results["coastal_metrics"]["accuracy"] == 1.0
     assert "area_weighted_metrics" in results
     assert results["area_weighted_metrics"]["accuracy"] == 1.0
+
+
+def test_cross_resolution_agreement():
+    from latent_earth.evaluation import compute_cross_resolution_agreement
+
+    # 1 coarse cell at 2.0° centered at (35.0, 135.0)
+    coarse = [
+        Prediction(
+            coordinate=Coordinate(35.0, 135.0),
+            probability_land=0.90,
+            is_land=True,
+            provider="test",
+        )
+    ]
+    # 4 fine child cells at 1.0° centered at (35.5, 134.5), (35.5, 135.5), (34.5, 134.5), (34.5, 135.5)
+    fine = [
+        Prediction(
+            coordinate=Coordinate(35.5, 134.5),
+            probability_land=0.95,
+            is_land=True,
+            provider="test",
+        ),
+        Prediction(
+            coordinate=Coordinate(35.5, 135.5),
+            probability_land=0.85,
+            is_land=True,
+            provider="test",
+        ),
+        Prediction(
+            coordinate=Coordinate(34.5, 134.5),
+            probability_land=0.88,
+            is_land=True,
+            provider="test",
+        ),
+        Prediction(
+            coordinate=Coordinate(34.5, 135.5),
+            probability_land=0.40,
+            is_land=False,  # 1 child differs (e.g. coastal ocean bay)
+            provider="test",
+        ),
+    ]
+
+    res = compute_cross_resolution_agreement(coarse, fine, coarse_step=2.0, fine_step=1.0)
+    assert res["total_parents"] == 1
+    assert res["children_per_parent"] == 4
+    assert res["total_child_evaluations"] == 4
+    assert res["child_agreement_rate"] == 0.75  # 3 of 4 match
+    assert res["majority_agreement_rate"] == 1.0  # 3 land vs 1 water -> majority agrees with parent
+    assert res["mean_probability_delta"] > 0.0
+

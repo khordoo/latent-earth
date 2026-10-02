@@ -189,10 +189,17 @@ async def async_run(args: argparse.Namespace) -> None:
 
     # Ground-truth evaluation if requested
     if args.evaluate and len(preds) > 0:
-        coastal_threshold = getattr(args, "coastal_threshold", 1.0) or 1.0
-        print(f"\nEvaluating against Natural Earth ground truth (coastal band: {coastal_threshold:g}°)...")
+        threshold_km = getattr(args, "coastal_threshold_km", 100.0)
+        coastal_threshold = getattr(args, "coastal_threshold", None)
+        if coastal_threshold is not None:
+            if coastal_threshold < 15.0:
+                threshold_km = coastal_threshold * 111.0
+            else:
+                threshold_km = coastal_threshold
+
+        print(f"\nEvaluating against Natural Earth ground truth (coastal band: ≤ {threshold_km:g} km)...")
         evaluator = GroundTruthEvaluator()
-        results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=coastal_threshold)
+        results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_km=threshold_km)
         results["metadata"] = metadata
         eval_json_path = output_file.parent / f"{output_file.stem}_evaluation.json"
         with open(eval_json_path, "w", encoding="utf-8") as f:
@@ -210,7 +217,8 @@ async def async_run(args: argparse.Namespace) -> None:
         if results['coastal_metrics']['accuracy'] is not None:
             c_cnt = results['coastal_metrics']['coastal_cell_count']
             c_frac = results['coastal_metrics']['coastal_cell_fraction']
-            print(f"Coastal Cells:          {c_cnt:,} ({c_frac:.1%} of region)")
+            c_km = results['coastal_metrics'].get('coastal_distance_threshold_km', threshold_km)
+            print(f"Coastal Band:           ≤ {c_km:g} km ({c_cnt:,} cells, {c_frac:.1%} of region)")
             print(f"Coastal Accuracy:       {results['coastal_metrics']['accuracy']:.1%}")
             if results['coastal_metrics']['brier_score'] is not None:
                 print(f"Coastal Brier Score:    {results['coastal_metrics']['brier_score']:.4f}")
@@ -263,9 +271,16 @@ def cmd_evaluate(args: argparse.Namespace) -> None:
         sys.exit("No valid predictions found in input file.")
 
     step = args.step if args.step else infer_step_from_predictions(preds)
-    coastal_threshold = getattr(args, "coastal_threshold", 1.0) or 1.0
+    threshold_km = getattr(args, "coastal_threshold_km", 100.0)
+    coastal_threshold = getattr(args, "coastal_threshold", None)
+    if coastal_threshold is not None:
+        if coastal_threshold < 15.0:
+            threshold_km = coastal_threshold * 111.0
+        else:
+            threshold_km = coastal_threshold
+
     evaluator = GroundTruthEvaluator()
-    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=coastal_threshold)
+    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_km=threshold_km)
 
     out_json = Path(args.output) if args.output else input_path.parent / f"{input_path.stem}_evaluation.json"
     with open(out_json, "w", encoding="utf-8") as f:
@@ -281,7 +296,8 @@ def cmd_evaluate(args: argparse.Namespace) -> None:
     if results['coastal_metrics']['accuracy'] is not None:
         c_cnt = results['coastal_metrics']['coastal_cell_count']
         c_frac = results['coastal_metrics']['coastal_cell_fraction']
-        print(f"Coastal Cells:          {c_cnt:,} ({c_frac:.1%} of region)")
+        c_km = results['coastal_metrics'].get('coastal_distance_threshold_km', threshold_km)
+        print(f"Coastal Band:           ≤ {c_km:g} km ({c_cnt:,} cells, {c_frac:.1%} of region)")
         print(f"Coastal Accuracy:       {results['coastal_metrics']['accuracy']:.1%}")
         if results['coastal_metrics']['brier_score'] is not None:
             print(f"Coastal Brier Score:    {results['coastal_metrics']['brier_score']:.4f}")
@@ -292,6 +308,106 @@ def cmd_evaluate(args: argparse.Namespace) -> None:
         err_map_path = input_path.parent / f"{input_path.stem}_error_map.png"
         render_error_map(preds, step, err_map_path, evaluator=evaluator)
         print(f"Saved error map to {err_map_path}")
+
+
+def cmd_agreement(args: argparse.Namespace) -> None:
+    """Compute and display cross-resolution agreement across nested resolution runs."""
+    from latent_earth.evaluation import compute_cross_resolution_agreement
+
+    runs: list[tuple[float, Path, list[Prediction]]] = []
+
+    if args.runs:
+        files = [Path(p) for p in args.runs]
+    elif args.coarse and args.fine:
+        files = [Path(args.coarse), Path(args.fine)]
+    else:
+        out_dir = Path(args.dir) if args.dir else Path("outputs")
+        files = sorted(out_dir.glob("*japan_korea*.jsonl"))
+        if not files:
+            files = sorted(out_dir.glob("*.jsonl"))
+
+    if not files:
+        sys.exit("No JSONL run files specified or found.")
+
+    for f in files:
+        if not f.exists():
+            continue
+        cache = PredictionCache(f, strict_validation=False)
+        preds = list(cache.load().values())
+        if not preds:
+            continue
+        step = infer_step_from_predictions(preds)
+        runs.append((step, f, preds))
+
+    if len(runs) < 2:
+        sys.exit(f"At least two runs are required for cross-resolution agreement. Found {len(runs)}.")
+
+    # Sort descending by step (coarsest to finest)
+    runs.sort(key=lambda r: r[0], reverse=True)
+
+    print("\n" + "=" * 86)
+    print("                LATENT EARTH: CROSS-RESOLUTION NESTED AGREEMENT")
+    print("=" * 86)
+    print(f"{'Comparison':<16} | {'Parents':<7} | {'Children':<8} | {'Child Agree':<11} | {'Majority':<9} | {'Mean |ΔP|':<9} | {'Pearson r':<9}")
+    print("-" * 86)
+
+    agreement_results: list[dict[str, Any]] = []
+    evaluator = GroundTruthEvaluator()
+
+    for i in range(len(runs)):
+        for j in range(i + 1, len(runs)):
+            coarse_step, coarse_path, coarse_preds = runs[i]
+            fine_step, fine_path, fine_preds = runs[j]
+
+            subdiv = coarse_step / fine_step
+            if abs(subdiv - round(subdiv)) > 1e-4:
+                continue
+
+            agr = compute_cross_resolution_agreement(
+                coarse_predictions=coarse_preds,
+                fine_predictions=fine_preds,
+                coarse_step=coarse_step,
+                fine_step=fine_step,
+                evaluator=evaluator,
+            )
+            agr["coarse_file"] = coarse_path.name
+            agr["fine_file"] = fine_path.name
+            agreement_results.append(agr)
+
+            pair_label = f"{coarse_step:g}° vs {fine_step:g}°"
+            print(
+                f"{pair_label:<16} | "
+                f"{agr['total_parents']:<7} | "
+                f"{agr['total_child_evaluations']:<8} | "
+                f"{agr['child_agreement_rate']:>10.1%} | "
+                f"{agr['majority_agreement_rate']:>8.1%} | "
+                f"{agr['mean_probability_delta']:>9.4f} | "
+                f"{agr['probability_correlation']:>9.4f}"
+            )
+
+    print("=" * 86)
+
+    # Print ground-truth transition breakdown
+    print("\n--- GROUND TRUTH TRANSITION BREAKDOWN (Water ↔ Land) ---")
+    for agr in agreement_results:
+        pair_label = f"{agr['coarse_resolution_deg']:g}° vs {agr['fine_resolution_deg']:g}°"
+        if "transitions" in agr:
+            w2l = agr["transitions"]["water_to_land"]
+            l2w = agr["transitions"]["land_to_water"]
+            print(f"\n{pair_label} Transition Analysis:")
+            print(f"  • Water → Land ({w2l['total']} total flips):")
+            print(f"      - Beneficial Refinement (GT is Land):  {w2l['beneficial_refinement']:>3} ({w2l['beneficial_pct']}%)")
+            print(f"      - Erroneous Expansion   (GT is Water): {w2l['erroneous_expansion']:>3} ({w2l['erroneous_pct']}%)")
+            print(f"  • Land → Water ({l2w['total']} total flips):")
+            print(f"      - Beneficial Refinement (GT is Water): {l2w['beneficial_refinement']:>3} ({l2w['beneficial_pct']}%)")
+            print(f"      - Erroneous Reduction   (GT is Land):  {l2w['erroneous_reduction']:>3} ({l2w['erroneous_pct']}%)")
+    print("---------------------------------------------------------\n")
+
+    if args.output:
+        out_path = Path(args.output)
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(agreement_results, f, indent=2)
+        print(f"Saved agreement metrics to {out_path}")
 
 
 
@@ -386,7 +502,8 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--grid-resolution", type=float, help="Grid resolution step in degrees (alias for --step).")
     run_parser.add_argument("--region", help="Region preset name (e.g. 'japan_korea') or custom name.")
     run_parser.add_argument("--bbox", nargs=4, type=float, metavar=("LAT_MIN", "LAT_MAX", "LON_MIN", "LON_MAX"), help="Bounding box: lat_min lat_max lon_min lon_max.")
-    run_parser.add_argument("--coastal-threshold", type=float, default=1.0, help="Distance threshold in degrees for coastal band evaluation (default: 1.0).")
+    run_parser.add_argument("--coastal-threshold", type=float, help="Distance threshold for coastal band evaluation (km, or degrees if < 15).")
+    run_parser.add_argument("--coastal-threshold-km", type=float, default=100.0, help="Geodesic distance threshold in kilometers for coastal band evaluation (default: 100.0 km).")
     run_parser.add_argument("--limit", type=int, help="Limit number of queries (for smoke test / dev).")
     run_parser.add_argument("--provider", choices=["jev", "mock", "openai_compatible"], help="Provider name.")
     run_parser.add_argument("--model", help="Model name.")
@@ -409,8 +526,17 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--input", required=True, help="Input predictions JSONL file.")
     eval_parser.add_argument("--step", type=float, help="Grid step in degrees (optional, auto-inferred).")
     eval_parser.add_argument("--output", help="Output JSON evaluation file path.")
-    eval_parser.add_argument("--coastal-threshold", type=float, default=1.0, help="Distance threshold in degrees for coastal band evaluation (default: 1.0).")
+    eval_parser.add_argument("--coastal-threshold", type=float, help="Distance threshold for coastal band evaluation (km, or degrees if < 15).")
+    eval_parser.add_argument("--coastal-threshold-km", type=float, default=100.0, help="Geodesic distance threshold in kilometers for coastal band evaluation (default: 100.0 km).")
     eval_parser.add_argument("--no-error-map", action="store_true", help="Do not render error map.")
+
+    # 'agreement' subcommand
+    agreement_parser = subparsers.add_parser("agreement", help="Compute cross-resolution agreement across nested grid runs.")
+    agreement_parser.add_argument("--runs", nargs="+", help="Specific JSONL run file paths to compare.")
+    agreement_parser.add_argument("--coarse", help="Coarse resolution JSONL run file path.")
+    agreement_parser.add_argument("--fine", help="Fine resolution JSONL run file path.")
+    agreement_parser.add_argument("--dir", default="outputs", help="Directory to search for resolution runs (default: outputs).")
+    agreement_parser.add_argument("--output", help="Output JSON file to save agreement metrics.")
 
     # 'serve' subcommand
     serve_parser = subparsers.add_parser("serve", help="Launch web visualization server.")
@@ -438,6 +564,8 @@ def main() -> None:
         cmd_render(args)
     elif args.command == "evaluate":
         cmd_evaluate(args)
+    elif args.command == "agreement":
+        cmd_agreement(args)
     elif args.command == "serve":
         cmd_serve(args)
     elif args.command == "export":

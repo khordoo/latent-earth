@@ -57,6 +57,7 @@ class Prediction:
     error_category: str | None = None  # 'correct_land', 'correct_water', 'false_land', 'false_water'
     is_coastal: bool | None = None
     distance_to_coastline: float | None = None
+    distance_to_coastline_km: float | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     raw_response: dict[str, Any] | None = None
 
@@ -103,6 +104,8 @@ class Prediction:
             d["is_coastal"] = self.is_coastal
         if self.distance_to_coastline is not None:
             d["distance_to_coastline"] = round(self.distance_to_coastline, 4)
+        if self.distance_to_coastline_km is not None:
+            d["distance_to_coastline_km"] = round(self.distance_to_coastline_km, 2)
         if self.raw_response is not None:
             d["raw_response"] = self.raw_response
         return d
@@ -117,6 +120,8 @@ class Prediction:
         prob = data.get("probability_land")
         if prob is not None:
             prob = float(prob)
+        dist_km = data.get("distance_to_coastline_km")
+        dist = data.get("distance_to_coastline")
         return cls(
             coordinate=coord,
             probability_land=prob,
@@ -128,7 +133,8 @@ class Prediction:
             actual_land=data.get("actual_land"),
             error_category=data.get("error_category"),
             is_coastal=data.get("is_coastal"),
-            distance_to_coastline=float(data["distance_to_coastline"]) if "distance_to_coastline" in data and data["distance_to_coastline"] is not None else None,
+            distance_to_coastline=float(dist) if dist is not None else None,
+            distance_to_coastline_km=float(dist_km) if dist_km is not None else (float(dist) if dist is not None else None),
             timestamp=str(data.get("timestamp", "")),
             raw_response=data.get("raw_response"),
         )

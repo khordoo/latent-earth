@@ -1,50 +1,52 @@
 {
   "total_evaluated": 528,
-  "coastal_threshold_degrees": 1.0,
-  "coastal_cell_count": 169,
-  "coastal_cell_fraction": 0.3201,
+  "coastal_threshold_km": 100.0,
+  "coastal_threshold_degrees": 0.901,
+  "coastal_cell_count": 249,
+  "coastal_cell_fraction": 0.4716,
   "metrics": {
-    "accuracy": 0.3561,
-    "precision": 0.2672,
+    "accuracy": 0.3523,
+    "precision": 0.2629,
     "recall": 1.0,
-    "f1": 0.4218,
-    "brier_score": 0.3307,
-    "log_loss": 0.8723,
-    "area_weighted_accuracy": 0.3462,
-    "area_weighted_brier_score": 0.3339,
-    "coastal_accuracy": 0.432,
-    "coastal_brier_score": 0.3127,
-    "coastal_area_weighted_accuracy": 0.4297
+    "f1": 0.4164,
+    "brier_score": 0.3351,
+    "log_loss": 0.8836,
+    "area_weighted_accuracy": 0.3429,
+    "area_weighted_brier_score": 0.3379,
+    "coastal_accuracy": 0.3655,
+    "coastal_brier_score": 0.3396,
+    "coastal_area_weighted_accuracy": 0.3627
   },
   "grid_metrics": {
-    "accuracy": 0.3561,
-    "precision": 0.2672,
+    "accuracy": 0.3523,
+    "precision": 0.2629,
     "recall": 1.0,
-    "f1": 0.4218,
-    "brier_score": 0.3307,
-    "log_loss": 0.8723
+    "f1": 0.4164,
+    "brier_score": 0.3351,
+    "log_loss": 0.8836
   },
   "area_weighted_metrics": {
-    "accuracy": 0.3462,
-    "precision": 0.2504,
+    "accuracy": 0.3429,
+    "precision": 0.2466,
     "recall": 1.0,
-    "f1": 0.4005,
-    "brier_score": 0.3339,
-    "log_loss": 0.8791
+    "f1": 0.3957,
+    "brier_score": 0.3379,
+    "log_loss": 0.8895
   },
   "coastal_metrics": {
-    "coastal_distance_threshold_deg": 1.0,
-    "coastal_cell_count": 169,
-    "coastal_cell_fraction": 0.3201,
-    "accuracy": 0.432,
-    "brier_score": 0.3127,
-    "area_weighted_accuracy": 0.4297,
-    "area_weighted_brier_score": 0.3122
+    "coastal_distance_threshold_km": 100.0,
+    "coastal_distance_threshold_deg": 0.901,
+    "coastal_cell_count": 249,
+    "coastal_cell_fraction": 0.4716,
+    "accuracy": 0.3655,
+    "brier_score": 0.3396,
+    "area_weighted_accuracy": 0.3627,
+    "area_weighted_brier_score": 0.3392
   },
   "confusion_matrix": {
-    "true_positive_land": 124,
+    "true_positive_land": 122,
     "true_negative_water": 64,
-    "false_positive_land": 340,
+    "false_positive_land": 342,
     "false_negative_water": 0
   },
   "calibration": [
@@ -75,7 +77,7 @@
     {
       "bin": "0.6-0.7",
       "mean_predicted_prob": 0.6473,
-      "observed_land_fraction": 0.0889,
+      "observed_land_fraction": 0.1037,
       "count": 135
     },
     {
@@ -87,7 +89,7 @@
     {
       "bin": "0.8-0.9",
       "mean_predicted_prob": 0.829,
-      "observed_land_fraction": 0.6279,
+      "observed_land_fraction": 0.5814,
       "count": 86
     },
     {
@@ -105,6 +107,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 1.87,
       "confidence_in_error": 0.89
     },
     {
@@ -114,6 +117,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 4.84,
       "confidence_in_error": 0.88
     },
     {
@@ -123,6 +127,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": false,
+      "distance_to_coastline_km": 124.62,
       "confidence_in_error": 0.88
     },
     {
@@ -132,6 +137,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 68.99,
       "confidence_in_error": 0.88
     },
     {
@@ -141,6 +147,17 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 59.67,
+      "confidence_in_error": 0.87
+    },
+    {
+      "latitude": 35.5,
+      "longitude": 140.5,
+      "probability_land": 0.87,
+      "predicted_land": true,
+      "actual_land": false,
+      "is_coastal": true,
+      "distance_to_coastline_km": 5.26,
       "confidence_in_error": 0.87
     },
     {
@@ -150,6 +167,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 25.42,
       "confidence_in_error": 0.86
     },
     {
@@ -159,7 +177,28 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 62.3,
       "confidence_in_error": 0.85
+    },
+    {
+      "latitude": 42.5,
+      "longitude": 141.5,
+      "probability_land": 0.84,
+      "predicted_land": true,
+      "actual_land": false,
+      "is_coastal": true,
+      "distance_to_coastline_km": 8.87,
+      "confidence_in_error": 0.84
+    },
+    {
+      "latitude": 42.5,
+      "longitude": 143.5,
+      "probability_land": 0.84,
+      "predicted_land": true,
+      "actual_land": false,
+      "is_coastal": true,
+      "distance_to_coastline_km": 0.93,
+      "confidence_in_error": 0.84
     },
     {
       "latitude": 38.5,
@@ -167,7 +206,8 @@
       "probability_land": 0.84,
       "predicted_land": true,
       "actual_land": false,
-      "is_coastal": false,
+      "is_coastal": true,
+      "distance_to_coastline_km": 79.83,
       "confidence_in_error": 0.84
     },
     {
@@ -177,6 +217,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 3.97,
       "confidence_in_error": 0.84
     },
     {
@@ -186,6 +227,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 31.84,
       "confidence_in_error": 0.83
     },
     {
@@ -195,6 +237,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 21.4,
       "confidence_in_error": 0.83
     },
     {
@@ -204,6 +247,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 19.16,
       "confidence_in_error": 0.83
     },
     {
@@ -213,6 +257,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 18.84,
       "confidence_in_error": 0.83
     },
     {
@@ -222,6 +267,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 58.63,
       "confidence_in_error": 0.82
     },
     {
@@ -231,6 +277,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 17.74,
       "confidence_in_error": 0.82
     },
     {
@@ -240,6 +287,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": true,
+      "distance_to_coastline_km": 19.67,
       "confidence_in_error": 0.82
     },
     {
@@ -249,33 +297,7 @@
       "predicted_land": true,
       "actual_land": false,
       "is_coastal": false,
-      "confidence_in_error": 0.82
-    },
-    {
-      "latitude": 33.5,
-      "longitude": 140.5,
-      "probability_land": 0.82,
-      "predicted_land": true,
-      "actual_land": false,
-      "is_coastal": false,
-      "confidence_in_error": 0.82
-    },
-    {
-      "latitude": 31.5,
-      "longitude": 135.5,
-      "probability_land": 0.82,
-      "predicted_land": true,
-      "actual_land": false,
-      "is_coastal": false,
-      "confidence_in_error": 0.82
-    },
-    {
-      "latitude": 31.5,
-      "longitude": 136.5,
-      "probability_land": 0.82,
-      "predicted_land": true,
-      "actual_land": false,
-      "is_coastal": false,
+      "distance_to_coastline_km": 109.86,
       "confidence_in_error": 0.82
     }
   ],
@@ -287,7 +309,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 2.3103
+      "distance_to_coastline_km": 244.73
     },
     {
       "latitude": 37.5,
@@ -296,7 +318,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 1.9131
+      "distance_to_coastline_km": 129.79
     },
     {
       "latitude": 28.5,
@@ -305,7 +327,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 6.66
+      "distance_to_coastline_km": 102.75
     },
     {
       "latitude": 27.5,
@@ -314,7 +336,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 8.7393
+      "distance_to_coastline_km": 226.0
     },
     {
       "latitude": 26.5,
@@ -322,8 +344,8 @@
       "probability_land": 0.5,
       "uncertainty": 1.0,
       "actual_land": false,
-      "is_coastal": false,
-      "distance_to_coastline": 8.8824
+      "is_coastal": true,
+      "distance_to_coastline_km": 34.48
     },
     {
       "latitude": 25.5,
@@ -332,7 +354,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": true,
-      "distance_to_coastline": 0.744
+      "distance_to_coastline_km": 44.62
     },
     {
       "latitude": 25.5,
@@ -341,7 +363,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 10.5322
+      "distance_to_coastline_km": 263.15
     },
     {
       "latitude": 24.5,
@@ -350,7 +372,7 @@
       "uncertainty": 1.0,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 10.7611
+      "distance_to_coastline_km": 108.82
     },
     {
       "latitude": 42.5,
@@ -359,7 +381,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": true,
-      "distance_to_coastline": 0.3107
+      "distance_to_coastline_km": 30.84
     },
     {
       "latitude": 37.5,
@@ -367,8 +389,8 @@
       "probability_land": 0.51,
       "uncertainty": 0.98,
       "actual_land": false,
-      "is_coastal": false,
-      "distance_to_coastline": 2.0612
+      "is_coastal": true,
+      "distance_to_coastline_km": 63.26
     },
     {
       "latitude": 29.5,
@@ -377,7 +399,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": true,
-      "distance_to_coastline": 0.4625
+      "distance_to_coastline_km": 29.81
     },
     {
       "latitude": 28.5,
@@ -386,7 +408,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 2.6134
+      "distance_to_coastline_km": 246.18
     },
     {
       "latitude": 28.5,
@@ -395,7 +417,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 7.8803
+      "distance_to_coastline_km": 247.05
     },
     {
       "latitude": 28.5,
@@ -404,7 +426,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 8.4612
+      "distance_to_coastline_km": 339.54
     },
     {
       "latitude": 27.5,
@@ -413,7 +435,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 1.0915
+      "distance_to_coastline_km": 122.5
     },
     {
       "latitude": 27.5,
@@ -422,7 +444,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 1.9551
+      "distance_to_coastline_km": 174.78
     },
     {
       "latitude": 25.5,
@@ -430,8 +452,8 @@
       "probability_land": 0.51,
       "uncertainty": 0.98,
       "actual_land": false,
-      "is_coastal": false,
-      "distance_to_coastline": 2.5978
+      "is_coastal": true,
+      "distance_to_coastline_km": 44.22
     },
     {
       "latitude": 25.5,
@@ -440,7 +462,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 8.4123
+      "distance_to_coastline_km": 278.68
     },
     {
       "latitude": 24.5,
@@ -449,7 +471,7 @@
       "uncertainty": 0.98,
       "actual_land": false,
       "is_coastal": false,
-      "distance_to_coastline": 6.6365
+      "distance_to_coastline_km": 226.86
     },
     {
       "latitude": 44.5,
@@ -458,25 +480,7 @@
       "uncertainty": 0.96,
       "actual_land": true,
       "is_coastal": false,
-      "distance_to_coastline": 1.5602
+      "distance_to_coastline_km": 160.72
     }
-  ],
-  "metadata": {
-    "provider": "jev",
-    "model": "jev-latest",
-    "model_version": "jev-latest",
-    "region_name": "japan_korea",
-    "bounding_box": {
-      "lat_min": 24.0,
-      "lat_max": 46.0,
-      "lon_min": 122.0,
-      "lon_max": 146.0
-    },
-    "grid_resolution": 1.0,
-    "step_degrees": 1.0,
-    "query_count": 528,
-    "timestamp": "2026-10-02T13:00:35.084124+00:00",
-    "prompt_version": "land-water-v1",
-    "convention": "cell_center"
-  }
+  ]
 }

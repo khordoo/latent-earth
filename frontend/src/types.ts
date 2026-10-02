@@ -10,6 +10,9 @@ export interface PredictionPoint {
   sequence_index: number;
   actual_land?: boolean;
   error_category?: 'correct_land' | 'correct_water' | 'false_land' | 'false_water';
+  is_coastal?: boolean;
+  distance_to_coastline?: number;
+  distance_to_coastline_km?: number;
   provider: string;
   model: string;
   raw_response?: any;
@@ -26,13 +29,29 @@ export interface DetailedMetrics {
 }
 
 export interface CoastalMetrics {
-  coastal_distance_threshold_deg: number;
+  coastal_distance_threshold_deg?: number;
+  coastal_distance_threshold_km?: number;
   coastal_cell_count: number;
   coastal_cell_fraction: number;
   accuracy?: number | null;
   brier_score?: number | null;
   area_weighted_accuracy?: number | null;
   area_weighted_brier_score?: number | null;
+}
+
+export interface AgreementComparison {
+  coarse_resolution_deg: number;
+  fine_resolution_deg: number;
+  subdivision_factor: number;
+  children_per_parent: number;
+  total_parents: number;
+  total_child_evaluations: number;
+  child_agreement_rate: number;
+  majority_agreement_rate: number;
+  mean_probability_delta: number;
+  probability_correlation: number;
+  coarse_file?: string;
+  fine_file?: string;
 }
 
 export interface EvaluationMetrics extends DetailedMetrics {
@@ -69,6 +88,7 @@ export interface RunData {
   grid_metrics?: DetailedMetrics | null;
   area_weighted_metrics?: DetailedMetrics | null;
   coastal_metrics?: CoastalMetrics | null;
+  cross_resolution_agreement?: AgreementComparison[] | null;
   points: PredictionPoint[];
 }
 

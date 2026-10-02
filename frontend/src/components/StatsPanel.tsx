@@ -201,7 +201,9 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
           {metrics.coastal_accuracy !== null && metrics.coastal_accuracy !== undefined && (
             <div className="bg-amber-950/20 p-2 rounded-lg border border-amber-800/30 flex flex-col gap-1.5">
               <div className="flex items-center justify-between text-[10px] font-bold text-amber-400 uppercase tracking-wider">
-                <span>Coastal Band (≤ 1.0°)</span>
+                <span>
+                  Coastal Band (≤ {runData.coastal_metrics?.coastal_distance_threshold_km ? `${runData.coastal_metrics.coastal_distance_threshold_km} km` : `${runData.coastal_metrics?.coastal_distance_threshold_deg ?? 1.0}°`})
+                </span>
                 {runData.coastal_metrics && (
                   <span className="font-mono text-slate-400">
                     {runData.coastal_metrics.coastal_cell_count} cells ({Math.round(runData.coastal_metrics.coastal_cell_fraction * 100)}%)
@@ -223,6 +225,35 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
                       : 'N/A'}
                   </span>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Cross-Resolution Nested Scale Agreement */}
+          {runData.cross_resolution_agreement && runData.cross_resolution_agreement.length > 0 && (
+            <div className="bg-cyan-950/20 p-2 rounded-lg border border-cyan-800/30 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
+                <span>Scale Agreement</span>
+                <span className="font-mono text-[9px] text-slate-400">Nested Quadtree</span>
+              </div>
+              <div className="flex flex-col gap-1 text-xs">
+                {runData.cross_resolution_agreement.map((agr, idx) => (
+                  <div key={idx} className="bg-slate-900/70 p-1.5 rounded border border-slate-800 flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-slate-300 font-semibold">
+                      {agr.coarse_resolution_deg}° ↔ {agr.fine_resolution_deg}°
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] text-slate-400">Agree:</span>
+                      <span className="font-mono font-bold text-cyan-300 text-[11px]">
+                        {(agr.child_agreement_rate * 100).toFixed(1)}%
+                      </span>
+                      <span className="text-[9px] text-slate-400">r:</span>
+                      <span className="font-mono font-bold text-emerald-300 text-[11px]">
+                        {agr.probability_correlation.toFixed(3)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

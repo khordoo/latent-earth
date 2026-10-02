@@ -36,6 +36,7 @@ REPO_ROOT = find_repo_root()
 DEFAULT_OUTPUTS_DIR = REPO_ROOT / "outputs"
 FRONTEND_DIST_DIR = REPO_ROOT / "frontend" / "dist"
 LAND_GEOJSON_PATH = Path(__file__).resolve().parent / "data" / "ne_110m_land.geojson"
+HIGH_RES_LAND_GEOJSON_PATH = Path(__file__).resolve().parent / "data" / "ne_10m_land.geojson"
 
 app = FastAPI(
     title="Latent Earth API",
@@ -51,7 +52,8 @@ def get_evaluator() -> Any:
     if _evaluator is None:
         try:
             from latent_earth.evaluation import GroundTruthEvaluator
-            _evaluator = GroundTruthEvaluator(LAND_GEOJSON_PATH)
+            # Automatically defaults to 10m high-res if available
+            _evaluator = GroundTruthEvaluator()
         except Exception as exc:
             logger.warning("Failed to initialize GroundTruthEvaluator: %s", exc)
     return _evaluator
@@ -244,15 +246,44 @@ async def get_run(run_id: str) -> dict[str, Any]:
         response_payload["area_weighted_metrics"] = eval_data.get("area_weighted_metrics")
         response_payload["coastal_metrics"] = eval_data.get("coastal_metrics")
 
+    # Attach cross-resolution agreement metrics if available
+    agreement_file = DEFAULT_OUTPUTS_DIR / "jev_japan_korea_cross_resolution_agreement.json"
+    if agreement_file.exists():
+        try:
+            with open(agreement_file, "r", encoding="utf-8") as af:
+                all_agreements = json.load(af)
+            matching_agreements = [
+                a for a in all_agreements
+                if run_id in a.get("coarse_file", "") or run_id in a.get("fine_file", "")
+            ]
+            if matching_agreements:
+                response_payload["cross_resolution_agreement"] = matching_agreements
+        except Exception as exc:
+            logger.warning("Could not load agreement data: %s", exc)
+
     return response_payload
 
 
+@app.get("/api/agreements")
+async def get_agreements() -> list[dict[str, Any]]:
+    """Retrieve all computed cross-resolution nested agreement metrics."""
+    agreement_file = DEFAULT_OUTPUTS_DIR / "jev_japan_korea_cross_resolution_agreement.json"
+    if agreement_file.exists():
+        try:
+            with open(agreement_file, "r", encoding="utf-8") as af:
+                return json.load(af)
+        except Exception:
+            return []
+    return []
+
+
 @app.get("/api/ground-truth")
-async def get_ground_truth_geojson():
-    """Serve bundled Natural Earth 110m land polygons GeoJSON."""
-    if not LAND_GEOJSON_PATH.exists():
+async def get_ground_truth_geojson(res: str = "110m"):
+    """Serve bundled Natural Earth land polygons GeoJSON (110m default for fast UI, or 10m)."""
+    path = HIGH_RES_LAND_GEOJSON_PATH if res == "10m" and HIGH_RES_LAND_GEOJSON_PATH.exists() else LAND_GEOJSON_PATH
+    if not path.exists():
         raise HTTPException(status_code=404, detail="Ground truth GeoJSON not found.")
-    return FileResponse(LAND_GEOJSON_PATH, media_type="application/json")
+    return FileResponse(path, media_type="application/json")
 
 
 # Direct route for root index.html

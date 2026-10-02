@@ -1,0 +1,110 @@
+[
+  {
+    "coarse_resolution_deg": 2.0,
+    "fine_resolution_deg": 1.0,
+    "subdivision_factor": 2,
+    "children_per_parent": 4,
+    "total_parents": 132,
+    "total_child_evaluations": 528,
+    "child_agreement_rate": 0.9129,
+    "majority_agreement_rate": 0.947,
+    "mean_probability_delta": 0.0578,
+    "probability_correlation": 0.8956,
+    "confusion_breakdown": {
+      "both_land": 429,
+      "both_water": 53,
+      "parent_land_child_water": 11,
+      "parent_water_child_land": 35
+    },
+    "transitions": {
+      "water_to_land": {
+        "total": 35,
+        "beneficial_refinement": 0,
+        "erroneous_expansion": 35,
+        "beneficial_pct": 0.0,
+        "erroneous_pct": 100.0
+      },
+      "land_to_water": {
+        "total": 11,
+        "beneficial_refinement": 11,
+        "erroneous_reduction": 0,
+        "beneficial_pct": 100.0,
+        "erroneous_pct": 0.0
+      }
+    },
+    "coarse_file": "jev_jev-latest_japan_korea_2deg_land-water-v1.jsonl",
+    "fine_file": "jev_jev-latest_japan_korea_1deg_land-water-v1.jsonl"
+  },
+  {
+    "coarse_resolution_deg": 2.0,
+    "fine_resolution_deg": 0.5,
+    "subdivision_factor": 4,
+    "children_per_parent": 16,
+    "total_parents": 132,
+    "total_child_evaluations": 2112,
+    "child_agreement_rate": 0.8949,
+    "majority_agreement_rate": 0.9167,
+    "mean_probability_delta": 0.0609,
+    "probability_correlation": 0.8908,
+    "confusion_breakdown": {
+      "both_land": 1726,
+      "both_water": 164,
+      "parent_land_child_water": 34,
+      "parent_water_child_land": 188
+    },
+    "transitions": {
+      "water_to_land": {
+        "total": 188,
+        "beneficial_refinement": 2,
+        "erroneous_expansion": 186,
+        "beneficial_pct": 1.1,
+        "erroneous_pct": 98.9
+      },
+      "land_to_water": {
+        "total": 34,
+        "beneficial_refinement": 34,
+        "erroneous_reduction": 0,
+        "beneficial_pct": 100.0,
+        "erroneous_pct": 0.0
+      }
+    },
+    "coarse_file": "jev_jev-latest_japan_korea_2deg_land-water-v1.jsonl",
+    "fine_file": "jev_jev-latest_japan_korea_0_5deg_land-water-v1.jsonl"
+  },
+  {
+    "coarse_resolution_deg": 1.0,
+    "fine_resolution_deg": 0.5,
+    "subdivision_factor": 2,
+    "children_per_parent": 4,
+    "total_parents": 528,
+    "total_child_evaluations": 2112,
+    "child_agreement_rate": 0.9602,
+    "majority_agreement_rate": 0.9716,
+    "mean_probability_delta": 0.0306,
+    "probability_correlation": 0.9692,
+    "confusion_breakdown": {
+      "both_land": 1843,
+      "both_water": 185,
+      "parent_land_child_water": 13,
+      "parent_water_child_land": 71
+    },
+    "transitions": {
+      "water_to_land": {
+        "total": 71,
+        "beneficial_refinement": 0,
+        "erroneous_expansion": 71,
+        "beneficial_pct": 0.0,
+        "erroneous_pct": 100.0
+      },
+      "land_to_water": {
+        "total": 13,
+        "beneficial_refinement": 13,
+        "erroneous_reduction": 0,
+        "beneficial_pct": 100.0,
+        "erroneous_pct": 0.0
+      }
+    },
+    "coarse_file": "jev_jev-latest_japan_korea_1deg_land-water-v1.jsonl",
+    "fine_file": "jev_jev-latest_japan_korea_0_5deg_land-water-v1.jsonl"
+  }
+]
