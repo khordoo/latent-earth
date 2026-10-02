@@ -1,0 +1,15 @@
+# Environment
+.env
+.venv
+__pycache__/
+*.py[cod]
+*$py.class
+*.swp
+.DS_Store
+
+# Outputs & caches (can be tracked or ignored, ignore raw caches by default)
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/

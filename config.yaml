@@ -1,0 +1,22 @@
+# Latent Earth Default Configuration
+
+grid:
+  step_degrees: 4
+  convention: cell_center
+
+provider:
+  name: jev
+  model: jev-latest
+  base_url: https://api.typesafe.ai/v1/systemone
+  prompt_version: land-water-v1
+
+inference:
+  batch_size: 64
+  concurrency: 16
+  max_retries: 4
+  rate_limit_per_second: 35.0
+  timeout_seconds: 30.0
+
+output:
+  dir: outputs
+  save_interval: 50
