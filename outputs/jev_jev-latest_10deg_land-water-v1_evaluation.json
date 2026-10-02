@@ -1,0 +1,383 @@
+{
+  "total_evaluated": 648,
+  "confusion_matrix": {
+    "true_positive_land": 200,
+    "true_negative_water": 313,
+    "false_positive_land": 122,
+    "false_negative_water": 13
+  },
+  "metrics": {
+    "accuracy": 0.7917,
+    "precision": 0.6211,
+    "recall": 0.939,
+    "f1": 0.7477,
+    "brier_score": 0.1427,
+    "log_loss": 0.4478
+  },
+  "calibration": [
+    {
+      "bin": "0.0-0.1",
+      "mean_predicted_prob": 0.0706,
+      "observed_land_fraction": 0.0,
+      "count": 31
+    },
+    {
+      "bin": "0.1-0.2",
+      "mean_predicted_prob": 0.1364,
+      "observed_land_fraction": 0.0,
+      "count": 96
+    },
+    {
+      "bin": "0.2-0.3",
+      "mean_predicted_prob": 0.2451,
+      "observed_land_fraction": 0.0317,
+      "count": 63
+    },
+    {
+      "bin": "0.3-0.4",
+      "mean_predicted_prob": 0.3443,
+      "observed_land_fraction": 0.0241,
+      "count": 83
+    },
+    {
+      "bin": "0.4-0.5",
+      "mean_predicted_prob": 0.4475,
+      "observed_land_fraction": 0.1698,
+      "count": 53
+    },
+    {
+      "bin": "0.5-0.6",
+      "mean_predicted_prob": 0.5486,
+      "observed_land_fraction": 0.1579,
+      "count": 57
+    },
+    {
+      "bin": "0.6-0.7",
+      "mean_predicted_prob": 0.6462,
+      "observed_land_fraction": 0.4603,
+      "count": 63
+    },
+    {
+      "bin": "0.7-0.8",
+      "mean_predicted_prob": 0.7491,
+      "observed_land_fraction": 0.7273,
+      "count": 88
+    },
+    {
+      "bin": "0.8-0.9",
+      "mean_predicted_prob": 0.8378,
+      "observed_land_fraction": 0.8276,
+      "count": 87
+    },
+    {
+      "bin": "0.9-1.0",
+      "mean_predicted_prob": 0.9211,
+      "observed_land_fraction": 0.963,
+      "count": 27
+    }
+  ],
+  "most_confidently_wrong": [
+    {
+      "latitude": 15.0,
+      "longitude": 85.0,
+      "probability_land": 0.9,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.9
+    },
+    {
+      "latitude": 15.0,
+      "longitude": -95.0,
+      "probability_land": 0.89,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.89
+    },
+    {
+      "latitude": 15.0,
+      "longitude": 95.0,
+      "probability_land": 0.88,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.88
+    },
+    {
+      "latitude": 25.0,
+      "longitude": 65.0,
+      "probability_land": 0.85,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.85
+    },
+    {
+      "latitude": 15.0,
+      "longitude": -75.0,
+      "probability_land": 0.85,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.85
+    },
+    {
+      "latitude": -25.0,
+      "longitude": -75.0,
+      "probability_land": 0.83,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.83
+    },
+    {
+      "latitude": -25.0,
+      "longitude": -45.0,
+      "probability_land": 0.83,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.83
+    },
+    {
+      "latitude": -25.0,
+      "longitude": 35.0,
+      "probability_land": 0.83,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.83
+    },
+    {
+      "latitude": -35.0,
+      "longitude": 115.0,
+      "probability_land": 0.83,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.83
+    },
+    {
+      "latitude": -45.0,
+      "longitude": 145.0,
+      "probability_land": 0.83,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.83
+    },
+    {
+      "latitude": -15.0,
+      "longitude": 5.0,
+      "probability_land": 0.82,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.82
+    },
+    {
+      "latitude": 25.0,
+      "longitude": -95.0,
+      "probability_land": 0.81,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.81
+    },
+    {
+      "latitude": 5.0,
+      "longitude": -85.0,
+      "probability_land": 0.81,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.81
+    },
+    {
+      "latitude": 45.0,
+      "longitude": 145.0,
+      "probability_land": 0.8,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.8
+    },
+    {
+      "latitude": 25.0,
+      "longitude": 35.0,
+      "probability_land": 0.8,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.8
+    },
+    {
+      "latitude": -15.0,
+      "longitude": -35.0,
+      "probability_land": 0.8,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.8
+    },
+    {
+      "latitude": 45.0,
+      "longitude": -145.0,
+      "probability_land": 0.79,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.79
+    },
+    {
+      "latitude": 15.0,
+      "longitude": 115.0,
+      "probability_land": 0.79,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.79
+    },
+    {
+      "latitude": 5.0,
+      "longitude": 105.0,
+      "probability_land": 0.79,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.79
+    },
+    {
+      "latitude": -85.0,
+      "longitude": -145.0,
+      "probability_land": 0.78,
+      "predicted_land": true,
+      "actual_land": false,
+      "confidence_in_error": 0.78
+    }
+  ],
+  "most_uncertain": [
+    {
+      "latitude": 55.0,
+      "longitude": 155.0,
+      "probability_land": 0.5,
+      "uncertainty": 1.0,
+      "actual_land": false
+    },
+    {
+      "latitude": 45.0,
+      "longitude": -85.0,
+      "probability_land": 0.5,
+      "uncertainty": 1.0,
+      "actual_land": true
+    },
+    {
+      "latitude": 75.0,
+      "longitude": -25.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": true
+    },
+    {
+      "latitude": 75.0,
+      "longitude": -5.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 75.0,
+      "longitude": 75.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 65.0,
+      "longitude": -65.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 65.0,
+      "longitude": -45.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": true
+    },
+    {
+      "latitude": 65.0,
+      "longitude": 165.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": true
+    },
+    {
+      "latitude": 55.0,
+      "longitude": -65.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": true
+    },
+    {
+      "latitude": 35.0,
+      "longitude": 145.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 15.0,
+      "longitude": 55.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 15.0,
+      "longitude": 135.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 5.0,
+      "longitude": 125.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": -5.0,
+      "longitude": 135.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": -35.0,
+      "longitude": -5.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": -35.0,
+      "longitude": 5.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": -65.0,
+      "longitude": -125.0,
+      "probability_land": 0.51,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": -65.0,
+      "longitude": -75.0,
+      "probability_land": 0.49,
+      "uncertainty": 0.98,
+      "actual_land": false
+    },
+    {
+      "latitude": 75.0,
+      "longitude": -155.0,
+      "probability_land": 0.52,
+      "uncertainty": 0.96,
+      "actual_land": false
+    },
+    {
+      "latitude": 75.0,
+      "longitude": 125.0,
+      "probability_land": 0.52,
+      "uncertainty": 0.96,
+      "actual_land": false
+    }
+  ]
+}

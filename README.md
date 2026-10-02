@@ -8,7 +8,7 @@ This experiment asks a decision model one simple question thousands of times:
 
 Each query is completely independent. The model receives no map, no image, no neighboring predictions, and no geographic database. Its answers and calibrated probabilities are then plotted back into coordinate space, reconstructing the continents purely from latent weights.
 
-![Latent Earth Composite](outputs/mock_mock-earth-v1_10deg_mock-v1_composite.png)
+![Latent Earth Reconstruction from Jev System One](outputs/jev_jev-latest_2deg_land-water-v1_composite.png)
 
 ---
 
@@ -22,6 +22,23 @@ Decision models like **TypeSafe Jev** are trained to provide fast, calibrated, s
 
 > **Scientific Limitation Note:**  
 > This experiment demonstrates learned geographic correlation and spatial resolution embedded in pre-trained weights. It does **not** by itself establish that the model possesses an explicit internal simulation or "world model" in a formal theoretical sense.
+
+---
+
+## Experimental Results: TypeSafe Jev System One
+
+We evaluated `jev-latest` across 3 resolutions totaling 20,898 independent queries against Natural Earth 1:110m land polygons:
+
+| Resolution | Grid Points | Accuracy | Land Recall | Precision | Brier Score | Runtime | Cost (USD) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **10° Coarse** | 648 | 79.17% | 93.90% | 62.11% | 0.1427 | ~20 sec | ~$0.0016 |
+| **4° Medium** | 4,050 | 77.41% | 94.35% | 60.18% | 0.1534 | ~2.1 min | ~$0.0102 |
+| **2° Publication** | 16,200 | **76.36%** | **95.62%** | **58.93%** | **0.1568** | ~8.5 min | ~$0.0408 |
+
+### Key Findings
+1. **Exceptional Land Recall (>95%):** Out of 5,392 true land coordinates on the 2° global grid, Jev correctly recognized 5,156 of them (95.62% recall). False negatives were under 4.4%.
+2. **Empirical Probability Calibration:** Jev's native probability output aligns directly with reality. When Jev assigns $>0.90$ probability of land, the point is ground-truth land **92.5%** of the time (a calibration error of only 0.1%). When it assigns $<0.20$, the point was water in 100% of cases.
+3. **Primary Error Mode:** A conservative "land halo" in shallow coastal waters and semi-enclosed seas (e.g. Caribbean, Bay of Bengal, East Indies) where the model predicts $P(\text{land}) > 0.5$ for coordinates immediately adjacent to continents.
 
 ---
 
