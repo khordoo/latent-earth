@@ -240,8 +240,18 @@ def cmd_export(args: argparse.Namespace) -> None:
         except Exception:
             pass
 
+    try:
+        from latent_earth.evaluation import GroundTruthEvaluator, evaluate_predictions
+        evaluator = GroundTruthEvaluator()
+        eval_metrics = evaluate_predictions(preds, evaluator=evaluator)
+        if not eval_data:
+            eval_data = eval_metrics
+    except Exception:
+        pass
+
     first_pred = preds[0]
     points_data = [p.to_dict() for p in preds]
+
 
     manifest = {
         "run_id": input_path.stem,

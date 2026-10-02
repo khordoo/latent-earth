@@ -42,6 +42,20 @@ app = FastAPI(
     version="0.1.0",
 )
 
+_evaluator: Any = None
+
+
+def get_evaluator() -> Any:
+    global _evaluator
+    if _evaluator is None:
+        try:
+            from latent_earth.evaluation import GroundTruthEvaluator
+            _evaluator = GroundTruthEvaluator(LAND_GEOJSON_PATH)
+        except Exception as exc:
+            logger.warning("Failed to initialize GroundTruthEvaluator: %s", exc)
+    return _evaluator
+
+
 # Enable CORS for local development (e.g. Vite dev server on localhost:5173)
 app.add_middleware(
     CORSMiddleware,
@@ -136,6 +150,17 @@ async def get_run(run_id: str) -> dict[str, Any]:
                 eval_data = json.load(ef)
         except Exception as exc:
             logger.warning("Could not read evaluation file %s: %s", eval_file, exc)
+
+    # Attach ground truth and error categories to predictions so UI Ground Truth and Error Overlay work
+    evaluator = get_evaluator()
+    if evaluator is not None and preds:
+        try:
+            from latent_earth.evaluation import evaluate_predictions
+            eval_metrics = evaluate_predictions(preds, evaluator=evaluator)
+            if not eval_data:
+                eval_data = eval_metrics
+        except Exception as exc:
+            logger.warning("Could not evaluate predictions against ground truth: %s", exc)
 
     first_pred = preds[0] if preds else None
     provider = first_pred.provider if first_pred else "unknown"

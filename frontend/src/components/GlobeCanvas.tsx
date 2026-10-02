@@ -195,16 +195,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // 3. Optional Natural Earth Coastline Reference Outline
-    if (showCoastlineOverlay && coastlineGeoJson) {
-      ctx.beginPath();
-      path(coastlineGeoJson);
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-      ctx.lineWidth = 1.0;
-      ctx.stroke();
-    }
-
-    // 4. Render Model Decision Grid Cells
+    // 3. Render Model Decision Grid Cells
     const halfStep = stepDegrees / 2.0;
     const activePoints = points.slice(0, visibleCount);
 
@@ -244,6 +235,16 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       ctx.fillStyle = fillColor;
       ctx.fill();
     }
+
+    // 4. Optional Natural Earth Coastline Reference Outline (drawn on top of cells for high contrast)
+    if (showCoastlineOverlay && coastlineGeoJson) {
+      ctx.beginPath();
+      path(coastlineGeoJson);
+      ctx.strokeStyle = '#38BDF8';
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+    }
+
 
     // 5. Pulsing marker for latest active sampling point
     if (activePoints.length > 0 && visibleCount < points.length) {

@@ -94,14 +94,13 @@ class Prediction:
             "model": self.model,
             "prompt_version": self.prompt_version,
             "timestamp": self.timestamp,
+            "actual_land": self.actual_land,
+            "error_category": self.error_category,
         }
-        if self.actual_land is not None:
-            d["actual_land"] = self.actual_land
-        if self.error_category is not None:
-            d["error_category"] = self.error_category
         if self.raw_response is not None:
             d["raw_response"] = self.raw_response
         return d
+
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Prediction:

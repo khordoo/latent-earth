@@ -41,3 +41,23 @@ def test_api_serves_frontend_index():
     response = client.get("/")
     assert response.status_code == 200
     assert "Latent Earth" in response.text
+
+
+def test_api_get_run_with_ground_truth():
+    client = TestClient(app)
+    runs_res = client.get("/api/runs")
+    assert runs_res.status_code == 200
+    runs = runs_res.json()
+    if runs:
+        run_id = runs[0]["run_id"]
+        res = client.get(f"/api/runs/{run_id}")
+        assert res.status_code == 200
+        data = res.json()
+        assert "points" in data
+        assert len(data["points"]) > 0
+        first_pt = data["points"][0]
+        assert "actual_land" in first_pt
+        assert "error_category" in first_pt
+        assert first_pt["actual_land"] is not None
+        assert first_pt["error_category"] in ("correct_land", "correct_water", "false_land", "false_water")
+
