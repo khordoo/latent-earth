@@ -72,13 +72,17 @@ def generate_grid(
     step_degrees: float = 4.0,
     convention: str = "cell_center",
     north_to_south: bool = True,
+    lat_min: float = -90.0,
+    lat_max: float = 90.0,
+    lon_min: float = -180.0,
+    lon_max: float = 180.0,
 ) -> list[Coordinate]:
-    """Generate a deterministic grid of coordinates covering the Earth.
+    """Generate a deterministic grid of coordinates covering the Earth or a regional bounding box.
 
     By default, uses the 'cell_center' convention:
-    - 4-degree: 45 latitudes x 90 longitudes = 4,050 coordinates
-    - 2-degree: 90 latitudes x 180 longitudes = 16,200 coordinates
-    - 10-degree: 18 latitudes x 36 longitudes = 648 coordinates
+    - 4-degree global: 45 latitudes x 90 longitudes = 4,050 coordinates
+    - 2-degree global: 90 latitudes x 180 longitudes = 16,200 coordinates
+    - 10-degree global: 18 latitudes x 36 longitudes = 648 coordinates
 
     Ordering:
     - Outer loop: Latitude (North to South by default)
@@ -86,6 +90,14 @@ def generate_grid(
     """
     lats = get_latitudes(step_degrees, convention=convention, north_to_south=north_to_south)
     lons = get_longitudes(step_degrees, convention=convention)
+
+    # Filter by bounding box with floating point tolerance
+    eps = 1e-6
+    if lat_min > -90.0 or lat_max < 90.0:
+        lats = [lat for lat in lats if (lat_min - eps) <= lat <= (lat_max + eps)]
+
+    if lon_min > -180.0 or lon_max < 180.0:
+        lons = [lon for lon in lons if (lon_min - eps) <= lon <= (lon_max + eps)]
 
     coordinates: list[Coordinate] = []
     for lat in lats:

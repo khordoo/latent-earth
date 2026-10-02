@@ -33,6 +33,16 @@ def setup_logging(verbose: bool = False) -> None:
     )
 
 
+REGION_PRESETS: dict[str, dict[str, float]] = {
+    "japan_korea": {
+        "lat_min": 24.0,
+        "lat_max": 46.0,
+        "lon_min": 122.0,
+        "lon_max": 146.0,
+    }
+}
+
+
 def infer_step_from_predictions(predictions: Sequence[Prediction]) -> float:
     """Attempt to infer grid step size from prediction coordinates."""
     if len(predictions) < 2:
@@ -60,8 +70,25 @@ async def async_run(args: argparse.Namespace) -> None:
     config = AppConfig.load(args.config)
 
     # CLI Overrides
-    if args.step:
-        config.grid.step_degrees = float(args.step)
+    step_val = args.grid_resolution if getattr(args, "grid_resolution", None) is not None else args.step
+    if step_val is not None:
+        config.grid.step_degrees = float(step_val)
+
+    if getattr(args, "region", None):
+        config.region.name = args.region
+        preset = REGION_PRESETS.get(args.region.lower())
+        if preset:
+            config.region.lat_min = preset["lat_min"]
+            config.region.lat_max = preset["lat_max"]
+            config.region.lon_min = preset["lon_min"]
+            config.region.lon_max = preset["lon_max"]
+
+    if getattr(args, "bbox", None):
+        config.region.lat_min = float(args.bbox[0])
+        config.region.lat_max = float(args.bbox[1])
+        config.region.lon_min = float(args.bbox[2])
+        config.region.lon_max = float(args.bbox[3])
+
     if args.provider:
         config.provider.name = args.provider
         if not args.model and args.provider == "mock":
@@ -84,6 +111,7 @@ async def async_run(args: argparse.Namespace) -> None:
             model=config.provider.model,
             step_degrees=config.grid.step_degrees,
             prompt_version=config.provider.prompt_version,
+            region_name=config.region.name,
         )
 
     cache = PredictionCache(
@@ -95,12 +123,19 @@ async def async_run(args: argparse.Namespace) -> None:
     provider = get_provider(config.provider, config.inference)
     runner = Runner(config=config, provider=provider, cache=cache)
 
-    # Cost estimate for Jev
+    # Calculate exact total coordinates for cost estimate
+    from latent_earth.grid import generate_grid
+    expected_coords = generate_grid(
+        step_degrees=config.grid.step_degrees,
+        convention=config.grid.convention,
+        lat_min=config.region.lat_min,
+        lat_max=config.region.lat_max,
+        lon_min=config.region.lon_min,
+        lon_max=config.region.lon_max,
+    )
     estimated_cost = None
     if config.provider.name == "jev":
-        estimated_cost = estimate_jev_cost(
-            int(round((180.0 / config.grid.step_degrees) * (360.0 / config.grid.step_degrees)))
-        )
+        estimated_cost = estimate_jev_cost(len(expected_coords))
 
     preds = await runner.run(
         step_degrees=config.grid.step_degrees,
@@ -112,8 +147,32 @@ async def async_run(args: argparse.Namespace) -> None:
     if args.dry_run:
         return
 
-    # Render visualizations if enabled
-    if not args.no_render and len(preds) > 0:
+    # Persist experiment metadata independently
+    metadata = {
+        "provider": config.provider.name,
+        "model": config.provider.model,
+        "model_version": config.provider.model,
+        "region_name": config.region.name,
+        "bounding_box": {
+            "lat_min": config.region.lat_min,
+            "lat_max": config.region.lat_max,
+            "lon_min": config.region.lon_min,
+            "lon_max": config.region.lon_max,
+        },
+        "grid_resolution": config.grid.step_degrees,
+        "step_degrees": config.grid.step_degrees,
+        "query_count": len(preds),
+        "timestamp": preds[0].timestamp if preds else "",
+        "prompt_version": config.provider.prompt_version,
+        "convention": config.grid.convention,
+    }
+    meta_path = output_file.parent / f"{output_file.stem}_metadata.json"
+    with open(meta_path, "w", encoding="utf-8") as mf:
+        json.dump(metadata, mf, indent=2)
+    print(f"Saved run metadata to {meta_path}")
+
+    # Render visualizations if enabled (for global runs or regional if requested)
+    if not args.no_render and len(preds) > 0 and config.region.is_global:
         base_name = output_file.stem
         out_dir = output_file.parent
         print(f"\nGenerating map visual reconstructions in {out_dir}...")
@@ -130,17 +189,32 @@ async def async_run(args: argparse.Namespace) -> None:
 
     # Ground-truth evaluation if requested
     if args.evaluate and len(preds) > 0:
-        print("\nEvaluating against Natural Earth ground truth...")
+        coastal_threshold = getattr(args, "coastal_threshold", 1.0) or 1.0
+        print(f"\nEvaluating against Natural Earth ground truth (coastal band: {coastal_threshold:g}°)...")
         evaluator = GroundTruthEvaluator()
-        results = evaluate_predictions(preds, evaluator=evaluator)
+        results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=coastal_threshold)
+        results["metadata"] = metadata
         eval_json_path = output_file.parent / f"{output_file.stem}_evaluation.json"
         with open(eval_json_path, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
         print(f"Saved evaluation metrics to {eval_json_path}")
 
-        err_map_path = output_file.parent / f"{output_file.stem}_error_map.png"
-        render_error_map(preds, config.grid.step_degrees, err_map_path, evaluator=evaluator)
-        print(f"Saved error map to {err_map_path}")
+        # Print summary table
+        print("\n=== EVALUATION METRICS ===")
+        print(f"Total Evaluated:        {results['total_evaluated']:,}")
+        print(f"Grid Accuracy:          {results['grid_metrics']['accuracy']:.1%}")
+        print(f"Area-Weighted Accuracy: {results['area_weighted_metrics']['accuracy']:.1%}")
+        if results['grid_metrics']['brier_score'] is not None:
+            print(f"Grid Brier Score:       {results['grid_metrics']['brier_score']:.4f}")
+            print(f"Area-Weighted Brier:    {results['area_weighted_metrics']['brier_score']:.4f}")
+        if results['coastal_metrics']['accuracy'] is not None:
+            c_cnt = results['coastal_metrics']['coastal_cell_count']
+            c_frac = results['coastal_metrics']['coastal_cell_fraction']
+            print(f"Coastal Cells:          {c_cnt:,} ({c_frac:.1%} of region)")
+            print(f"Coastal Accuracy:       {results['coastal_metrics']['accuracy']:.1%}")
+            if results['coastal_metrics']['brier_score'] is not None:
+                print(f"Coastal Brier Score:    {results['coastal_metrics']['brier_score']:.4f}")
+        print("==========================\n")
 
 
 def cmd_render(args: argparse.Namespace) -> None:
@@ -189,18 +263,30 @@ def cmd_evaluate(args: argparse.Namespace) -> None:
         sys.exit("No valid predictions found in input file.")
 
     step = args.step if args.step else infer_step_from_predictions(preds)
+    coastal_threshold = getattr(args, "coastal_threshold", 1.0) or 1.0
     evaluator = GroundTruthEvaluator()
-    results = evaluate_predictions(preds, evaluator=evaluator)
+    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=coastal_threshold)
 
     out_json = Path(args.output) if args.output else input_path.parent / f"{input_path.stem}_evaluation.json"
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     print("\n=== GROUND TRUTH EVALUATION METRICS ===")
-    metrics = results.get("metrics", {})
-    for k, v in metrics.items():
-        print(f"{k.capitalize():<14}: {v}")
-    print(f"\nSaved full results to {out_json}")
+    print(f"Total Evaluated:        {results['total_evaluated']:,}")
+    print(f"Grid Accuracy:          {results['grid_metrics']['accuracy']:.1%}")
+    print(f"Area-Weighted Accuracy: {results['area_weighted_metrics']['accuracy']:.1%}")
+    if results['grid_metrics']['brier_score'] is not None:
+        print(f"Grid Brier Score:       {results['grid_metrics']['brier_score']:.4f}")
+        print(f"Area-Weighted Brier:    {results['area_weighted_metrics']['brier_score']:.4f}")
+    if results['coastal_metrics']['accuracy'] is not None:
+        c_cnt = results['coastal_metrics']['coastal_cell_count']
+        c_frac = results['coastal_metrics']['coastal_cell_fraction']
+        print(f"Coastal Cells:          {c_cnt:,} ({c_frac:.1%} of region)")
+        print(f"Coastal Accuracy:       {results['coastal_metrics']['accuracy']:.1%}")
+        if results['coastal_metrics']['brier_score'] is not None:
+            print(f"Coastal Brier Score:    {results['coastal_metrics']['brier_score']:.4f}")
+    print("=======================================\n")
+    print(f"Saved full results to {out_json}")
 
     if not args.no_error_map:
         err_map_path = input_path.parent / f"{input_path.stem}_error_map.png"
@@ -232,7 +318,17 @@ def cmd_export(args: argparse.Namespace) -> None:
     out_path = Path(args.output) if args.output else input_path.parent / f"{input_path.stem}_bundle.json"
 
     eval_file = input_path.parent / f"{input_path.stem}_evaluation.json"
+    meta_file = input_path.parent / f"{input_path.stem}_metadata.json"
     eval_data: dict[str, Any] | None = None
+    meta_data: dict[str, Any] | None = None
+
+    if meta_file.exists():
+        try:
+            with open(meta_file, "r", encoding="utf-8") as mf:
+                meta_data = json.load(mf)
+        except Exception:
+            pass
+
     if eval_file.exists():
         try:
             with open(eval_file, "r", encoding="utf-8") as ef:
@@ -252,7 +348,6 @@ def cmd_export(args: argparse.Namespace) -> None:
     first_pred = preds[0]
     points_data = [p.to_dict() for p in preds]
 
-
     manifest = {
         "run_id": input_path.stem,
         "provider": first_pred.provider,
@@ -263,6 +358,7 @@ def cmd_export(args: argparse.Namespace) -> None:
         "total_coordinates": len(preds),
         "sampled_count": len(preds),
         "created_at": first_pred.timestamp,
+        "region": meta_data.get("bounding_box") if meta_data else None,
         "metrics": eval_data.get("metrics") if eval_data else None,
         "points": points_data,
     }
@@ -286,7 +382,11 @@ def build_parser() -> argparse.ArgumentParser:
     # 'run' subcommand
     run_parser = subparsers.add_parser("run", help="Run model inference over coordinate grid.")
     run_parser.add_argument("--config", default="config.yaml", help="Path to config YAML file.")
-    run_parser.add_argument("--step", type=float, help="Grid step in degrees (e.g. 10, 4, 2).")
+    run_parser.add_argument("--step", type=float, help="Grid step in degrees (e.g. 10, 4, 2, 1, 0.5).")
+    run_parser.add_argument("--grid-resolution", type=float, help="Grid resolution step in degrees (alias for --step).")
+    run_parser.add_argument("--region", help="Region preset name (e.g. 'japan_korea') or custom name.")
+    run_parser.add_argument("--bbox", nargs=4, type=float, metavar=("LAT_MIN", "LAT_MAX", "LON_MIN", "LON_MAX"), help="Bounding box: lat_min lat_max lon_min lon_max.")
+    run_parser.add_argument("--coastal-threshold", type=float, default=1.0, help="Distance threshold in degrees for coastal band evaluation (default: 1.0).")
     run_parser.add_argument("--limit", type=int, help="Limit number of queries (for smoke test / dev).")
     run_parser.add_argument("--provider", choices=["jev", "mock", "openai_compatible"], help="Provider name.")
     run_parser.add_argument("--model", help="Model name.")
@@ -309,6 +409,7 @@ def build_parser() -> argparse.ArgumentParser:
     eval_parser.add_argument("--input", required=True, help="Input predictions JSONL file.")
     eval_parser.add_argument("--step", type=float, help="Grid step in degrees (optional, auto-inferred).")
     eval_parser.add_argument("--output", help="Output JSON evaluation file path.")
+    eval_parser.add_argument("--coastal-threshold", type=float, default=1.0, help="Distance threshold in degrees for coastal band evaluation (default: 1.0).")
     eval_parser.add_argument("--no-error-map", action="store_true", help="Do not render error map.")
 
     # 'serve' subcommand

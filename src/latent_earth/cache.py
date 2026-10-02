@@ -24,6 +24,7 @@ def get_default_output_path(
     model: str,
     step_degrees: float,
     prompt_version: str,
+    region_name: str | None = None,
 ) -> Path:
     """Generate a structured, descriptive filename for run outputs."""
     p_dir = Path(output_dir)
@@ -31,7 +32,11 @@ def get_default_output_path(
     step_str = f"{step_degrees:g}".replace(".", "_")
     safe_model = sanitize_filename(model)
     safe_prompt = sanitize_filename(prompt_version)
-    filename = f"{provider}_{safe_model}_{step_str}deg_{safe_prompt}.jsonl"
+    if region_name and region_name.lower() not in ("global", "world"):
+        safe_region = sanitize_filename(region_name.lower())
+        filename = f"{provider}_{safe_model}_{safe_region}_{step_str}deg_{safe_prompt}.jsonl"
+    else:
+        filename = f"{provider}_{safe_model}_{step_str}deg_{safe_prompt}.jsonl"
     return p_dir / filename
 
 

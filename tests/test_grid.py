@@ -74,3 +74,21 @@ def test_coordinate_formatting():
     assert "45.000° N" in c.format_cardinal()
     assert "73.000° W" in c.format_cardinal()
     assert c.id == "lat_+45.000_lon_-73.000"
+
+
+def test_regional_grid_japan_korea():
+    """Verify exact coordinate counts for Japan/Korea regional experiment."""
+    # Lat: 24 to 46, Lon: 122 to 146
+    grid_2deg = generate_grid(step_degrees=2.0, lat_min=24, lat_max=46, lon_min=122, lon_max=146)
+    assert len(grid_2deg) == 132
+
+    grid_1deg = generate_grid(step_degrees=1.0, lat_min=24, lat_max=46, lon_min=122, lon_max=146)
+    assert len(grid_1deg) == 528
+
+    grid_05deg = generate_grid(step_degrees=0.5, lat_min=24, lat_max=46, lon_min=122, lon_max=146)
+    assert len(grid_05deg) == 2112
+
+    # Verify all coordinates strictly within bounding box
+    for c in grid_05deg:
+        assert 24.0 <= c.latitude <= 46.0
+        assert 122.0 <= c.longitude <= 146.0

@@ -33,6 +33,7 @@ def print_run_summary(
     concurrency: int,
     dry_run: bool = False,
     estimated_cost: str | None = None,
+    region_info: str | None = None,
 ) -> None:
     """Print standard formatted run summary before starting execution."""
     expected_batches = math.ceil(remaining_coords / batch_size) if batch_size > 0 and remaining_coords > 0 else 0
@@ -40,6 +41,8 @@ def print_run_summary(
     print("\n" + header)
     print(f"Provider:           {provider_name}")
     print(f"Model:              {model}")
+    if region_info:
+        print(f"Region:             {region_info}")
     print(f"Grid spacing:       {step_degrees:g}°")
     print(f"Total coordinates:  {total_coords:,}")
     print(f"Already cached:     {cached_coords:,}")
@@ -77,6 +80,10 @@ class Runner:
         all_coords = generate_grid(
             step_degrees=step,
             convention=self.config.grid.convention,
+            lat_min=self.config.region.lat_min,
+            lat_max=self.config.region.lat_max,
+            lon_min=self.config.region.lon_min,
+            lon_max=self.config.region.lon_max,
         )
         total_coords = len(all_coords)
 
@@ -95,6 +102,11 @@ class Runner:
         batch_size = self.config.inference.batch_size
         concurrency = self.config.inference.concurrency
 
+        region_str = None
+        if not self.config.region.is_global:
+            r = self.config.region
+            region_str = f"{r.name} [Lat {r.lat_min:g}° to {r.lat_max:g}°, Lon {r.lon_min:g}° to {r.lon_max:g}°]"
+
         print_run_summary(
             provider_name=self.provider.provider_name,
             model=self.provider.model,
@@ -106,6 +118,7 @@ class Runner:
             concurrency=concurrency,
             dry_run=dry_run,
             estimated_cost=estimated_cost,
+            region_info=region_str,
         )
 
         if dry_run:

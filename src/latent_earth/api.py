@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+import re
 from typing import Any
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -83,11 +84,23 @@ async def list_runs() -> list[dict[str, Any]]:
     for f in jsonl_files:
         run_id = f.stem
         eval_file = DEFAULT_OUTPUTS_DIR / f"{run_id}_evaluation.json"
+        meta_file = DEFAULT_OUTPUTS_DIR / f"{run_id}_metadata.json"
 
         provider = "unknown"
         model = "unknown"
         prompt_version = "unknown"
         point_count = 0
+        meta_data: dict[str, Any] = {}
+
+        if meta_file.exists():
+            try:
+                with open(meta_file, "r", encoding="utf-8") as mf:
+                    meta_data = json.load(mf)
+                    provider = meta_data.get("provider", provider)
+                    model = meta_data.get("model", model)
+                    prompt_version = meta_data.get("prompt_version", prompt_version)
+            except Exception:
+                pass
 
         with open(f, "r", encoding="utf-8") as fp:
             for i, line in enumerate(fp):
@@ -95,7 +108,7 @@ async def list_runs() -> list[dict[str, Any]]:
                 if not line_str:
                     continue
                 point_count += 1
-                if i == 0:
+                if i == 0 and not meta_data:
                     try:
                         first_data = json.loads(line_str)
                         provider = first_data.get("provider", provider)
@@ -116,12 +129,27 @@ async def list_runs() -> list[dict[str, Any]]:
             except Exception:
                 pass
 
+        step = meta_data.get("grid_resolution") or meta_data.get("step_degrees")
+        if not step:
+            # Infer from filename e.g. _2deg_ or _0_5deg_
+            m = re.search(r"_(\d+(?:_\d+)?)deg_", run_id)
+            if m:
+                step = float(m.group(1).replace("_", "."))
+            else:
+                step = 4.0
+
+        region_name = meta_data.get("region_name", "global")
+        if region_name == "global" and "japan_korea" in run_id:
+            region_name = "japan_korea"
+
         runs.append({
             "run_id": run_id,
             "filename": f.name,
             "provider": provider,
             "model": model,
             "prompt_version": prompt_version,
+            "region_name": region_name,
+            "step_degrees": step,
             "point_count": point_count,
             "has_evaluation": has_eval,
             "metrics": eval_summary,
@@ -141,6 +169,15 @@ async def get_run(run_id: str) -> dict[str, Any]:
 
     cache = PredictionCache(jsonl_file, strict_validation=False)
     preds = list(cache.load().values())
+
+    meta_file = DEFAULT_OUTPUTS_DIR / f"{run_id}_metadata.json"
+    meta_data: dict[str, Any] = {}
+    if meta_file.exists():
+        try:
+            with open(meta_file, "r", encoding="utf-8") as mf:
+                meta_data = json.load(mf)
+        except Exception as exc:
+            logger.warning("Could not read metadata file %s: %s", meta_file, exc)
 
     eval_file = DEFAULT_OUTPUTS_DIR / f"{run_id}_evaluation.json"
     eval_data: dict[str, Any] | None = None
@@ -163,29 +200,39 @@ async def get_run(run_id: str) -> dict[str, Any]:
             logger.warning("Could not evaluate predictions against ground truth: %s", exc)
 
     first_pred = preds[0] if preds else None
-    provider = first_pred.provider if first_pred else "unknown"
-    model = first_pred.model if first_pred else "unknown"
-    prompt_version = first_pred.prompt_version if first_pred else "unknown"
+    provider = meta_data.get("provider") or (first_pred.provider if first_pred else "unknown")
+    model = meta_data.get("model") or (first_pred.model if first_pred else "unknown")
+    prompt_version = meta_data.get("prompt_version") or (first_pred.prompt_version if first_pred else "unknown")
 
-    step = 4.0
-    if len(preds) > 1:
-        lats = sorted({round(p.coordinate.latitude, 6) for p in preds})
-        if len(lats) > 1:
-            diffs = [round(abs(lats[i] - lats[i - 1]), 4) for i in range(1, len(lats))]
-            step = min(diffs)
+    step = meta_data.get("grid_resolution") or meta_data.get("step_degrees")
+    if not step:
+        if len(preds) > 1:
+            lats = sorted({round(p.coordinate.latitude, 6) for p in preds})
+            if len(lats) > 1:
+                diffs = [round(abs(lats[i] - lats[i - 1]), 4) for i in range(1, len(lats))]
+                step = min(diffs)
+            else:
+                step = 4.0
+        else:
+            step = 4.0
 
     points_data = [p.to_dict() for p in preds]
+
+    region_obj = meta_data.get("bounding_box") or (
+        {"name": meta_data.get("region_name")} if meta_data.get("region_name") else None
+    )
 
     manifest = RunManifest(
         run_id=run_id,
         provider=provider,
         model=model,
         prompt_version=prompt_version,
-        step_degrees=step,
+        step_degrees=float(step),
         convention="cell_center",
         total_coordinates=len(preds),
         sampled_count=len(preds),
         created_at=preds[0].timestamp if preds else "",
+        region=region_obj,
         metrics=eval_data.get("metrics") if eval_data else None,
         points=points_data,
     )
@@ -193,6 +240,9 @@ async def get_run(run_id: str) -> dict[str, Any]:
     response_payload = manifest.to_dict()
     if eval_data:
         response_payload["full_evaluation"] = eval_data
+        response_payload["grid_metrics"] = eval_data.get("grid_metrics")
+        response_payload["area_weighted_metrics"] = eval_data.get("area_weighted_metrics")
+        response_payload["coastal_metrics"] = eval_data.get("coastal_metrics")
 
     return response_payload
 

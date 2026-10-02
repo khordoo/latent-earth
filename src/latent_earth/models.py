@@ -55,6 +55,8 @@ class Prediction:
     sequence_index: int = 0
     actual_land: bool | None = None
     error_category: str | None = None  # 'correct_land', 'correct_water', 'false_land', 'false_water'
+    is_coastal: bool | None = None
+    distance_to_coastline: float | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     raw_response: dict[str, Any] | None = None
 
@@ -97,10 +99,13 @@ class Prediction:
             "actual_land": self.actual_land,
             "error_category": self.error_category,
         }
+        if self.is_coastal is not None:
+            d["is_coastal"] = self.is_coastal
+        if self.distance_to_coastline is not None:
+            d["distance_to_coastline"] = round(self.distance_to_coastline, 4)
         if self.raw_response is not None:
             d["raw_response"] = self.raw_response
         return d
-
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Prediction:
@@ -122,6 +127,8 @@ class Prediction:
             sequence_index=int(data.get("sequence_index", 0)),
             actual_land=data.get("actual_land"),
             error_category=data.get("error_category"),
+            is_coastal=data.get("is_coastal"),
+            distance_to_coastline=float(data["distance_to_coastline"]) if "distance_to_coastline" in data and data["distance_to_coastline"] is not None else None,
             timestamp=str(data.get("timestamp", "")),
             raw_response=data.get("raw_response"),
         )
@@ -140,11 +147,12 @@ class RunManifest:
     total_coordinates: int
     sampled_count: int
     created_at: str
+    region: dict[str, Any] | None = None
     metrics: dict[str, Any] | None = None
     points: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        d = {
             "run_id": self.run_id,
             "provider": self.provider,
             "model": self.model,
@@ -157,6 +165,9 @@ class RunManifest:
             "metrics": self.metrics,
             "points": self.points,
         }
+        if self.region is not None:
+            d["region"] = self.region
+        return d
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> RunManifest:
@@ -170,6 +181,7 @@ class RunManifest:
             total_coordinates=int(data["total_coordinates"]),
             sampled_count=int(data["sampled_count"]),
             created_at=data.get("created_at", ""),
+            region=data.get("region"),
             metrics=data.get("metrics"),
             points=data.get("points", []),
         )

@@ -99,12 +99,18 @@ export const App: React.FC = () => {
   return (
     <div className="relative w-screen h-screen bg-[#070B14] overflow-hidden select-none">
       {/* Loading Overlay */}
-      {loading && (
+      {loading && !runData && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#070B14]/80 backdrop-blur-md">
           <Loader2 className="w-8 h-8 text-cyan-400 animate-spin mb-3" />
           <span className="text-sm font-semibold tracking-wider text-slate-300">
             Loading Geographic Model Reconstructions...
           </span>
+        </div>
+      )}
+      {loading && runData && (
+        <div className="absolute top-4 right-4 z-40 flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/50 text-cyan-300 text-xs font-semibold shadow-lg backdrop-blur-sm">
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <span>Switching resolution...</span>
         </div>
       )}
 

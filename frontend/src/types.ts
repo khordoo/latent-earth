@@ -16,13 +16,42 @@ export interface PredictionPoint {
 }
 
 
-export interface EvaluationMetrics {
+export interface DetailedMetrics {
   accuracy: number;
   precision: number;
   recall: number;
   f1: number;
   brier_score?: number | null;
   log_loss?: number | null;
+}
+
+export interface CoastalMetrics {
+  coastal_distance_threshold_deg: number;
+  coastal_cell_count: number;
+  coastal_cell_fraction: number;
+  accuracy?: number | null;
+  brier_score?: number | null;
+  area_weighted_accuracy?: number | null;
+  area_weighted_brier_score?: number | null;
+}
+
+export interface EvaluationMetrics extends DetailedMetrics {
+  area_weighted_accuracy?: number;
+  area_weighted_brier_score?: number | null;
+  coastal_accuracy?: number | null;
+  coastal_brier_score?: number | null;
+  coastal_area_weighted_accuracy?: number | null;
+  grid_metrics?: DetailedMetrics;
+  area_weighted_metrics?: DetailedMetrics;
+  coastal_metrics?: CoastalMetrics;
+}
+
+export interface RegionInfo {
+  name?: string;
+  lat_min: number;
+  lat_max: number;
+  lon_min: number;
+  lon_max: number;
 }
 
 export interface RunData {
@@ -35,7 +64,11 @@ export interface RunData {
   total_coordinates: number;
   sampled_count: number;
   created_at: string;
+  region?: RegionInfo | null;
   metrics?: EvaluationMetrics | null;
+  grid_metrics?: DetailedMetrics | null;
+  area_weighted_metrics?: DetailedMetrics | null;
+  coastal_metrics?: CoastalMetrics | null;
   points: PredictionPoint[];
 }
 
@@ -45,6 +78,8 @@ export interface RunSummary {
   provider: string;
   model: string;
   prompt_version: string;
+  region_name?: string;
+  step_degrees?: number;
   point_count: number;
   has_evaluation: boolean;
   metrics?: EvaluationMetrics | null;

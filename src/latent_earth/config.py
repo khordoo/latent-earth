@@ -49,6 +49,34 @@ class InferenceConfig:
 
 
 @dataclass
+class RegionConfig:
+    name: str = "global"
+    lat_min: float = -90.0
+    lat_max: float = 90.0
+    lon_min: float = -180.0
+    lon_max: float = 180.0
+
+    @property
+    def is_global(self) -> bool:
+        return (
+            self.lat_min <= -90.0
+            and self.lat_max >= 90.0
+            and self.lon_min <= -180.0
+            and self.lon_max >= 180.0
+            and self.name.lower() in ("global", "world", "")
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "lat_min": self.lat_min,
+            "lat_max": self.lat_max,
+            "lon_min": self.lon_min,
+            "lon_max": self.lon_max,
+        }
+
+
+@dataclass
 class OutputConfig:
     dir: str = "outputs"
     save_interval: int = 50
@@ -57,6 +85,7 @@ class OutputConfig:
 @dataclass
 class AppConfig:
     grid: GridConfig = field(default_factory=GridConfig)
+    region: RegionConfig = field(default_factory=RegionConfig)
     provider: ProviderConfig = field(default_factory=ProviderConfig)
     inference: InferenceConfig = field(default_factory=InferenceConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
@@ -74,14 +103,25 @@ class AppConfig:
                         data = loaded
 
         grid_data = data.get("grid", {})
+        region_data = data.get("region", {})
         provider_data = data.get("provider", {})
         inference_data = data.get("inference", {})
         output_data = data.get("output", {})
 
+        # Support grid_resolution as top-level or grid-level alias
+        step = data.get("grid_resolution", grid_data.get("step_degrees", 4.0))
+
         return cls(
             grid=GridConfig(
-                step_degrees=float(grid_data.get("step_degrees", 4.0)),
+                step_degrees=float(step),
                 convention=str(grid_data.get("convention", "cell_center")),
+            ),
+            region=RegionConfig(
+                name=str(region_data.get("name", "global")),
+                lat_min=float(region_data.get("lat_min", -90.0)),
+                lat_max=float(region_data.get("lat_max", 90.0)),
+                lon_min=float(region_data.get("lon_min", -180.0)),
+                lon_max=float(region_data.get("lon_max", 180.0)),
             ),
             provider=ProviderConfig(
                 name=str(provider_data.get("name", "jev")),

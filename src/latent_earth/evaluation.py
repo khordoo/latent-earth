@@ -49,7 +49,9 @@ class GroundTruthEvaluator:
         self.land_union = unary_union(polygons)
         # Prepare geometry for fast spatial point-in-polygon queries
         prepare(self.land_union)
-        logger.info("Ground truth geometry loaded and prepared.")
+        self.coastline = self.land_union.boundary
+        prepare(self.coastline)
+        logger.info("Ground truth geometry and coastline prepared.")
 
     def is_land(self, lat: float, lon: float) -> bool:
         """Check whether a (latitude, longitude) coordinate intersects land ground truth."""
@@ -57,13 +59,23 @@ class GroundTruthEvaluator:
         pt = Point(lon, lat)
         return bool(self.land_union.contains(pt) or self.land_union.touches(pt))
 
+    def distance_to_coastline(self, lat: float, lon: float) -> float:
+        """Calculate minimum Euclidean distance in degrees to the ground truth coastline."""
+        pt = Point(lon, lat)
+        return float(pt.distance(self.coastline))
+
+    def is_coastal(self, lat: float, lon: float, threshold_degrees: float = 1.0) -> bool:
+        """Check whether a coordinate is within threshold degrees of the coastline."""
+        return self.distance_to_coastline(lat, lon) <= threshold_degrees
+
 
 def evaluate_predictions(
     predictions: Sequence[Prediction],
     evaluator: GroundTruthEvaluator | None = None,
     geojson_path: str | Path | None = None,
+    coastal_distance_degrees: float = 1.0,
 ) -> dict[str, Any]:
-    """Calculate full evaluation metrics and error analysis."""
+    """Calculate full evaluation metrics and error analysis, including area-weighting and coastal metrics."""
     if evaluator is None:
         evaluator = GroundTruthEvaluator(geojson_path)
 
@@ -76,9 +88,26 @@ def evaluate_predictions(
     fp = 0  # Predicted land, actual water
     fn = 0  # Predicted water, actual land
 
+    # Area-weighted sums (cos(lat) weighting)
+    weighted_tp = 0.0
+    weighted_tn = 0.0
+    weighted_fp = 0.0
+    weighted_fn = 0.0
+    total_weight = 0.0
+
     brier_sum = 0.0
+    weighted_brier_sum = 0.0
     log_loss_sum = 0.0
+    weighted_log_loss_sum = 0.0
     has_probs = False
+
+    # Coastal metrics tracking
+    coastal_count = 0
+    coastal_correct = 0
+    coastal_brier_sum = 0.0
+    coastal_weighted_correct = 0.0
+    coastal_weighted_brier_sum = 0.0
+    coastal_total_weight = 0.0
 
     confidently_wrong: list[dict[str, Any]] = []
     uncertain_coords: list[dict[str, Any]] = []
@@ -87,16 +116,47 @@ def evaluate_predictions(
     bins = [[] for _ in range(10)]
 
     for pred in predictions:
-        actual_land = evaluator.is_land(pred.coordinate.latitude, pred.coordinate.longitude)
+        lat = pred.coordinate.latitude
+        lon = pred.coordinate.longitude
+        actual_land = evaluator.is_land(lat, lon)
         actual_y = 1.0 if actual_land else 0.0
         predicted_land = pred.is_land
         prob = pred.probability_land if pred.probability_land is not None else actual_y
 
+        # Area weight proportional to cos(latitude)
+        lat_rad = math.radians(lat)
+        weight = max(0.0, math.cos(lat_rad))
+        total_weight += weight
+
+        # Coastal proximity evaluation
+        dist_to_coast = evaluator.distance_to_coastline(lat, lon)
+        is_coastal_pt = dist_to_coast <= coastal_distance_degrees
+        pred.is_coastal = is_coastal_pt
+        pred.distance_to_coastline = round(dist_to_coast, 4)
+
+        is_correct = (predicted_land == actual_land)
+
+        if is_coastal_pt:
+            coastal_count += 1
+            coastal_total_weight += weight
+            if is_correct:
+                coastal_correct += 1
+                coastal_weighted_correct += weight
+
         if pred.probability_land is not None:
             has_probs = True
-            brier_sum += (prob - actual_y) ** 2
+            brier_pt = (prob - actual_y) ** 2
+            brier_sum += brier_pt
+            weighted_brier_sum += weight * brier_pt
+
+            if is_coastal_pt:
+                coastal_brier_sum += brier_pt
+                coastal_weighted_brier_sum += weight * brier_pt
+
             p_clipped = max(1e-7, min(1.0 - 1e-7, prob))
-            log_loss_sum += -(actual_y * math.log(p_clipped) + (1.0 - actual_y) * math.log(1.0 - p_clipped))
+            ll_pt = -(actual_y * math.log(p_clipped) + (1.0 - actual_y) * math.log(1.0 - p_clipped))
+            log_loss_sum += ll_pt
+            weighted_log_loss_sum += weight * ll_pt
 
             # Calibration bin
             b_idx = min(9, int(prob * 10))
@@ -104,22 +164,25 @@ def evaluate_predictions(
 
             # Uncertainty
             uncertain_coords.append({
-                "latitude": pred.coordinate.latitude,
-                "longitude": pred.coordinate.longitude,
+                "latitude": lat,
+                "longitude": lon,
                 "probability_land": prob,
                 "uncertainty": pred.uncertainty,
                 "actual_land": actual_land,
+                "is_coastal": is_coastal_pt,
+                "distance_to_coastline": round(dist_to_coast, 4),
             })
 
             # Check if wrongly classified
-            if predicted_land != actual_land:
+            if not is_correct:
                 confidence = prob if predicted_land else (1.0 - prob)
                 confidently_wrong.append({
-                    "latitude": pred.coordinate.latitude,
-                    "longitude": pred.coordinate.longitude,
+                    "latitude": lat,
+                    "longitude": lon,
                     "probability_land": prob,
                     "predicted_land": predicted_land,
                     "actual_land": actual_land,
+                    "is_coastal": is_coastal_pt,
                     "confidence_in_error": round(confidence, 4),
                 })
 
@@ -127,23 +190,49 @@ def evaluate_predictions(
         if predicted_land and actual_land:
             pred.error_category = "correct_land"
             tp += 1
+            weighted_tp += weight
         elif not predicted_land and not actual_land:
             pred.error_category = "correct_water"
             tn += 1
+            weighted_tn += weight
         elif predicted_land and not actual_land:
             pred.error_category = "false_land"
             fp += 1
+            weighted_fp += weight
         else:
             pred.error_category = "false_water"
             fn += 1
+            weighted_fn += weight
 
+    # Unweighted Grid Metrics
     accuracy = (tp + tn) / total
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
-
     brier_score = brier_sum / total if has_probs else None
     log_loss = log_loss_sum / total if has_probs else None
+
+    # Area-Weighted Metrics
+    weighted_acc = (weighted_tp + weighted_tn) / total_weight if total_weight > 0 else 0.0
+    weighted_prec = weighted_tp / (weighted_tp + weighted_fp) if (weighted_tp + weighted_fp) > 0 else 0.0
+    weighted_rec = weighted_tp / (weighted_tp + weighted_fn) if (weighted_tp + weighted_fn) > 0 else 0.0
+    weighted_f1 = (
+        2 * weighted_prec * weighted_rec / (weighted_prec + weighted_rec)
+        if (weighted_prec + weighted_rec) > 0
+        else 0.0
+    )
+    weighted_brier = weighted_brier_sum / total_weight if (has_probs and total_weight > 0) else None
+    weighted_log_loss = weighted_log_loss_sum / total_weight if (has_probs and total_weight > 0) else None
+
+    # Coastal Metrics
+    coastal_acc = coastal_correct / coastal_count if coastal_count > 0 else None
+    coastal_brier = coastal_brier_sum / coastal_count if (has_probs and coastal_count > 0) else None
+    coastal_weighted_acc = coastal_weighted_correct / coastal_total_weight if coastal_total_weight > 0 else None
+    coastal_weighted_brier = (
+        coastal_weighted_brier_sum / coastal_total_weight
+        if (has_probs and coastal_total_weight > 0)
+        else None
+    )
 
     # Sort analysis lists
     confidently_wrong.sort(key=lambda x: x["confidence_in_error"], reverse=True)
@@ -164,12 +253,9 @@ def evaluate_predictions(
 
     results = {
         "total_evaluated": total,
-        "confusion_matrix": {
-            "true_positive_land": tp,
-            "true_negative_water": tn,
-            "false_positive_land": fp,
-            "false_negative_water": fn,
-        },
+        "coastal_threshold_degrees": coastal_distance_degrees,
+        "coastal_cell_count": coastal_count,
+        "coastal_cell_fraction": round(coastal_count / total, 4),
         "metrics": {
             "accuracy": round(accuracy, 4),
             "precision": round(precision, 4),
@@ -177,6 +263,42 @@ def evaluate_predictions(
             "f1": round(f1, 4),
             "brier_score": round(brier_score, 4) if brier_score is not None else None,
             "log_loss": round(log_loss, 4) if log_loss is not None else None,
+            "area_weighted_accuracy": round(weighted_acc, 4),
+            "area_weighted_brier_score": round(weighted_brier, 4) if weighted_brier is not None else None,
+            "coastal_accuracy": round(coastal_acc, 4) if coastal_acc is not None else None,
+            "coastal_brier_score": round(coastal_brier, 4) if coastal_brier is not None else None,
+            "coastal_area_weighted_accuracy": round(coastal_weighted_acc, 4) if coastal_weighted_acc is not None else None,
+        },
+        "grid_metrics": {
+            "accuracy": round(accuracy, 4),
+            "precision": round(precision, 4),
+            "recall": round(recall, 4),
+            "f1": round(f1, 4),
+            "brier_score": round(brier_score, 4) if brier_score is not None else None,
+            "log_loss": round(log_loss, 4) if log_loss is not None else None,
+        },
+        "area_weighted_metrics": {
+            "accuracy": round(weighted_acc, 4),
+            "precision": round(weighted_prec, 4),
+            "recall": round(weighted_rec, 4),
+            "f1": round(weighted_f1, 4),
+            "brier_score": round(weighted_brier, 4) if weighted_brier is not None else None,
+            "log_loss": round(weighted_log_loss, 4) if weighted_log_loss is not None else None,
+        },
+        "coastal_metrics": {
+            "coastal_distance_threshold_deg": coastal_distance_degrees,
+            "coastal_cell_count": coastal_count,
+            "coastal_cell_fraction": round(coastal_count / total, 4),
+            "accuracy": round(coastal_acc, 4) if coastal_acc is not None else None,
+            "brier_score": round(coastal_brier, 4) if coastal_brier is not None else None,
+            "area_weighted_accuracy": round(coastal_weighted_acc, 4) if coastal_weighted_acc is not None else None,
+            "area_weighted_brier_score": round(coastal_weighted_brier, 4) if coastal_weighted_brier is not None else None,
+        },
+        "confusion_matrix": {
+            "true_positive_land": tp,
+            "true_negative_water": tn,
+            "false_positive_land": fp,
+            "false_negative_water": fn,
         },
         "calibration": calibration_curve,
         "most_confidently_wrong": confidently_wrong[:20],

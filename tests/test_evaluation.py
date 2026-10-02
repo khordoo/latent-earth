@@ -79,3 +79,40 @@ def test_evaluate_predictions_metrics(tmp_path: Path):
     render_error_map(preds, step_degrees=30.0, output_path=err_map, evaluator=evaluator, dpi=100)
     assert err_map.exists()
     assert err_map.stat().st_size > 1000
+
+
+def test_coastal_distance_and_metrics():
+    evaluator = GroundTruthEvaluator()
+
+    # Tokyo bay coastal point
+    dist_tokyo = evaluator.distance_to_coastline(lat=35.5, lon=139.8)
+    assert dist_tokyo < 0.5  # Very close to coastline
+    assert evaluator.is_coastal(lat=35.5, lon=139.8, threshold_degrees=1.0) is True
+
+    # Deep Pacific Ocean point
+    dist_pacific = evaluator.distance_to_coastline(lat=0.0, lon=-150.0)
+    assert dist_pacific > 10.0
+    assert evaluator.is_coastal(lat=0.0, lon=-150.0, threshold_degrees=1.0) is False
+
+    # Test predictions with coastal classification
+    preds = [
+        Prediction(
+            coordinate=Coordinate(35.5, 139.8),
+            probability_land=0.9,
+            is_land=True,
+            provider="test",
+        ),
+        Prediction(
+            coordinate=Coordinate(0.0, -150.0),
+            probability_land=0.02,
+            is_land=False,
+            provider="test",
+        ),
+    ]
+
+    results = evaluate_predictions(preds, evaluator=evaluator, coastal_distance_degrees=1.0)
+    assert results["coastal_cell_count"] == 1
+    assert results["coastal_cell_fraction"] == 0.5
+    assert results["coastal_metrics"]["accuracy"] == 1.0
+    assert "area_weighted_metrics" in results
+    assert results["area_weighted_metrics"]["accuracy"] == 1.0

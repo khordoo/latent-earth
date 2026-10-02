@@ -1,0 +1,18 @@
+{
+  "provider": "jev",
+  "model": "jev-latest",
+  "model_version": "jev-latest",
+  "region_name": "japan_korea",
+  "bounding_box": {
+    "lat_min": 24.0,
+    "lat_max": 46.0,
+    "lon_min": 122.0,
+    "lon_max": 146.0
+  },
+  "grid_resolution": 2.0,
+  "step_degrees": 2.0,
+  "query_count": 132,
+  "timestamp": "2026-10-02T13:00:26.414318+00:00",
+  "prompt_version": "land-water-v1",
+  "convention": "cell_center"
+}
