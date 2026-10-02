@@ -28,12 +28,12 @@ function getProbabilityColor(p: number | null): string {
 }
 
 function getUncertaintyColor(u: number): string {
-  if (u < 0.2) return '#4A355A'; // Muted plum / lavender-gray (certain)
-  if (u < 0.4) return '#7E22CE'; // Purple
-  if (u < 0.6) return '#A21CAF'; // Deep magenta / fuchsia
-  if (u < 0.75) return '#C026D3'; // Vibrant magenta
-  if (u < 0.9) return '#EA580C'; // Hot orange
-  return '#FDE047'; // Bright yellow (maximum ambiguity)
+  if (u < 0.2) return '#756A8A'; // Medium-light, muted lavender-gray (certain)
+  if (u < 0.4) return '#7B4FA3'; // Lavender-purple
+  if (u < 0.6) return '#A52AC7'; // Purple-magenta
+  if (u < 0.75) return '#D92DA5'; // Vibrant magenta
+  if (u < 0.9) return '#F97316'; // Bright orange
+  return '#FDE047'; // Bright electric yellow (maximum ambiguity)
 }
 
 function getBinaryColor(isLand: boolean): string {
@@ -230,7 +230,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
 
     // 3b. Render Queried Model Decision Grid Cells
     const activePoints = points.slice(0, visibleCount);
-
+    ctx.globalAlpha = 1.0;
 
     for (let i = 0; i < activePoints.length; i++) {
       const pt = activePoints[i];
