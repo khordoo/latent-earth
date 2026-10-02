@@ -6,7 +6,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -16,9 +16,25 @@ from latent_earth.models import RunManifest
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_OUTPUTS_DIR = Path("outputs")
-FRONTEND_DIST_DIR = Path("frontend/dist")
-LAND_GEOJSON_PATH = Path(__file__).parent / "data" / "ne_110m_land.geojson"
+
+def find_repo_root() -> Path:
+    """Find repository root containing outputs/ and frontend/dist/."""
+    here = Path(__file__).resolve()
+    for parent in [here.parent, here.parent.parent, here.parent.parent.parent]:
+        if (parent / "frontend" / "dist").exists() or (parent / "outputs").exists():
+            return parent
+    cwd = Path.cwd()
+    if (cwd / "frontend" / "dist").exists() or (cwd / "outputs").exists():
+        return cwd
+    if (cwd / "latent-earth" / "frontend" / "dist").exists():
+        return cwd / "latent-earth"
+    return here.parent.parent.parent
+
+
+REPO_ROOT = find_repo_root()
+DEFAULT_OUTPUTS_DIR = REPO_ROOT / "outputs"
+FRONTEND_DIST_DIR = REPO_ROOT / "frontend" / "dist"
+LAND_GEOJSON_PATH = Path(__file__).resolve().parent / "data" / "ne_110m_land.geojson"
 
 app = FastAPI(
     title="Latent Earth API",
@@ -54,7 +70,6 @@ async def list_runs() -> list[dict[str, Any]]:
         run_id = f.stem
         eval_file = DEFAULT_OUTPUTS_DIR / f"{run_id}_evaluation.json"
 
-        # Peek at first line to get metadata
         provider = "unknown"
         model = "unknown"
         prompt_version = "unknown"
@@ -127,7 +142,6 @@ async def get_run(run_id: str) -> dict[str, Any]:
     model = first_pred.model if first_pred else "unknown"
     prompt_version = first_pred.prompt_version if first_pred else "unknown"
 
-    # Infer step degrees from latitudes
     step = 4.0
     if len(preds) > 1:
         lats = sorted({round(p.coordinate.latitude, 6) for p in preds})
@@ -166,6 +180,31 @@ async def get_ground_truth_geojson():
     return FileResponse(LAND_GEOJSON_PATH, media_type="application/json")
 
 
-# Mount static frontend build if it exists
+# Direct route for root index.html
+@app.get("/")
+async def serve_root():
+    index_file = FRONTEND_DIST_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return JSONResponse({
+        "message": "Latent Earth API is running. Build frontend with 'cd frontend && npm run build'.",
+        "status": "ok",
+    })
+
+
+# Favicon handler
+@app.get("/favicon.ico")
+async def favicon():
+    fav_file = FRONTEND_DIST_DIR / "favicon.ico"
+    if fav_file.exists():
+        return FileResponse(fav_file)
+    return Response(status_code=204)
+
+
+# Mount static assets if dist exists
+if (FRONTEND_DIST_DIR / "assets").exists():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST_DIR / "assets")), name="assets")
+
+# Fallback mount for other static files
 if FRONTEND_DIST_DIR.exists():
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIST_DIR), html=True), name="frontend")
