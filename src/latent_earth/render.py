@@ -39,11 +39,11 @@ EARTH_CMAP = mcolors.LinearSegmentedColormap.from_list(
 
 
 UNCERTAINTY_CMAP = mcolors.LinearSegmentedColormap.from_list(
-    "uncertainty_glow",
+    "uncertainty_attention",
     [
-        (0.00, "#756A8A"),  # Certain: Medium-light muted lavender-gray
-        (0.20, "#7B4FA3"),  # Lavender-purple
-        (0.40, "#A52AC7"),  # Purple-magenta
+        (0.00, "#5A5A65"),  # Certain: Neutral medium gray (visually recedes)
+        (0.20, "#735682"),  # Gray-purple / muted purple
+        (0.40, "#9D34B5"),  # Muted purple
         (0.60, "#D92DA5"),  # Magenta
         (0.80, "#F97316"),  # Orange
         (1.00, "#FDE047"),  # Max uncertainty: Bright yellow

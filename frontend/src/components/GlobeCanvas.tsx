@@ -28,12 +28,12 @@ function getProbabilityColor(p: number | null): string {
 }
 
 function getUncertaintyColor(u: number): string {
-  if (u < 0.2) return '#756A8A'; // Medium-light, muted lavender-gray (certain)
-  if (u < 0.4) return '#7B4FA3'; // Lavender-purple
-  if (u < 0.6) return '#A52AC7'; // Purple-magenta
-  if (u < 0.75) return '#D92DA5'; // Vibrant magenta
-  if (u < 0.9) return '#F97316'; // Bright orange
-  return '#FDE047'; // Bright electric yellow (maximum ambiguity)
+  if (u < 0.2) return '#5A5A65'; // Neutral medium gray (certain, visually recedes)
+  if (u < 0.4) return '#735682'; // Gray-purple / muted purple
+  if (u < 0.6) return '#9D34B5'; // Muted purple
+  if (u < 0.75) return '#D92DA5'; // Magenta
+  if (u < 0.9) return '#F97316'; // Orange
+  return '#FDE047'; // Bright yellow (maximum ambiguity)
 }
 
 function getBinaryColor(isLand: boolean): string {
