@@ -25,17 +25,18 @@ ACCENT_BLUE = "#38BDF8"
 EARTH_CMAP = mcolors.LinearSegmentedColormap.from_list(
     "earth_latent",
     [
-        (0.00, "#030712"),  # Deep abyss
+        (0.00, "#040814"),  # Deep abyss
         (0.20, "#0C2340"),  # Open ocean
         (0.40, "#1D4ED8"),  # Coastal waters
         (0.50, "#06B6D4"),  # Shelf / Shoreline threshold
-        (0.60, "#FBBF24"),  # Coastal sands
-        (0.75, "#15803D"),  # Vegetated plains
-        (0.90, "#166534"),  # Forest highlands
-        (1.00, "#E2E8F0"),  # High alpine / continental heart
+        (0.60, "#D97706"),  # Coastal sands
+        (0.75, "#22C55E"),  # Vegetated plains
+        (0.90, "#16A34A"),  # Forest highlands
+        (1.00, "#14532D"),  # Dense continental heartland
     ],
     N=256,
 )
+
 
 UNCERTAINTY_CMAP = mcolors.LinearSegmentedColormap.from_list(
     "uncertainty_glow",

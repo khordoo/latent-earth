@@ -17,14 +17,14 @@ interface GlobeCanvasProps {
 // Color interpolation helpers
 function getProbabilityColor(p: number | null): string {
   if (p === null) return '#1E293B';
-  if (p < 0.2) return '#081225';
+  if (p < 0.2) return '#060E1E';
   if (p < 0.4) return '#1E3A8A';
   if (p < 0.5) return '#0284C7';
   if (p < 0.55) return '#06B6D4';
-  if (p < 0.65) return '#F59E0B';
-  if (p < 0.8) return '#16A34A';
-  if (p < 0.95) return '#15803D';
-  return '#F1F5F9';
+  if (p < 0.65) return '#D97706';
+  if (p < 0.8) return '#22C55E';
+  if (p < 0.92) return '#16A34A';
+  return '#14532D'; // Deep forest green for continental heartlands
 }
 
 function getUncertaintyColor(u: number): string {
@@ -37,8 +37,9 @@ function getUncertaintyColor(u: number): string {
 }
 
 function getBinaryColor(isLand: boolean): string {
-  return isLand ? '#F8FAFC' : '#0B132B';
+  return isLand ? '#10B981' : '#0B132B';
 }
+
 
 function getErrorColor(cat?: string): string {
   switch (cat) {

@@ -103,7 +103,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
             <div
               className="h-3 w-full rounded-md shadow-inner"
               style={{
-                background: 'linear-gradient(to right, #081225, #1E3A8A, #0284C7, #06B6D4, #F59E0B, #16A34A, #F1F5F9)',
+                background: 'linear-gradient(to right, #060E1E, #1E3A8A, #0284C7, #06B6D4, #D97706, #22C55E, #14532D)',
               }}
             />
             <div className="flex justify-between text-[10px] font-mono text-slate-400">
@@ -121,11 +121,12 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
               <span className="text-slate-400">Water (P &lt; 0.5)</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm bg-[#F8FAFC] border border-slate-400" />
-              <span className="text-slate-200">Land (P ≥ 0.5)</span>
+              <span className="w-3 h-3 rounded-sm bg-[#10B981]" />
+              <span className="text-emerald-300">Land (P ≥ 0.5)</span>
             </div>
           </div>
         )}
+
 
         {renderMode === 'uncertainty' && (
           <div className="flex flex-col gap-1">
