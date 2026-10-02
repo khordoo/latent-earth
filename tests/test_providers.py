@@ -160,3 +160,40 @@ async def test_openai_compatible_provider():
     assert pred.probability_land is not None
     assert pred.probability_land > 0.9
     await provider.close()
+
+
+@pytest.mark.asyncio
+async def test_openrouter_d1_provider():
+    from latent_earth.providers.openrouter import OpenRouterD1Provider
+
+    coord = Coordinate(latitude=35.0, longitude=135.0)
+
+    async def mock_post(*args, **kwargs):
+        payload = kwargs.get("json", {})
+        assert "questions" in payload
+        assert payload["questions"]["is_land"]["type"] == "noul"
+        assert "criteria" in payload["questions"]["is_land"]
+        return httpx.Response(
+            200,
+            json={
+                "model": "liquid/d1-20260930",
+                "answers": {
+                    "is_land": {
+                        "type": "noul",
+                        "noul": 0.884,
+                    }
+                },
+                "usage": {"input_tokens": 60, "output_tokens": 1},
+            },
+        )
+
+    provider = OpenRouterD1Provider(api_key="sk-or-test-key")
+    with patch.object(httpx.AsyncClient, "post", side_effect=mock_post):
+        pred = await provider.predict_coordinate(coord)
+
+    assert pred.is_land is True
+    assert pred.probability_land == 0.884
+    assert pred.provider == "openrouter"
+    assert pred.model == "liquid/d1-20260930"
+    await provider.close()
+

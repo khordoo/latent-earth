@@ -34,6 +34,8 @@ class ProviderConfig:
 
         if self.name == "jev":
             return os.getenv("TYPESAFE_API_KEY") or os.getenv("JEV_API_KEY")
+        elif self.name in ("openrouter", "openrouter_d1", "openrouterd1", "liquid"):
+            return os.getenv("OPENROUTER_API_KEY")
         elif self.name == "openai_compatible":
             return os.getenv("OPENAI_API_KEY")
         return None

@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "region": "japan_korea",
+    "resolution_degrees": 0.5,
+    "total_points": 2112,
+    "coastal_threshold_km": 100.0,
+    "ground_truth": "Natural Earth 1:10m Land"
+  },
+  "metrics_comparison": {
+    "jev": {
+      "model": "jev-latest",
+      "grid_accuracy": 0.3253,
+      "area_weighted_accuracy": 0.3133,
+      "grid_brier": 0.3562,
+      "area_weighted_brier": 0.3603,
+      "coastal_accuracy": 0.334,
+      "coastal_brier": 0.3649,
+      "land_precision": 0.2555,
+      "land_recall": 1.0,
+      "confusion_matrix": {
+        "true_positive_land": 489,
+        "true_negative_water": 198,
+        "false_positive_land": 1425,
+        "false_negative_water": 0
+      }
+    },
+    "liquid_d1": {
+      "model": "liquid/d1",
+      "grid_accuracy": 0.34,
+      "area_weighted_accuracy": 0.3298,
+      "grid_brier": 0.4166,
+      "area_weighted_brier": 0.4189,
+      "coastal_accuracy": 0.3482,
+      "coastal_brier": 0.4421,
+      "land_precision": 0.2594,
+      "land_recall": 0.998,
+      "confusion_matrix": {
+        "true_positive_land": 488,
+        "true_negative_water": 230,
+        "false_positive_land": 1393,
+        "false_negative_water": 1
+      }
+    }
+  },
+  "disagreement_matrix": {
+    "counts": {
+      "both_correct": 603,
+      "both_wrong": 1310,
+      "jev_correct_d1_wrong": 84,
+      "d1_correct_jev_wrong": 115
+    },
+    "percentages": {
+      "both_correct": 28.55,
+      "both_wrong": 62.03,
+      "jev_correct_d1_wrong": 3.98,
+      "d1_correct_jev_wrong": 5.45
+    }
+  },
+  "sea_of_japan_inspection": {
+    "bounding_box": {
+      "lat_min": 35.0,
+      "lat_max": 43.0,
+      "lon_min": 130.0,
+      "lon_max": 138.0
+    },
+    "total_ground_truth_water_points": 226,
+    "jev_correct_water_count": 6,
+    "jev_correct_water_percentage": 2.65,
+    "jev_false_land_count": 220,
+    "liquid_d1_correct_water_count": 0,
+    "liquid_d1_correct_water_percentage": 0.0,
+    "liquid_d1_false_land_count": 226
+  }
+}
