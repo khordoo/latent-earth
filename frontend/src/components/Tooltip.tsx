@@ -1,89 +1,155 @@
 import React from 'react';
 import { PredictionPoint } from '../types';
-import { Compass, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 
 interface TooltipProps {
   point: PredictionPoint | null;
   mousePos: { x: number; y: number } | null;
 }
 
+function formatCoordinate(lat: number, lon: number): string {
+  const latDir = lat >= 0 ? 'N' : 'S';
+  const lonDir = lon >= 0 ? 'E' : 'W';
+  const absLat = Math.abs(lat);
+  const absLon = Math.abs(lon);
+  const latStr = Number.isInteger(absLat) ? absLat.toString() : absLat.toFixed(1);
+  const lonStr = Number.isInteger(absLon) ? absLon.toString() : absLon.toFixed(1);
+  return `${latStr}° ${latDir}, ${lonStr}° ${lonDir}`;
+}
+
+function getRawAnswerString(point: PredictionPoint): string {
+  const raw = point.raw_response;
+  if (!raw) {
+    if (point.probability_land !== null && point.probability_land !== undefined) {
+      return point.probability_land.toFixed(2);
+    }
+    return 'N/A';
+  }
+  // TypeSafe Jev structure: raw.answers.is_land.noul
+  if (raw.answers?.is_land?.noul !== undefined) {
+    return String(raw.answers.is_land.noul);
+  }
+  if (typeof raw === 'number' || typeof raw === 'string') {
+    return String(raw);
+  }
+  if (raw.decision !== undefined) {
+    return String(raw.decision);
+  }
+  if (raw.text !== undefined) {
+    return String(raw.text);
+  }
+  if (raw.choices?.[0]?.message?.content) {
+    return String(raw.choices[0].message.content).trim();
+  }
+  if (point.probability_land !== null && point.probability_land !== undefined) {
+    return point.probability_land.toFixed(2);
+  }
+  return JSON.stringify(raw);
+}
+
 export const Tooltip: React.FC<TooltipProps> = ({ point, mousePos }) => {
   if (!point || !mousePos) return null;
 
-  const pLand = point.probability_land !== null ? (point.probability_land * 100).toFixed(1) : 'N/A';
+  const coordStr = formatCoordinate(point.latitude, point.longitude);
+  const pLand =
+    point.probability_land !== null && point.probability_land !== undefined
+      ? point.probability_land.toFixed(2)
+      : 'N/A';
+  const predictionStr = point.is_land ? 'LAND' : 'WATER';
+  const groundTruthStr =
+    point.actual_land !== undefined && point.actual_land !== null
+      ? point.actual_land
+        ? 'LAND'
+        : 'WATER'
+      : 'N/A';
+  const isCorrect =
+    point.actual_land !== undefined && point.actual_land !== null
+      ? point.is_land === point.actual_land
+      : null;
+  const uncertaintyStr = point.uncertainty.toFixed(2);
+  const rawResponseStr = getRawAnswerString(point);
 
   return (
     <div
-      className="fixed pointer-events-none z-50 glass-panel p-3 rounded-xl border border-cyan-500/40 shadow-2xl flex flex-col gap-1.5 w-60 text-xs"
+      className="fixed pointer-events-none z-50 p-3.5 rounded-xl border border-cyan-500/40 shadow-2xl flex flex-col gap-2.5 w-64 bg-[#090F1E]/95 backdrop-blur-md text-xs font-mono"
       style={{
-        left: Math.min(window.innerWidth - 260, mousePos.x + 15),
-        top: Math.min(window.innerHeight - 200, mousePos.y + 15),
+        left: Math.min(window.innerWidth - 280, mousePos.x + 16),
+        top: Math.min(window.innerHeight - 240, mousePos.y + 16),
       }}
     >
-      <div className="flex items-center justify-between border-b border-slate-700/60 pb-1.5">
-        <span className="font-mono text-cyan-300 font-bold flex items-center gap-1">
-          <Compass className="w-3.5 h-3.5 text-cyan-400" />
-          {point.cardinal}
+      {/* Coordinate Header */}
+      <div className="flex items-center justify-between border-b border-slate-700/80 pb-2">
+        <span className="font-bold text-cyan-300 text-sm tracking-wide">
+          {coordStr}
         </span>
-        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-          point.is_land ? 'bg-emerald-500/20 text-emerald-300' : 'bg-blue-500/20 text-blue-300'
-        }`}>
-          {point.is_land ? 'LAND' : 'WATER'}
+        <span
+          className={`text-[10px] font-bold px-2 py-0.5 rounded font-sans uppercase tracking-wider ${
+            point.is_land
+              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+              : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+          }`}
+        >
+          {predictionStr}
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-1.5 text-[11px] pt-1">
-        <div className="flex flex-col">
-          <span className="text-[10px] text-slate-400">P(Land)</span>
-          <span className="font-mono font-bold text-slate-100">{pLand}%</span>
+      {/* Structured Key-Value Inspection Table */}
+      <div className="flex flex-col gap-1.5 text-xs">
+        <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+          <span className="text-slate-400">P(land)</span>
+          <span className="font-bold text-slate-100">{pLand}</span>
         </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] text-slate-400">Uncertainty</span>
-          <span className="font-mono font-bold text-slate-100">{(point.uncertainty * 100).toFixed(1)}%</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] text-slate-400">Latitude</span>
-          <span className="font-mono text-slate-300">{point.latitude.toFixed(3)}°</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] text-slate-400">Longitude</span>
-          <span className="font-mono text-slate-300">{point.longitude.toFixed(3)}°</span>
-        </div>
-      </div>
 
-      {point.actual_land !== undefined && (
-        <div className="border-t border-slate-700/60 pt-1.5 flex items-center justify-between text-[11px]">
-          <span className="text-slate-400">Ground Truth:</span>
-          <span className="font-semibold text-slate-200">
-            {point.actual_land ? 'Actual Land' : 'Actual Water'}
+        <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+          <span className="text-slate-400">Prediction</span>
+          <span className={`font-bold ${point.is_land ? 'text-emerald-400' : 'text-blue-400'}`}>
+            {predictionStr}
           </span>
         </div>
-      )}
 
-      {point.error_category && (
-        <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider">
-          {point.error_category === 'correct_land' && (
-            <span className="text-emerald-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" /> Correct Land (TP)
+        <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+          <span className="text-slate-400">Ground truth</span>
+          <span
+            className={`font-bold ${
+              point.actual_land === true
+                ? 'text-emerald-300'
+                : point.actual_land === false
+                ? 'text-blue-300'
+                : 'text-slate-500'
+            }`}
+          >
+            {groundTruthStr}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+          <span className="text-slate-400">Correct</span>
+          {isCorrect === true && (
+            <span className="text-emerald-400 font-bold flex items-center gap-1">
+              ✓ <span className="text-[10px] text-emerald-400/80 font-sans font-normal">({point.is_land ? 'TP' : 'TN'})</span>
             </span>
           )}
-          {point.error_category === 'correct_water' && (
-            <span className="text-blue-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" /> Correct Water (TN)
+          {isCorrect === false && (
+            <span className="text-red-400 font-bold flex items-center gap-1">
+              ✗ <span className="text-[10px] text-red-400/80 font-sans font-normal">({point.is_land ? 'False Land' : 'False Water'})</span>
             </span>
           )}
-          {point.error_category === 'false_land' && (
-            <span className="text-red-400 flex items-center gap-1">
-              <XCircle className="w-3 h-3" /> False Land (FP)
-            </span>
-          )}
-          {point.error_category === 'false_water' && (
-            <span className="text-amber-400 flex items-center gap-1">
-              <AlertCircle className="w-3 h-3" /> False Water (FN)
-            </span>
+          {isCorrect === null && (
+            <span className="text-slate-500">N/A</span>
           )}
         </div>
-      )}
+
+        <div className="flex justify-between items-center py-0.5 border-b border-slate-800/60">
+          <span className="text-slate-400">Uncertainty</span>
+          <span className="font-bold text-amber-300">{uncertaintyStr}</span>
+        </div>
+
+        {rawResponseStr && (
+          <div className="flex justify-between items-center pt-0.5">
+            <span className="text-slate-400">Raw response</span>
+            <span className="text-cyan-300 font-bold">{rawResponseStr}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

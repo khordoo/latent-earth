@@ -65,8 +65,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [rotation, setRotation] = useState<[number, number]>([-10, -20]);
   const [zoomScale, setZoomScale] = useState<number>(320);
+  const [hoveredCell, setHoveredCell] = useState<PredictionPoint | null>(null);
   const isDraggingRef = useRef(false);
   const lastMousePosRef = useRef<[number, number]>([0, 0]);
+
 
   // Handle Dragging
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -247,7 +249,28 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     }
 
 
-    // 5. Pulsing marker for latest active sampling point
+    // 5. Highlight hovered cell outline for tactile inspection
+    if (hoveredCell) {
+      const hLat = hoveredCell.latitude;
+      const hLon = hoveredCell.longitude;
+      const highlightPoly = {
+        type: 'Polygon',
+        coordinates: [[
+          [hLon - halfStep, hLat + halfStep],
+          [hLon + halfStep, hLat + halfStep],
+          [hLon + halfStep, hLat - halfStep],
+          [hLon - halfStep, hLat - halfStep],
+          [hLon - halfStep, hLat + halfStep],
+        ]],
+      };
+      ctx.beginPath();
+      path(highlightPoly as any);
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2.0;
+      ctx.stroke();
+    }
+
+    // 6. Pulsing marker for latest active sampling point
     if (activePoints.length > 0 && visibleCount < points.length) {
       const latest = activePoints[activePoints.length - 1];
       const screenCoord = projection([latest.longitude, latest.latitude]);
@@ -274,7 +297,9 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     zoomScale,
     showCoastlineOverlay,
     coastlineGeoJson,
+    hoveredCell,
   ]);
+
 
   // Hover detection
   const checkHover = useCallback((mouseX: number, mouseY: number, clientX: number, clientY: number) => {
@@ -331,8 +356,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     }
 
     if (matched) {
+      setHoveredCell(matched);
       onHoverPoint(matched, { x: clientX, y: clientY });
     } else {
+      setHoveredCell(null);
       onHoverPoint(null, null);
     }
   }, [points, visibleCount, stepDegrees, projectionType, zoomScale, rotation, onHoverPoint]);
@@ -356,9 +383,14 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseLeave={() => {
+        isDraggingRef.current = false;
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+      }}
       onWheel={handleWheel}
       className="w-full h-full block cursor-grab active:cursor-grabbing"
     />
   );
 };
+

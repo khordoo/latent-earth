@@ -12,7 +12,9 @@ export interface PredictionPoint {
   error_category?: 'correct_land' | 'correct_water' | 'false_land' | 'false_water';
   provider: string;
   model: string;
+  raw_response?: any;
 }
+
 
 export interface EvaluationMetrics {
   accuracy: number;
