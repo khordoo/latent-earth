@@ -78,54 +78,54 @@
     "fastino_glide": {
       "model": "fastino/glide",
       "total_points": 512,
-      "grid_accuracy": 0.9395,
-      "area_weighted_accuracy": 0.9416,
-      "grid_brier": 0.0847,
-      "area_weighted_brier": 0.0835,
-      "coastal_accuracy": 0.8833,
-      "coastal_brier": 0.1179,
-      "land_precision": 0.8667,
-      "land_recall": 0.8739,
-      "f1": 0.8703,
-      "tp": 104,
-      "tn": 377,
-      "fp": 16,
-      "fn": 15,
+      "grid_accuracy": 0.8965,
+      "area_weighted_accuracy": 0.9016,
+      "grid_brier": 0.1216,
+      "area_weighted_brier": 0.1191,
+      "coastal_accuracy": 0.8,
+      "coastal_brier": 0.1658,
+      "land_precision": 0.7705,
+      "land_recall": 0.7899,
+      "f1": 0.7801,
+      "tp": 94,
+      "tn": 365,
+      "fp": 28,
+      "fn": 25,
       "confusion_matrix": {
-        "true_positive_land": 104,
-        "true_negative_water": 377,
-        "false_positive_land": 16,
-        "false_negative_water": 15
+        "true_positive_land": 94,
+        "true_negative_water": 365,
+        "false_positive_land": 28,
+        "false_negative_water": 25
       }
     }
   },
   "pairwise_disagreements": {
     "jev_vs_fastino_glide": {
       "counts": {
-        "both_correct": 155,
-        "both_wrong": 16,
-        "jev_correct_fastino_glide_wrong": 15,
-        "fastino_glide_correct_jev_wrong": 326
+        "both_correct": 145,
+        "both_wrong": 28,
+        "jev_correct_fastino_glide_wrong": 25,
+        "fastino_glide_correct_jev_wrong": 314
       },
       "percentages": {
-        "both_correct": 30.27,
-        "both_wrong": 3.12,
-        "jev_correct_fastino_glide_wrong": 2.93,
-        "fastino_glide_correct_jev_wrong": 63.67
+        "both_correct": 28.32,
+        "both_wrong": 5.47,
+        "jev_correct_fastino_glide_wrong": 4.88,
+        "fastino_glide_correct_jev_wrong": 61.33
       }
     },
     "liquid_d1_vs_fastino_glide": {
       "counts": {
-        "both_correct": 160,
-        "both_wrong": 16,
-        "liquid_d1_correct_fastino_glide_wrong": 15,
-        "fastino_glide_correct_liquid_d1_wrong": 321
+        "both_correct": 150,
+        "both_wrong": 28,
+        "liquid_d1_correct_fastino_glide_wrong": 25,
+        "fastino_glide_correct_liquid_d1_wrong": 309
       },
       "percentages": {
-        "both_correct": 31.25,
-        "both_wrong": 3.12,
-        "liquid_d1_correct_fastino_glide_wrong": 2.93,
-        "fastino_glide_correct_liquid_d1_wrong": 62.7
+        "both_correct": 29.3,
+        "both_wrong": 5.47,
+        "liquid_d1_correct_fastino_glide_wrong": 4.88,
+        "fastino_glide_correct_liquid_d1_wrong": 60.35
       }
     },
     "jev_vs_liquid_d1": {
@@ -165,15 +165,39 @@
       "fastino_glide": {
         "model": "fastino/glide",
         "total_soj_water_probes": 49,
-        "correct_water_count": 45,
-        "correct_water_pct": 91.84,
-        "false_land_count": 4,
-        "false_land_pct": 8.16
+        "correct_water_count": 42,
+        "correct_water_pct": 85.71,
+        "false_land_count": 7,
+        "false_land_pct": 14.29
       }
     }
   },
   "provider_performance": {
     "fastino_glide": {
+      "wall_clock_time_seconds": 415.56,
+      "queries_executed": 512,
+      "queries_cached": 0,
+      "total_benchmark_points": 512,
+      "retries_count": 0,
+      "failures_count": 0,
+      "latency_stats": {
+        "median_seconds": 0.8111,
+        "p90_seconds": 12.6199,
+        "p95_seconds": 12.9011,
+        "p99_seconds": 15.1351,
+        "min_seconds": 0.3666,
+        "max_seconds": 29.6756,
+        "sample_count": 512
+      },
+      "thinking_token_stats": {
+        "mean_tokens": 324.6,
+        "median_tokens": 1.0,
+        "p90_tokens": 1026.0,
+        "p95_tokens": 1026.0,
+        "sample_count": 512
+      }
+    },
+    "fastino_glide_before_gpu_fix": {
       "wall_clock_time_seconds": 41.96,
       "queries_executed": 37,
       "queries_cached": 475,

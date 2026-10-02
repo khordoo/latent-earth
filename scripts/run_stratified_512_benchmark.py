@@ -257,7 +257,11 @@ def render_stratified_figure(
     logger.info("Saved stratified benchmark figure to %s", out_path)
 
 
-def run_full_stratified_evaluation():
+def run_full_stratified_evaluation(fresh: bool = False):
+    import sys
+    if "--fresh" in sys.argv:
+        fresh = True
+
     outputs_dir = Path("outputs")
     coords_json_path = outputs_dir / "stratified_512_coordinates.json"
     with open(coords_json_path) as f:
@@ -280,29 +284,42 @@ def run_full_stratified_evaluation():
     jev_preds = PredictionCache(jev_512_path, strict_validation=False).load()
     d1_preds = PredictionCache(d1_512_path, strict_validation=False).load()
 
-    # Load any already-completed GLiDE predictions
+    # Load any already-completed GLiDE predictions (unless fresh run requested)
     cached_glide = {}
-    if glide_512_path.exists():
-        cached_glide.update(PredictionCache(glide_512_path, strict_validation=False).load())
-    if glide_full_path.exists():
-        full_cached = PredictionCache(glide_full_path, strict_validation=False).load()
-        for cid, pred in full_cached.items():
-            if cid in target_ids and cid not in cached_glide:
-                cached_glide[cid] = pred
-                # Write to stratified file
-                with open(glide_512_path, "a", encoding="utf-8") as f:
-                    f.write(json.dumps(pred.to_dict()) + "\n")
+    if fresh:
+        logger.info("FRESH RUN REQUESTED: Bypassing local caches. Clearing %s.", glide_512_path)
+        if glide_512_path.exists():
+            # Ensure before-fix backup exists
+            backup_path = outputs_dir / "fastino_glide_japan_korea_stratified_512_before_gpu_fix.jsonl"
+            if not backup_path.exists():
+                import shutil
+                shutil.copy(glide_512_path, backup_path)
+            # Empty out stratified file for clean re-write
+            with open(glide_512_path, "w", encoding="utf-8") as f:
+                pass
+    else:
+        if glide_512_path.exists():
+            cached_glide.update(PredictionCache(glide_512_path, strict_validation=False).load())
+        if glide_full_path.exists():
+            full_cached = PredictionCache(glide_full_path, strict_validation=False).load()
+            for cid, pred in full_cached.items():
+                if cid in target_ids and cid not in cached_glide:
+                    cached_glide[cid] = pred
+                    # Write to stratified file
+                    with open(glide_512_path, "a", encoding="utf-8") as f:
+                        f.write(json.dumps(pred.to_dict()) + "\n")
 
     logger.info("GLiDE initially cached for 512 subset: %d / 512", len(cached_glide))
 
-    # Run remaining GLiDE queries
+    # Run remaining GLiDE queries with concurrency 16
+    concurrency = 16 if fresh else 12
     glide_preds, perf_stats = asyncio.run(
         execute_glide_queries(
             target_coords=target_coords,
             cached_preds=cached_glide,
             stratified_output_path=glide_512_path,
             full_cache_output_path=glide_full_path,
-            concurrency=12,
+            concurrency=concurrency,
             timeout_seconds=90.0,
         )
     )
@@ -381,6 +398,16 @@ def run_full_stratified_evaluation():
             "false_land_pct": round(false_land / len(soj_ids) * 100.0, 2) if soj_ids else 0,
         }
 
+    before_file = outputs_dir / "three_models_stratified_512_comparison_before_gpu_fix.json"
+    before_stats = None
+    if before_file.exists():
+        try:
+            with open(before_file) as f_b:
+                before_data = json.load(f_b)
+                before_stats = before_data.get("provider_performance", {}).get("fastino_glide")
+        except Exception:
+            pass
+
     results = {
         "benchmark": "512-point stratified benchmark",
         "parent_benchmark": "Japan/Korea 0.5-degree frozen benchmark (2,112 coordinates)",
@@ -397,6 +424,7 @@ def run_full_stratified_evaluation():
         },
         "provider_performance": {
             "fastino_glide": perf_stats,
+            "fastino_glide_before_gpu_fix": before_stats,
         },
     }
 
