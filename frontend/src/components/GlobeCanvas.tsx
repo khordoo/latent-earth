@@ -386,6 +386,24 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         .rotate([rotation[0], 0, 0]);
     }
 
+    if (projectionType !== 'orthographic') {
+      // 3. In flat 2D maps (equirectangular and mercator), strictly check if mouse
+      // is outside the left or right edges of the drawn map rectangle:
+      const mapHalfWidth = Math.PI * currentScale;
+      const xMin = width / 2 - mapHalfWidth;
+      const xMax = width / 2 + mapHalfWidth;
+
+      const mapHalfHeight = (projectionType === 'equirectangular' ? Math.PI / 2 : Math.PI) * currentScale;
+      const yMin = height / 2 - mapHalfHeight;
+      const yMax = height / 2 + mapHalfHeight;
+
+      if (mouseX < xMin || mouseX > xMax || mouseY < yMin || mouseY > yMax) {
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
+    }
+
     const inverted = projection.invert?.([mouseX, mouseY]);
     if (!inverted || isNaN(inverted[0]) || isNaN(inverted[1])) {
       setHoveredCell(null);
@@ -393,15 +411,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       return;
     }
 
-    // 3. In flat 2D maps (equirectangular and mercator), verify that the mouse is
-    // within the drawn map boundaries (not wrapped far to the left, right, top, or bottom):
     if (projectionType !== 'orthographic') {
-      const reprojected = projection(inverted);
-      if (!reprojected || Math.hypot(reprojected[0] - mouseX, reprojected[1] - mouseY) > 8) {
-        setHoveredCell(null);
-        onHoverPoint(null, null);
-        return;
-      }
       if (inverted[1] < -85 || inverted[1] > 85) {
         setHoveredCell(null);
         onHoverPoint(null, null);
@@ -420,8 +430,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     for (let i = 0; i < activePoints.length; i++) {
       const pt = activePoints[i];
       const dLat = Math.abs(pt.latitude - lat);
-      const dLon = Math.abs(pt.longitude - lon);
-      if (dLat <= halfStep && (dLon <= halfStep || Math.abs(dLon - 360) <= halfStep)) {
+      let dLon = Math.abs(pt.longitude - lon);
+      if (dLon > 180) dLon = 360 - dLon;
+
+      if (dLat <= halfStep && dLon <= halfStep) {
         const dist = dLat * dLat + dLon * dLon;
         if (dist < minDistance) {
           minDistance = dist;
