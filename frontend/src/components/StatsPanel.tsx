@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, BarChart2, Compass, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Activity, BarChart2, Compass, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { RunData, RenderMode, RunSummary } from '../types';
 
 interface StatsPanelProps {
@@ -20,6 +20,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
   const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
     return typeof window !== 'undefined' ? window.innerWidth < 1280 : false;
   });
+  const [isRegionalExpanded, setIsRegionalExpanded] = useState<boolean>(false);
 
   if (!runData) return null;
 
@@ -104,40 +105,63 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
         </div>
       </div>
 
-      {/* Regional Resolution Switcher (Fast comparison across 2°, 1°, 0.5°) */}
+      {/* Regional Resolution Switcher (Collapsible Accordion, collapsed by default) */}
       {regionalRuns.length > 0 && (
-        <div className="bg-[#070B14]/80 p-2.5 rounded-xl border border-cyan-500/30 flex flex-col gap-1.5 shadow-inner">
-          <div className="flex items-center justify-between text-[11px] font-bold text-cyan-400">
+        <div className="bg-[#070B14]/80 rounded-xl border border-cyan-500/30 overflow-hidden shadow-inner transition-all">
+          <button
+            type="button"
+            onClick={() => setIsRegionalExpanded(!isRegionalExpanded)}
+            className="w-full p-2.5 flex items-center justify-between text-[11px] font-bold text-cyan-400 hover:bg-cyan-500/10 transition-colors text-left"
+            title="Click to toggle regional resolution comparison options"
+          >
             <span className="flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-cyan-400" />
               Regional Resolution Comparison
             </span>
-            <span className="text-[10px] font-mono text-slate-400">Japan + Korea</span>
-          </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-mono text-slate-400">
+                {isRegionalExpanded ? 'Japan + Korea' : `${runData.step_degrees ?? 0.5}°`}
+              </span>
+              {isRegionalExpanded ? (
+                <ChevronUp className="w-3.5 h-3.5 text-cyan-400" />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              )}
+            </div>
+          </button>
 
-          <div className="grid grid-cols-3 gap-1.5">
-            {regionalRuns.map((r) => {
-              const isSelected = r.run_id === selectedRunId;
-              const stepLabel = `${r.step_degrees ?? 2}°`;
-              return (
-                <button
-                  key={r.run_id}
-                  onClick={() => onSelectRun(r.run_id)}
-                  className={`px-2 py-1.5 rounded-lg text-xs font-bold transition-all text-center flex flex-col items-center justify-center ${
-                    isSelected
-                      ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30 font-extrabold'
-                      : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/60'
-                  }`}
-                  title={`Switch to ${stepLabel} resolution`}
-                >
-                  <span className="font-mono text-sm leading-tight">{stepLabel}</span>
-                  <span className="text-[9px] opacity-80 font-normal">
-                    {r.point_count.toLocaleString()} pts
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          {isRegionalExpanded && (
+            <div className="p-2.5 pt-0 border-t border-cyan-500/20 mt-1">
+              <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1.5 font-mono">
+                <span>Select Resolution</span>
+                <span>Japan & Korea</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {regionalRuns.map((r) => {
+                  const isSelected = r.run_id === selectedRunId;
+                  const stepLabel = `${r.step_degrees ?? 2}°`;
+                  return (
+                    <button
+                      type="button"
+                      key={r.run_id}
+                      onClick={() => onSelectRun(r.run_id)}
+                      className={`px-2 py-1.5 rounded-lg text-xs font-bold transition-all text-center flex flex-col items-center justify-center ${
+                        isSelected
+                          ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30 font-extrabold'
+                          : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/60'
+                      }`}
+                      title={`Switch to ${stepLabel} resolution (${r.point_count.toLocaleString()} points)`}
+                    >
+                      <span className="font-mono text-sm leading-tight">{stepLabel}</span>
+                      <span className="text-[9px] opacity-80 font-normal">
+                        {r.point_count.toLocaleString()} pts
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
