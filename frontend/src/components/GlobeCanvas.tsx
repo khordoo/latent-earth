@@ -74,6 +74,8 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     isDraggingRef.current = true;
     lastMousePosRef.current = [e.clientX, e.clientY];
+    setHoveredCell(null);
+    onHoverPoint(null, null);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -98,10 +100,14 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         // Flat map horizontal pan
         setRotation(([lambda, phi]) => [(lambda + dx * 0.5) % 360, phi]);
       }
+
+      // Suppress hover tooltip while actively dragging
+      setHoveredCell(null);
+      onHoverPoint(null, null);
+      return;
     }
 
-    // Hover inspection
-    // We check in screen space or geo space
+    // Hover inspection only when NOT dragging
     checkHover(mouseX, mouseY, e.clientX, e.clientY);
   };
 
@@ -332,37 +338,75 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   ]);
 
 
-  // Hover detection
+  // Hover detection with strict spatial boundary checks
   const checkHover = useCallback((mouseX: number, mouseY: number, clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // 1. Suppress hover completely while dragging/panning
+    if (isDraggingRef.current) {
+      setHoveredCell(null);
+      onHoverPoint(null, null);
+      return;
+    }
+
     let projection: d3.GeoProjection;
+    let currentScale: number;
     const width = canvas.width;
     const height = canvas.height;
 
     if (projectionType === 'orthographic') {
+      // 2. In orthographic mode, check distance to globe center:
+      // If outside the globe sphere disk, immediately clear hover!
+      const dx = mouseX - width / 2;
+      const dy = mouseY - height / 2;
+      if (Math.hypot(dx, dy) > zoomScale) {
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
+
+      currentScale = zoomScale;
       projection = d3.geoOrthographic()
         .scale(zoomScale)
         .translate([width / 2, height / 2])
         .rotate([rotation[0], rotation[1], 0])
         .clipAngle(90);
     } else if (projectionType === 'equirectangular') {
+      currentScale = zoomScale * 0.8;
       projection = d3.geoEquirectangular()
-        .scale(zoomScale * 0.8)
+        .scale(currentScale)
         .translate([width / 2, height / 2])
         .rotate([rotation[0], 0, 0]);
     } else {
+      currentScale = zoomScale * 0.55;
       projection = d3.geoMercator()
-        .scale(zoomScale * 0.55)
+        .scale(currentScale)
         .translate([width / 2, height / 2])
         .rotate([rotation[0], 0, 0]);
     }
 
     const inverted = projection.invert?.([mouseX, mouseY]);
     if (!inverted || isNaN(inverted[0]) || isNaN(inverted[1])) {
+      setHoveredCell(null);
       onHoverPoint(null, null);
       return;
+    }
+
+    // 3. In flat 2D maps (equirectangular and mercator), verify that the mouse is
+    // within the drawn map boundaries (not wrapped far to the left, right, top, or bottom):
+    if (projectionType !== 'orthographic') {
+      const reprojected = projection(inverted);
+      if (!reprojected || Math.hypot(reprojected[0] - mouseX, reprojected[1] - mouseY) > 8) {
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
+      if (inverted[1] < -85 || inverted[1] > 85) {
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
     }
 
     const [lon, lat] = inverted;
@@ -387,6 +431,24 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     }
 
     if (matched) {
+      // 4. Verify candidate point's screen projection is visible and near the cursor
+      const screenCoord = projection([matched.longitude, matched.latitude]);
+      if (!screenCoord) {
+        // Point is clipped / occluded on back side of globe
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
+
+      // Max allowable screen distance between mouse and cell center
+      const cellRadiusPx = Math.max(8, Math.min(80, (stepDegrees * (Math.PI / 180)) * currentScale * 1.25));
+      const screenDist = Math.hypot(screenCoord[0] - mouseX, screenCoord[1] - mouseY);
+      if (screenDist > cellRadiusPx) {
+        setHoveredCell(null);
+        onHoverPoint(null, null);
+        return;
+      }
+
       setHoveredCell(matched);
       onHoverPoint(matched, { x: clientX, y: clientY });
     } else {
