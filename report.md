@@ -20,7 +20,7 @@ The leaderboard below ranks models by their **Efficiency-Adjusted Utility (Paret
 | 🥈 | **Perplexity Pplx-Decider v1.1** | 27B (Qwen3.8 Backbone) | **83.57%** | **79.09%** | **0.1146** | **71.46%** | **0.35 s** | **0.50 s** | **12.7 req/s** | **Pure Non-Autoregressive System-1** (Noul probability) |
 | 🥉 | **Cloudflare Clef** | 27B (Qwen3.8 Backbone) | **78.93%** | **75.50%** | **0.1387** | **65.49%** | **0.52 s** | **0.86 s** | **30.0 req/s** | **Cloudflare Workers AI Decision Model** (OpenRouter Decisions API) |
 | 4 | **GPT-6-Luna (Chat CoT)** | Frontier Reasoning API | **97.63%** | **96.67%** | **0.0196** | **95.34%** | **3.43 s** | **5.36 s** | 5.5 req/s | Autoregressive + CoT reasoning tokens |
-| 5 | **Fastino GLiDE** | Specialized Geo Model | **88.97%** | **85.25%** | **0.1247** | **79.55%** | **1.29 s** | **12.68 s** | 3.9 req/s | Hybrid (escalates to 1,026 thinking tokens on coasts) |
+| 5 | **Fastino GLiDE** | Adaptive Decision Engine (GLiDE) | **88.97%** | **85.25%** | **0.1247** | **79.55%** | **1.29 s** | **12.68 s** | 3.9 req/s | Hybrid (escalates to 1,026 thinking tokens on coasts) |
 | 6 | **Microsoft Decision-1** | 9B (Qwen3.5 Backbone) | 60.84% | 51.38% | 0.2414 | 58.60% | **0.42 s** | **0.80 s** | **20.8 req/s** | Pure Non-Autoregressive System-1 (Noul probability) |
 | 7 | **Google Gemma-4-31B** | 31B Dense Chat LLM | 79.73% | 68.45% | 0.2027 | 70.55% | 0.95 s | 4.60 s | 4.8 req/s | Autoregressive Chat (erased 70% of Japan) |
 | 8 | **Liquid D1** | Small Decision Model | 63.66% | 56.98% | 0.3120 | 57.40% | 0.85 s | 1.95 s | 5.2 req/s | OpenRouter Decisions API |
@@ -110,10 +110,11 @@ Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% contine
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | 🥇 | **OpenAI Decisions API** | **GPT-6-Luna-Decision** | **88.13%** | **92.01%** | **87.55%** | **0.0918** | **65.91%** | **0.31 s** | **0.45 s** | **85.8 req/s** | **3.15 min** |
 | 🥈 | **Perplexity Pplx-Decider v1.1** | 27B System-1 (Qwen3.8) | 81.67% | 86.30% | 81.17% | 0.1250 | 59.19% | 0.36 s | 0.53 s | 45.1 req/s | 5.99 min |
-| 🥉 | **Fastino GLiDE** | Specialized Geo Model | 85.15% | 88.50% | 81.65% | 0.1259 | 64.54% | 1.15 s | 11.85 s | 4.1 req/s | 65.8 min |
-| 4 | **JEV (jev-latest)** | Proprietary System-1 | 76.30% | 75.48% | 73.10% | 0.2310 | 58.20% | **0.21 s** | **0.42 s** | 16.5 req/s | 16.4 min |
-| 5 | **Microsoft Decision-1** | 9B System-1 (Qwen3.5) | 69.68% | 72.89% | 64.38% | 0.2171 | 53.69% | 0.48 s | 2.04 s | 12.1 req/s | 22.3 min |
-| 6 | **Liquid D1** | Neural Decision Arch | 63.66% | 66.09% | 62.40% | 0.3120 | 49.30% | 0.78 s | 1.82 s | 5.6 req/s | 48.2 min |
+| 🥉 | **Fastino GLiDE** | Adaptive Decision Engine | 85.15% | 88.50% | 81.65% | 0.1259 | 64.54% | 1.15 s | 11.85 s | 4.1 req/s | 65.8 min |
+| 4 | **Cloudflare Clef** | 27B System-1 (Qwen3.8) | 75.76% | 82.75% | 72.73% | 0.1585 | 56.84% | 0.56 s | 0.91 s | 42.3 req/s | 6.38 min |
+| 5 | **JEV (jev-latest)** | Proprietary System-1 | 76.30% | 75.48% | 73.10% | 0.2310 | 58.20% | **0.21 s** | **0.42 s** | 16.5 req/s | 16.4 min |
+| 6 | **Microsoft Decision-1** | 9B System-1 (Qwen3.5) | 69.68% | 72.89% | 64.38% | 0.2171 | 53.69% | 0.48 s | 2.04 s | 12.1 req/s | 22.3 min |
+| 7 | **Liquid D1** | Neural Decision Arch | 63.66% | 66.09% | 62.40% | 0.3120 | 49.30% | 0.78 s | 1.82 s | 5.6 req/s | 48.2 min |
 
 ### Key Planetary Findings:
 1. **OpenAI Decisions API Sweeps Every Frontier Metric:**
@@ -138,6 +139,7 @@ Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% contine
 | **OpenAI Decisions API** | **4,617** | 9,660 | 1,161 | **762** | 79.91% | **85.83%** | **0.828** |
 | **Fastino GLiDE** | 3,824 | **9,970** | **851** | 1,555 | **81.80%** | 71.10% | 0.761 |
 | **Perplexity Pplx-Decider** | 4,286 | 8,944 | 1,877 | 1,093 | 69.54% | 79.68% | 0.743 |
+| **Cloudflare Clef** | 3,428 | 8,845 | 1,976 | 1,951 | 63.43% | 63.73% | 0.636 |
 | **JEV (jev-latest)** | 4,120 | 8,241 | 2,580 | 1,259 | 61.50% | 76.60% | 0.682 |
 | **Liquid D1** | 4,510 | 5,803 | 5,018 | 869 | 47.30% | 83.80% | 0.605 |
 | **Microsoft Decision-1** | 2,609 | 8,654 | 2,135 | 2,765 | 55.00% | 48.55% | 0.516 |
@@ -149,8 +151,10 @@ Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% contine
 * **Interactive Web App:** [`http://localhost:8000`](http://localhost:8000) (Includes 🏆 Live Billboard tab, 100x playback speed, and smooth 2D/3D pan centering)
 * **OpenAI Decisions API Global 16,200 Evaluation:** [`openai_gpt-6-luna-decision_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openai_gpt-6-luna-decision_global_16200_evaluation.json)
 * **OpenAI Decisions API Japan & Korea 2,112 Evaluation:** [`openai_gpt-6-luna-decision_japan_korea_2112_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openai_gpt-6-luna-decision_japan_korea_2112_evaluation.json)
+* **Cloudflare Clef Global 16,200 Evaluation:** [`openrouter_cloudflare_clef_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_cloudflare_clef_global_16200_evaluation.json)
 * **Cloudflare Clef Japan & Korea 2,112 Evaluation:** [`openrouter_cloudflare_clef_japan_korea_2112_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_cloudflare_clef_japan_korea_2112_evaluation.json)
-* **Cloudflare Clef Map Visualization:** [`openrouter_cloudflare_clef_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_cloudflare_clef_japan_korea_2112_comparison.png)
+* **Cloudflare Clef Global 16,200 Map Visualization:** [`openrouter_cloudflare_clef_global_16200_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_cloudflare_clef_global_16200_comparison.png)
+* **Cloudflare Clef Regional Map Visualization:** [`openrouter_cloudflare_clef_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_cloudflare_clef_japan_korea_2112_comparison.png)
 * **Perplexity Global 16,200 Evaluation:** [`openrouter_perplexity_pplx-decider-v1.1-27b_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_perplexity_pplx-decider-v1.1-27b_global_16200_evaluation.json)
 * **Microsoft Decision-1 Global 16,200 Evaluation:** [`openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json)
 * **OpenAI Global 16,200 Map Visualization:** [`openai_gpt-6-luna-decision_global_16200_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openai_gpt-6-luna-decision_global_16200_comparison.png)

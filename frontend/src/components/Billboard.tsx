@@ -49,6 +49,7 @@ export const Billboard: React.FC<BillboardProps> = ({
   const [sortField, setSortField] = useState<SortField>('paretoRank');
   const [sortAscending, setSortAscending] = useState<boolean>(true);
   const [expandedModelId, setExpandedModelId] = useState<string | null>(null);
+  const [hoveredScatterModel, setHoveredScatterModel] = useState<BillboardModelEntry | null>(null);
 
   const currentDataset: BenchmarkDatasetInfo = useMemo(() => {
     return (
@@ -314,48 +315,137 @@ export const Billboard: React.FC<BillboardProps> = ({
                 const cy = 210 - normY * (210 - 25);
 
                 const isPplx = m.id.includes('pplx');
-                const isLuna = m.id.includes('luna');
+                const isLunaDecision = m.id.includes('decision') && (m.provider.toLowerCase().includes('openai') || m.id.includes('openai'));
+                const isLunaChat = m.id.includes('luna') && !isLunaDecision;
+                const isClef = m.id.includes('clef');
                 const isGlide = m.id.includes('glide');
                 const isMsft = m.id.includes('microsoft');
 
+                const isHovered = hoveredScatterModel?.id === m.id;
+
+                const dotColor = isLunaDecision
+                  ? '#06b6d4'
+                  : isLunaChat
+                  ? '#38bdf8'
+                  : isPplx
+                  ? '#10b981'
+                  : isClef
+                  ? '#f97316'
+                  : isGlide
+                  ? '#f43f5e'
+                  : isMsft
+                  ? '#f59e0b'
+                  : m.isParetoOptimal
+                  ? '#10b981'
+                  : '#64748b';
+
+                // Distinct short display name for each point
+                let shortLabel = m.name.split(' ')[0];
+                if (isLunaDecision) shortLabel = 'OpenAI Dec';
+                else if (isLunaChat) shortLabel = 'Luna (Chat)';
+                else if (isClef) shortLabel = 'Clef (27B)';
+                else if (isPplx) shortLabel = 'Pplx-Decider';
+                else if (isGlide) shortLabel = 'GLiDE';
+                else if (isMsft) shortLabel = 'MSFT Dec-1';
+                else if (m.id.includes('gemma')) shortLabel = 'Gemma-4';
+                else if (m.id.includes('liquid')) shortLabel = 'Liquid D1';
+                else if (m.id.includes('jev')) shortLabel = 'JEV';
+                else if (m.id.includes('julia')) shortLabel = 'Julia-1';
+                else if (m.id.includes('kev')) shortLabel = 'Kev-4B';
+                else if (m.id.includes('laya')) shortLabel = 'Laya';
+
                 return (
-                  <g key={m.id} className="cursor-pointer group">
+                  <g
+                    key={m.id}
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredScatterModel(m)}
+                    onMouseLeave={() => setHoveredScatterModel(null)}
+                    onClick={() => {
+                      if (onSelectModelForGlobe) onSelectModelForGlobe(m.runId);
+                      if (onSwitchToGlobe) onSwitchToGlobe();
+                    }}
+                  >
+                    {/* Generous hit-target circle prevents cursor boundary chatter */}
+                    <circle cx={cx} cy={cy} r={16} fill="transparent" />
+
+                    {/* Point Circle (radius changes cleanly without position displacement) */}
                     <circle
                       cx={cx}
                       cy={cy}
-                      r={m.isParetoOptimal ? 7 : 5}
-                      fill={
-                        isPplx
-                          ? '#10b981'
-                          : isLuna
-                          ? '#38bdf8'
-                          : isGlide
-                          ? '#f43f5e'
-                          : isMsft
-                          ? '#f59e0b'
-                          : m.isParetoOptimal
-                          ? '#10b981'
-                          : '#64748b'
-                      }
-                      stroke="#ffffff"
-                      strokeWidth={m.isParetoOptimal ? 2 : 1}
-                      className="transition-transform duration-200 group-hover:scale-125"
+                      r={isHovered ? (m.isParetoOptimal ? 9.5 : 7.5) : (m.isParetoOptimal ? 6.5 : 4.5)}
+                      fill={dotColor}
+                      stroke={isHovered ? '#ffffff' : '#ffffffbb'}
+                      strokeWidth={isHovered ? 2.5 : (m.isParetoOptimal ? 2 : 1)}
                     />
+
+                    {/* Distinct Label */}
                     <text
                       x={cx}
-                      y={cy - 10}
-                      fill={m.isParetoOptimal ? '#ffffff' : '#94a3b8'}
-                      fontSize="9"
-                      fontWeight={m.isParetoOptimal ? 'bold' : 'normal'}
+                      y={cy - (isHovered ? 13 : 9)}
+                      fill={isHovered ? '#38bdf8' : (m.isParetoOptimal ? '#ffffff' : '#94a3b8')}
+                      fontSize={isHovered ? '10' : '8.5'}
+                      fontWeight={isHovered || m.isParetoOptimal ? 'bold' : 'normal'}
                       textAnchor="middle"
-                      className="pointer-events-none drop-shadow"
+                      className="pointer-events-none select-none drop-shadow"
                     >
-                      {m.name.split(' ')[0]} ({m.balancedAccuracy.toFixed(0)}%)
+                      {shortLabel} ({m.balancedAccuracy.toFixed(0)}%)
                     </text>
                   </g>
                 );
               })}
             </svg>
+
+            {/* Rich Hover Floating Tooltip Overlay */}
+            {hoveredScatterModel && (
+              <div className="absolute top-3 right-3 z-20 px-3.5 py-2.5 rounded-xl border border-cyan-500/40 shadow-2xl bg-slate-950/95 text-xs backdrop-blur-md max-w-xs pointer-events-none transition-all">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="font-bold text-slate-100 truncate">{hoveredScatterModel.name}</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold ${
+                      hoveredScatterModel.isParetoOptimal
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    #{hoveredScatterModel.paretoRank}
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400 mb-2 truncate">
+                  {hoveredScatterModel.architecture}
+                </div>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1 font-mono text-[11px]">
+                  <div className="text-slate-400">
+                    Bal Acc:{' '}
+                    <span className="text-emerald-400 font-bold">
+                      {hoveredScatterModel.balancedAccuracy.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="text-slate-400">
+                    P90 Lat:{' '}
+                    <span className="text-cyan-300 font-bold">
+                      {hoveredScatterModel.p90LatencySeconds < 1
+                        ? `${(hoveredScatterModel.p90LatencySeconds * 1000).toFixed(0)}ms`
+                        : `${hoveredScatterModel.p90LatencySeconds.toFixed(2)}s`}
+                    </span>
+                  </div>
+                  <div className="text-slate-400">
+                    Throughput:{' '}
+                    <span className="text-slate-200 font-bold">
+                      {hoveredScatterModel.throughputReqPerSec.toFixed(1)} req/s
+                    </span>
+                  </div>
+                  <div className="text-slate-400">
+                    Brier:{' '}
+                    <span className="text-slate-200 font-bold">
+                      {hoveredScatterModel.brierScore.toFixed(4)}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-2 pt-1.5 border-t border-slate-800 text-[10px] text-cyan-400/80 font-medium">
+                  Click point to inspect on Globe 🌐
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

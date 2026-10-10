@@ -1,0 +1,70 @@
+{
+  "benchmark": "Global 16,200-Point Planetary Benchmark (2.0\u00b0)",
+  "provider": "openrouter",
+  "model": "cloudflare/clef",
+  "total_evaluated": 16200,
+  "balanced_accuracy": 0.7273,
+  "metrics": {
+    "accuracy": 0.7576,
+    "area_weighted_accuracy": 0.8275,
+    "brier_score": 0.1585,
+    "area_weighted_brier_score": 0.122,
+    "coastal_accuracy": 0.5684,
+    "coastal_brier_score": 0.2627,
+    "precision": 0.6343,
+    "recall": 0.6373,
+    "f1": 0.6358
+  },
+  "grid_metrics": {
+    "accuracy": 0.7576,
+    "precision": 0.6343,
+    "recall": 0.6373,
+    "f1": 0.6358,
+    "brier_score": 0.1585,
+    "log_loss": 0.4717,
+    "area_weighted_accuracy": 0.8275,
+    "area_weighted_brier_score": 0.122,
+    "coastal_accuracy": 0.5684,
+    "coastal_brier_score": 0.2627,
+    "coastal_area_weighted_accuracy": 0.6201
+  },
+  "area_weighted_metrics": {
+    "accuracy": 0.8275,
+    "precision": 0.7284,
+    "recall": 0.643,
+    "f1": 0.6831,
+    "brier_score": 0.122,
+    "log_loss": 0.3828
+  },
+  "coastal_metrics": {
+    "coastal_distance_threshold_km": 100.0,
+    "coastal_distance_threshold_deg": 0.901,
+    "coastal_cell_count": 2857,
+    "coastal_cell_fraction": 0.1764,
+    "accuracy": 0.5684,
+    "brier_score": 0.2627,
+    "area_weighted_accuracy": 0.6201,
+    "area_weighted_brier_score": 0.2356
+  },
+  "confusion_matrix": {
+    "true_positive_land": 3428,
+    "true_negative_water": 8845,
+    "false_positive_land": 1976,
+    "false_negative_water": 1951
+  },
+  "performance": {
+    "wall_clock_time_seconds": 383.05,
+    "queries_executed": 16200,
+    "queries_cached": 0,
+    "total_benchmark_points": 16200,
+    "effective_throughput_req_per_sec": 42.29,
+    "latency_stats": {
+      "median_seconds": 0.5602,
+      "p90_seconds": 0.9129,
+      "p95_seconds": 1.134,
+      "min_seconds": 0.1795,
+      "max_seconds": 3.9583,
+      "sample_count": 16200
+    }
+  }
+}
