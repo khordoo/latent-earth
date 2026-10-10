@@ -12,6 +12,7 @@ interface GlobeCanvasProps {
   showCoastlineOverlay: boolean;
   coastlineGeoJson: any | null;
   onHoverPoint: (point: PredictionPoint | null, mousePos: { x: number; y: number } | null) => void;
+  recenterTrigger?: number;
 }
 
 // Color interpolation helpers
@@ -61,14 +62,73 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   showCoastlineOverlay,
   coastlineGeoJson,
   onHoverPoint,
+  recenterTrigger,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [rotation, setRotation] = useState<[number, number]>([-10, -20]);
+  const [panOffset, setPanOffset] = useState<[number, number]>([0, 0]);
   const [zoomScale, setZoomScale] = useState<number>(320);
   const [hoveredCell, setHoveredCell] = useState<PredictionPoint | null>(null);
   const isDraggingRef = useRef(false);
   const lastMousePosRef = useRef<[number, number]>([0, 0]);
 
+  // Centroid computation for active points
+  const centroid = React.useMemo(() => {
+    if (!points || points.length === 0) return { lat: 0, lon: 0, isRegional: false };
+    let minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
+    const sampleLimit = Math.min(points.length, 1000);
+    for (let i = 0; i < sampleLimit; i++) {
+      const p = points[i];
+      if (p.latitude < minLat) minLat = p.latitude;
+      if (p.latitude > maxLat) maxLat = p.latitude;
+      if (p.longitude < minLon) minLon = p.longitude;
+      if (p.longitude > maxLon) maxLon = p.longitude;
+    }
+    const isRegional = (maxLat - minLat < 60) && (maxLon - minLon < 90);
+    return {
+      lat: (minLat + maxLat) / 2,
+      lon: (minLon + maxLon) / 2,
+      isRegional,
+    };
+  }, [points]);
+
+  const recenterView = useCallback(() => {
+    if (centroid.isRegional) {
+      // Regional dataset focus (e.g. Japan & Korea)
+      if (projectionType === 'orthographic') {
+        setRotation([-centroid.lon, -centroid.lat]);
+        setPanOffset([0, 0]);
+        setZoomScale(520);
+      } else {
+        setRotation([-centroid.lon, 0]);
+        const currentScale = (projectionType === 'equirectangular' ? 320 * 0.8 : 320 * 0.55);
+        const panY = centroid.lat * (currentScale * Math.PI / 180);
+        setPanOffset([0, panY]);
+        setZoomScale(450);
+      }
+    } else {
+      // Global Earth full planetary view
+      setRotation([-10, -20]);
+      setPanOffset([0, 0]);
+      setZoomScale(320);
+    }
+  }, [centroid, projectionType]);
+
+  // Recenter whenever recenterTrigger changes
+  useEffect(() => {
+    if (recenterTrigger !== undefined && recenterTrigger > 0) {
+      recenterView();
+    }
+  }, [recenterTrigger, recenterView]);
+
+  // Recenter automatically when switching datasets
+  const lastPointsLengthRef = useRef(points.length);
+  useEffect(() => {
+    if (points.length > 0 && points.length !== lastPointsLengthRef.current) {
+      lastPointsLengthRef.current = points.length;
+      recenterView();
+    }
+  }, [points.length, recenterView]);
 
   // Handle Dragging
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -91,14 +151,21 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       lastMousePosRef.current = [e.clientX, e.clientY];
 
       if (projectionType === 'orthographic') {
-        const sensitivity = 0.35;
-        setRotation(([lambda, phi]) => [
-          (lambda + dx * sensitivity) % 360,
-          Math.max(-85, Math.min(85, phi - dy * sensitivity)),
-        ]);
+        if (e.shiftKey || e.buttons === 2) {
+          // Shift+Drag or Right-Click Drag: Pan the globe across canvas
+          setPanOffset(([px, py]) => [px + dx, py + dy]);
+        } else {
+          // Left-Drag: Rotate the sphere (sensitivity scales with zoom level)
+          const sensitivity = 0.35 * Math.min(1.0, 320 / Math.max(150, zoomScale));
+          setRotation(([lambda, phi]) => [
+            (lambda + dx * sensitivity) % 360,
+            Math.max(-85, Math.min(85, phi - dy * sensitivity)),
+          ]);
+        }
       } else {
-        // Flat map horizontal pan
-        setRotation(([lambda, phi]) => [(lambda + dx * 0.5) % 360, phi]);
+        // Flat 2D maps (Equirectangular & Mercator):
+        // 2D Pan in BOTH X and Y directions, allowing users to drag down/up/left/right freely!
+        setPanOffset(([px, py]) => [px + dx, py + dy]);
       }
 
       // Suppress hover tooltip while actively dragging
@@ -118,7 +185,11 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setZoomScale((prev) => Math.max(120, Math.min(1800, prev * delta)));
+    setZoomScale((prev) => Math.max(120, Math.min(2400, prev * delta)));
+  };
+
+  const handleDoubleClick = () => {
+    recenterView();
   };
 
   // Idle rotation animation
@@ -146,23 +217,26 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     const height = canvas.height;
     ctx.clearRect(0, 0, width, height);
 
+    const centerX = width / 2 + panOffset[0];
+    const centerY = height / 2 + panOffset[1];
+
     // Setup projection
     let projection: d3.GeoProjection;
     if (projectionType === 'orthographic') {
       projection = d3.geoOrthographic()
         .scale(zoomScale)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], rotation[1], 0])
         .clipAngle(90);
     } else if (projectionType === 'equirectangular') {
       projection = d3.geoEquirectangular()
         .scale(zoomScale * 0.8)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], 0, 0]);
     } else {
       projection = d3.geoMercator()
         .scale(zoomScale * 0.55)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], 0, 0]);
     }
 
@@ -172,14 +246,14 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     if (projectionType === 'orthographic') {
       // Glow atmosphere
       const grad = ctx.createRadialGradient(
-        width / 2, height / 2, zoomScale * 0.95,
-        width / 2, height / 2, zoomScale * 1.08
+        centerX, centerY, zoomScale * 0.95,
+        centerX, centerY, zoomScale * 1.08
       );
       grad.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
       grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(width / 2, height / 2, zoomScale * 1.08, 0, 2 * Math.PI);
+      ctx.arc(centerX, centerY, zoomScale * 1.08, 0, 2 * Math.PI);
       ctx.fill();
 
       // Deep space sphere body
@@ -331,6 +405,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     renderMode,
     visibleCount,
     rotation,
+    panOffset,
     zoomScale,
     showCoastlineOverlay,
     coastlineGeoJson,
@@ -354,12 +429,14 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     let currentScale: number;
     const width = canvas.width;
     const height = canvas.height;
+    const centerX = width / 2 + panOffset[0];
+    const centerY = height / 2 + panOffset[1];
 
     if (projectionType === 'orthographic') {
       // 2. In orthographic mode, check distance to globe center:
       // If outside the globe sphere disk, immediately clear hover!
-      const dx = mouseX - width / 2;
-      const dy = mouseY - height / 2;
+      const dx = mouseX - centerX;
+      const dy = mouseY - centerY;
       if (Math.hypot(dx, dy) > zoomScale) {
         setHoveredCell(null);
         onHoverPoint(null, null);
@@ -369,20 +446,20 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       currentScale = zoomScale;
       projection = d3.geoOrthographic()
         .scale(zoomScale)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], rotation[1], 0])
         .clipAngle(90);
     } else if (projectionType === 'equirectangular') {
       currentScale = zoomScale * 0.8;
       projection = d3.geoEquirectangular()
         .scale(currentScale)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], 0, 0]);
     } else {
       currentScale = zoomScale * 0.55;
       projection = d3.geoMercator()
         .scale(currentScale)
-        .translate([width / 2, height / 2])
+        .translate([centerX, centerY])
         .rotate([rotation[0], 0, 0]);
     }
 
@@ -390,12 +467,12 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       // 3. In flat 2D maps (equirectangular and mercator), strictly check if mouse
       // is outside the left or right edges of the drawn map rectangle:
       const mapHalfWidth = Math.PI * currentScale;
-      const xMin = width / 2 - mapHalfWidth;
-      const xMax = width / 2 + mapHalfWidth;
+      const xMin = centerX - mapHalfWidth;
+      const xMax = centerX + mapHalfWidth;
 
       const mapHalfHeight = (projectionType === 'equirectangular' ? Math.PI / 2 : Math.PI) * currentScale;
-      const yMin = height / 2 - mapHalfHeight;
-      const yMax = height / 2 + mapHalfHeight;
+      const yMin = centerY - mapHalfHeight;
+      const yMax = centerY + mapHalfHeight;
 
       if (mouseX < xMin || mouseX > xMax || mouseY < yMin || mouseY > yMax) {
         setHoveredCell(null);
@@ -467,7 +544,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       setHoveredCell(null);
       onHoverPoint(null, null);
     }
-  }, [points, visibleCount, stepDegrees, projectionType, zoomScale, rotation, onHoverPoint]);
+  }, [points, visibleCount, stepDegrees, projectionType, zoomScale, rotation, panOffset, onHoverPoint]);
 
   // Resize canvas to match display size
   useEffect(() => {
@@ -494,6 +571,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         onHoverPoint(null, null);
       }}
       onWheel={handleWheel}
+      onDoubleClick={handleDoubleClick}
       className="w-full h-full block cursor-grab active:cursor-grabbing"
     />
   );

@@ -6,7 +6,7 @@ import { Tooltip } from './components/Tooltip';
 import { Billboard } from './components/Billboard';
 import { RunData, RunSummary, ProjectionType, RenderMode, PredictionPoint } from './types';
 import { Loader2, Globe, Trophy, Sparkles } from 'lucide-react';
-import { REGIONAL_JAPAN_KOREA_2112 } from './data/billboardData';
+import { REGIONAL_JAPAN_KOREA_2112, GLOBAL_EARTH_16200 } from './data/billboardData';
 
 export const App: React.FC = () => {
   // Navigation: 'globe' or 'billboard'
@@ -33,29 +33,56 @@ export const App: React.FC = () => {
   const [hoveredPoint, setHoveredPoint] = useState<PredictionPoint | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
 
+  // View recentering trigger
+  const [recenterTrigger, setRecenterTrigger] = useState<number>(0);
+
   // Fallback runs list for Vercel / static deployments
-  const fallbackRuns: RunSummary[] = REGIONAL_JAPAN_KOREA_2112.models.map((m) => ({
-    run_id: m.runId,
-    filename: `${m.runId}.jsonl`,
-    provider: m.provider,
-    model: m.name,
-    prompt_version: 'land-water-v1',
-    region_name: 'japan_korea',
-    step_degrees: 0.5,
-    point_count: 2112,
-    has_evaluation: true,
-    metrics: {
-      accuracy: m.gridAccuracy / 100,
-      precision: m.precision / 100,
-      recall: m.recall / 100,
-      f1: m.f1,
-      brier_score: m.brierScore,
-      area_weighted_accuracy: m.areaWeightedAccuracy / 100,
-      coastal_accuracy: m.coastalAccuracy / 100,
-    },
-    modified_time: Date.now(),
-    size_bytes: 1000000,
-  }));
+  const fallbackRuns: RunSummary[] = [
+    ...REGIONAL_JAPAN_KOREA_2112.models.map((m) => ({
+      run_id: m.runId,
+      filename: `${m.runId}.jsonl`,
+      provider: m.provider,
+      model: m.name,
+      prompt_version: 'land-water-v1',
+      region_name: 'japan_korea',
+      step_degrees: 0.5,
+      point_count: 2112,
+      has_evaluation: true,
+      metrics: {
+        accuracy: m.gridAccuracy / 100,
+        precision: m.precision / 100,
+        recall: m.recall / 100,
+        f1: m.f1,
+        brier_score: m.brierScore,
+        area_weighted_accuracy: m.areaWeightedAccuracy / 100,
+        coastal_accuracy: m.coastalAccuracy / 100,
+      },
+      modified_time: Date.now(),
+      size_bytes: 1000000,
+    })),
+    ...GLOBAL_EARTH_16200.models.map((m) => ({
+      run_id: m.runId,
+      filename: `${m.runId}.jsonl`,
+      provider: m.provider,
+      model: m.name,
+      prompt_version: 'land-water-v1',
+      region_name: 'global',
+      step_degrees: 2.0,
+      point_count: 16200,
+      has_evaluation: true,
+      metrics: {
+        accuracy: m.gridAccuracy / 100,
+        precision: m.precision / 100,
+        recall: m.recall / 100,
+        f1: m.f1,
+        brier_score: m.brierScore,
+        area_weighted_accuracy: m.areaWeightedAccuracy / 100,
+        coastal_accuracy: m.coastalAccuracy / 100,
+      },
+      modified_time: Date.now(),
+      size_bytes: 12000000,
+    })),
+  ];
 
   // Load runs list (tries local API first, falls back to static bundled runs for Vercel)
   useEffect(() => {
@@ -256,6 +283,7 @@ export const App: React.FC = () => {
                 autoRotate={autoRotate}
                 showCoastlineOverlay={showCoastlines}
                 coastlineGeoJson={coastlineGeoJson}
+                recenterTrigger={recenterTrigger}
                 onHoverPoint={(point, pos) => {
                   setHoveredPoint(point);
                   setMousePos(pos);
@@ -274,6 +302,7 @@ export const App: React.FC = () => {
                 onToggleAutoRotate={() => setAutoRotate(!autoRotate)}
                 showCoastlines={showCoastlines}
                 onToggleCoastlines={() => setShowCoastlines(!showCoastlines)}
+                onRecenterView={() => setRecenterTrigger((prev) => prev + 1)}
                 isPlaying={isPlaying}
                 onTogglePlay={handleTogglePlay}
                 visibleCount={visibleCount}

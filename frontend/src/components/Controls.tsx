@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward } from 'lucide-react';
+import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward, Crosshair } from 'lucide-react';
 import { ProjectionType, RenderMode } from '../types';
 
 interface ControlsProps {
@@ -11,6 +11,7 @@ interface ControlsProps {
   onToggleAutoRotate: () => void;
   showCoastlines: boolean;
   onToggleCoastlines: () => void;
+  onRecenterView: () => void;
   isPlaying: boolean;
   onTogglePlay: () => void;
   visibleCount: number;
@@ -29,6 +30,7 @@ export const Controls: React.FC<ControlsProps> = ({
   onToggleAutoRotate,
   showCoastlines,
   onToggleCoastlines,
+  onRecenterView,
   isPlaying,
   onTogglePlay,
   visibleCount,
@@ -129,6 +131,15 @@ export const Controls: React.FC<ControlsProps> = ({
           >
             <Layers className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Coastlines</span>
+          </button>
+
+          <button
+            onClick={onRecenterView}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border bg-slate-900/60 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40 hover:bg-slate-800/80 transition-all"
+            title="Center View on Dataset (Double-click canvas also recenters)"
+          >
+            <Crosshair className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="hidden sm:inline">Center</span>
           </button>
         </div>
       </div>

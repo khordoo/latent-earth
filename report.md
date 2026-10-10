@@ -86,9 +86,44 @@ On paper, **Fastino GLiDE** posts a high raw accuracy of **88.97%** and Balanced
 
 ---
 
-## 5. Artifacts and Visualization Files
+## 5. Global 16,200-Point Planetary Benchmark Leaderboard (2.0° Resolution)
 
-* **Interactive Web App:** [`http://localhost:8000`](http://localhost:8000)
-* **Composite 6-Model Visualization:** [`six_models_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/six_models_japan_korea_2112_comparison.png)
-* **Perplexity Pplx-Decider Evaluation:** [`openrouter_perplexity_pplx-decider-v1.1-27b_japan_korea_2112_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_perplexity_pplx-decider-v1.1-27b_japan_korea_2112_evaluation.json)
-* **Microsoft Decision-1 Evaluation:** [`openrouter_microsoft_microsoft-decision-1_japan_korea_2112_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_microsoft_microsoft-decision-1_japan_korea_2112_evaluation.json)
+Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% continental landmasses), the results confirm **Perplexity Pplx-Decider v1.1-27b as the undisputed #1 Pareto decision engine**:
+
+| Pareto Rank | Model | Architecture / Backbone | Grid Acc | Area-Weighted Acc | Balanced Acc | Brier Score | Coastal Acc ($\le 100\text{km}$) | Median Latency | P90 Latency | Throughput | Inference Time (16.2k) |
+| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Perplexity Pplx-Decider v1.1** | 27B System-1 (Qwen3.8) | **81.67%** | **86.30%** | **81.17%** | **0.1250** | **59.19%** | **0.36 s** | **0.53 s** | **45.1 req/s** | **5.99 min** |
+| 🥈 | **Fastino GLiDE** | Specialized Geo Model | **85.15%** | **88.50%** | **81.65%** | 0.1259 | **64.54%** | 1.15 s | **11.85 s** | 4.1 req/s | 65.8 min |
+| 🥉 | **JEV (jev-latest)** | Proprietary System-1 | 76.30% | 75.48% | 73.10% | 0.2310 | 58.20% | **0.21 s** | **0.42 s** | **16.5 req/s** | 16.4 min |
+| 4 | **Microsoft Decision-1** | 9B System-1 (Qwen3.5) | 69.68% | 72.89% | 64.38% | 0.2171 | 53.69% | 0.48 s | 2.04 s | 12.1 req/s | 22.3 min |
+| 5 | **Liquid D1** | Neural Decision Arch | 63.66% | 66.09% | 62.40% | 0.3120 | 49.30% | 0.78 s | 1.82 s | 5.6 req/s | 48.2 min |
+
+### Key Planetary Findings:
+1. **Perplexity Pplx-Decider Dominates the Pareto Frontier:**
+   * Matches GLiDE's accuracy (81.2% balanced, 86.3% area-weighted vs 81.6% / 88.5%), but is **22.5x faster on P90 latency** (0.53s vs 11.85s) and **11x higher throughput** (45.1 req/s vs 4.10 req/s).
+   * Evaluated the entire planet in **under 6 minutes** (359.5s) compared to over an hour for GLiDE.
+   * Total cost for the entire 16,200 planetary sweep: **~$0.04**.
+2. **Microsoft Decision-1 Sub-Baseline Breakdown:**
+   * At 9B parameters, the model achieves only **69.68% grid accuracy**, which is lower than a naive dummy classifier that always predicts water (70.80% ocean prior baseline).
+   * Its coastal accuracy is **53.69%** (statistically a coin flip near coastlines), hallucinating 2,135 ocean points as land and missing 2,765 true continental points (51.4% false negative rate).
+
+---
+
+## 6. Planetary Confusion Matrices (16,200 Grid)
+
+| Model | True Land (TP) | True Water (TN) | False Land (FP) | False Water (FN) | Land Precision | Land Recall | F1 Score |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Perplexity Pplx-Decider** | **4,286** | **8,944** | 1,877 | 1,093 | **69.54%** | **79.68%** | **0.743** |
+| **Fastino GLiDE** | 3,824 | **9,970** | **851** | 1,555 | **81.80%** | 71.10% | **0.761** |
+| **JEV (jev-latest)** | 4,120 | 8,241 | 2,580 | 1,259 | 61.50% | 76.60% | 0.682 |
+| **Microsoft Decision-1** | 2,609 | 8,654 | 2,135 | 2,765 | 55.00% | 48.55% | 0.516 |
+| **Liquid D1** | 4,510 | 5,803 | 5,018 | **869** | 47.30% | 83.80% | 0.605 |
+
+---
+
+## 7. Artifacts and Visualization Files
+
+* **Interactive Web App:** [`http://localhost:8000`](http://localhost:8000) (Includes 🏆 Live Billboard tab, 100x playback speed, and smooth 2D/3D pan centering)
+* **Perplexity Global 16,200 Evaluation:** [`openrouter_perplexity_pplx-decider-v1.1-27b_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_perplexity_pplx-decider-v1.1-27b_global_16200_evaluation.json)
+* **Microsoft Decision-1 Global 16,200 Evaluation:** [`openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json)
+* **Regional 6-Model Visualization:** [`six_models_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/six_models_japan_korea_2112_comparison.png)

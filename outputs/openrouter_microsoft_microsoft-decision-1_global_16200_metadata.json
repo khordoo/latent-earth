@@ -1,0 +1,11 @@
+{
+  "run_id": "openrouter_microsoft_microsoft-decision-1_global_16200",
+  "provider": "openrouter",
+  "model": "microsoft/microsoft-decision-1",
+  "prompt_version": "land-water-v1",
+  "region_name": "global",
+  "grid_resolution": 2.0,
+  "step_degrees": 2.0,
+  "point_count": 16163,
+  "wall_clock_seconds": 1335.67
+}
