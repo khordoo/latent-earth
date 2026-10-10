@@ -70,6 +70,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   const [zoomScale, setZoomScale] = useState<number>(320);
   const [hoveredCell, setHoveredCell] = useState<PredictionPoint | null>(null);
   const isDraggingRef = useRef(false);
+  const [isDraggingState, setIsDraggingState] = useState(false);
   const lastMousePosRef = useRef<[number, number]>([0, 0]);
 
   // Centroid computation for active points
@@ -132,20 +133,18 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
 
   // Handle Dragging
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0 && e.button !== 1) return;
     isDraggingRef.current = true;
+    setIsDraggingState(true);
     lastMousePosRef.current = [e.clientX, e.clientY];
     setHoveredCell(null);
     onHoverPoint(null, null);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    if (isDraggingRef.current) {
+  // Window-level mouse listeners for continuous click-and-hold dragging
+  useEffect(() => {
+    const handleWindowMouseMove = (e: MouseEvent) => {
+      if (!isDraggingRef.current) return;
       const dx = e.clientX - lastMousePosRef.current[0];
       const dy = e.clientY - lastMousePosRef.current[1];
       lastMousePosRef.current = [e.clientX, e.clientY];
@@ -164,13 +163,38 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         }
       } else {
         // Flat 2D maps (Equirectangular & Mercator):
-        // 2D Pan in BOTH X and Y directions, allowing users to drag down/up/left/right freely!
+        // Click and hold smoothly drags/pans the entire map in X and Y
         setPanOffset(([px, py]) => [px + dx, py + dy]);
       }
 
-      // Suppress hover tooltip while actively dragging
       setHoveredCell(null);
       onHoverPoint(null, null);
+    };
+
+    const handleWindowMouseUp = () => {
+      if (isDraggingRef.current) {
+        isDraggingRef.current = false;
+        setIsDraggingState(false);
+      }
+    };
+
+    window.addEventListener('mousemove', handleWindowMouseMove);
+    window.addEventListener('mouseup', handleWindowMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleWindowMouseMove);
+      window.removeEventListener('mouseup', handleWindowMouseUp);
+    };
+  }, [projectionType, zoomScale, onHoverPoint]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    if (isDraggingRef.current) {
+      // Dragging handled by window listener
       return;
     }
 
@@ -180,6 +204,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
 
   const handleMouseUp = () => {
     isDraggingRef.current = false;
+    setIsDraggingState(false);
   };
 
   const handleWheel = (e: React.WheelEvent) => {
@@ -566,13 +591,18 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => {
-        isDraggingRef.current = false;
-        setHoveredCell(null);
-        onHoverPoint(null, null);
+        if (!isDraggingRef.current) {
+          setHoveredCell(null);
+          onHoverPoint(null, null);
+        }
       }}
       onWheel={handleWheel}
       onDoubleClick={handleDoubleClick}
-      className="w-full h-full block cursor-grab active:cursor-grabbing"
+      className={`w-full h-full block select-none ${
+        isDraggingState
+          ? 'cursor-grabbing'
+          : 'cursor-grab'
+      }`}
     />
   );
 };

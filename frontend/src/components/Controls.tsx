@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward, Crosshair } from 'lucide-react';
+import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward, RotateCcw } from 'lucide-react';
 import { ProjectionType, RenderMode } from '../types';
 
 interface ControlsProps {
@@ -135,11 +135,11 @@ export const Controls: React.FC<ControlsProps> = ({
 
           <button
             onClick={onRecenterView}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border bg-slate-900/60 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40 hover:bg-slate-800/80 transition-all"
-            title="Center View on Dataset (Double-click canvas also recenters)"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border bg-slate-900/60 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40 hover:bg-slate-800/80 transition-all shadow-sm"
+            title="Reset Zoom & Extents (Double-click canvas also resets zoom)"
           >
-            <Crosshair className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">Center</span>
+            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="hidden sm:inline font-medium">Reset Zoom</span>
           </button>
         </div>
       </div>
