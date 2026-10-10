@@ -45,7 +45,7 @@ export const Controls: React.FC<ControlsProps> = ({
     { id: 'error_map', label: 'Error Overlay', desc: 'TP, TN, False Land, False Water' },
   ];
 
-  const speeds = [1, 5, 20, 50, 200];
+  const speeds = [1, 5, 20, 50, 100, 200];
 
   const percent = totalPoints > 0 ? (visibleCount / totalPoints) * 100 : 0;
   const percentRound = Math.round(percent);

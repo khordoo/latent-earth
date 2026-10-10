@@ -27,7 +27,7 @@ export const App: React.FC = () => {
   // Playback / Timeline Animation
   const [visibleCount, setVisibleCount] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(20);
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(100);
 
   // Hover Inspection
   const [hoveredPoint, setHoveredPoint] = useState<PredictionPoint | null>(null);
