@@ -16,3 +16,6 @@ htmlcov/
 node_modules/
 frontend/node_modules/
 
+# Local model weights
+models/
+*.gguf

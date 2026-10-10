@@ -1,0 +1,18 @@
+{
+  "provider": "fastino",
+  "model": "fastino/GLiNER-2.5-Decide",
+  "model_version": "fastino/GLiNER-2.5-Decide",
+  "region_name": "japan_korea",
+  "bounding_box": {
+    "lat_min": 24.0,
+    "lat_max": 46.0,
+    "lon_min": 122.0,
+    "lon_max": 146.0
+  },
+  "grid_resolution": 0.5,
+  "step_degrees": 0.5,
+  "query_count": 2112,
+  "timestamp": "2026-10-02T14:08:04.524843+00:00",
+  "prompt_version": "land-water-v1",
+  "convention": "cell_center"
+}

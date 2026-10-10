@@ -1,0 +1,60 @@
+{
+  "benchmark": "Japan/Korea 2,112-Point Regional Benchmark",
+  "provider": "local_llama_cpp",
+  "model": "Laya-421M",
+  "total_evaluated": 2112,
+  "grid_metrics": {
+    "accuracy": 0.2315,
+    "precision": 0.2315,
+    "recall": 1.0,
+    "f1": 0.376,
+    "brier_score": 0.3892,
+    "log_loss": 0.9902
+  },
+  "area_weighted_metrics": {
+    "accuracy": 0.2151,
+    "precision": 0.2151,
+    "recall": 1.0,
+    "f1": 0.3541,
+    "brier_score": 0.3957,
+    "log_loss": 1.0041
+  },
+  "coastal_metrics": {
+    "coastal_distance_threshold_km": 100.0,
+    "coastal_distance_threshold_deg": 0.901,
+    "coastal_cell_count": 988,
+    "coastal_cell_fraction": 0.4678,
+    "accuracy": 0.2945,
+    "brier_score": 0.3658,
+    "area_weighted_accuracy": 0.2848,
+    "area_weighted_brier_score": 0.3698
+  },
+  "confusion_matrix": {
+    "true_positive_land": 489,
+    "true_negative_water": 0,
+    "false_positive_land": 1623,
+    "false_negative_water": 0
+  },
+  "sea_of_japan_inspection": {
+    "total_probes": 226,
+    "correct_water_count": 0,
+    "correct_water_pct": 0.0,
+    "false_land_count": 226
+  },
+  "performance": {
+    "wall_clock_time_seconds": 182.65,
+    "queries_executed": 2112,
+    "queries_cached": 0,
+    "total_benchmark_points": 2112,
+    "effective_throughput_req_per_sec": 11.56,
+    "latency_stats": {
+      "median_seconds": 0.34,
+      "p90_seconds": 0.3887,
+      "p95_seconds": 0.4092,
+      "p99_seconds": 0.4778,
+      "min_seconds": 0.0752,
+      "max_seconds": 0.6749,
+      "sample_count": 2112
+    }
+  }
+}

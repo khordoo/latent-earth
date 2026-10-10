@@ -1,0 +1,80 @@
+{
+  "benchmark": "Japan/Korea 2,112-Point Regional Benchmark",
+  "provider": "openrouter",
+  "model": "microsoft/microsoft-decision-1",
+  "total_evaluated": 2112,
+  "balanced_accuracy": 0.5138,
+  "japan_land_recovery": {
+    "total_japan_land_points": 296,
+    "correct_predicted_land": 163,
+    "recovery_rate": 0.5507
+  },
+  "metrics": {
+    "accuracy": 0.6084,
+    "area_weighted_accuracy": 0.6146,
+    "brier_score": 0.2414,
+    "area_weighted_brier_score": 0.2364,
+    "coastal_accuracy": 0.586,
+    "coastal_brier_score": 0.2509,
+    "precision": 0.247,
+    "recall": 0.3374,
+    "f1": 0.2852
+  },
+  "grid_metrics": {
+    "accuracy": 0.6084,
+    "precision": 0.247,
+    "recall": 0.3374,
+    "f1": 0.2852,
+    "brier_score": 0.2414,
+    "log_loss": 0.6926,
+    "area_weighted_accuracy": 0.6146,
+    "area_weighted_brier_score": 0.2364,
+    "coastal_accuracy": 0.586,
+    "coastal_brier_score": 0.2509,
+    "coastal_area_weighted_accuracy": 0.5934
+  },
+  "area_weighted_metrics": {
+    "accuracy": 0.6146,
+    "precision": 0.2281,
+    "recall": 0.3322,
+    "f1": 0.2705,
+    "brier_score": 0.2364,
+    "log_loss": 0.6793
+  },
+  "coastal_metrics": {
+    "coastal_distance_threshold_km": 100.0,
+    "coastal_cell_count": 988,
+    "coastal_cell_fraction": 0.4678,
+    "accuracy": 0.586,
+    "brier_score": 0.2509,
+    "area_weighted_accuracy": 0.5934,
+    "area_weighted_brier_score": 0.2475
+  },
+  "confusion_matrix": {
+    "true_positive_land": 165,
+    "true_negative_water": 1120,
+    "false_positive_land": 503,
+    "false_negative_water": 324
+  },
+  "sea_of_japan_inspection": {
+    "total_probes": 159,
+    "correct_water_count": 115,
+    "correct_water_pct": 72.33,
+    "false_land_count": 44
+  },
+  "performance": {
+    "wall_clock_time_seconds": 0.3,
+    "queries_executed": 1,
+    "queries_cached": 2111,
+    "total_benchmark_points": 2112,
+    "effective_throughput_req_per_sec": 3.32,
+    "latency_stats": {
+      "median_seconds": 0.2692,
+      "p90_seconds": 0.2692,
+      "p95_seconds": 0.2692,
+      "min_seconds": 0.2692,
+      "max_seconds": 0.2692,
+      "sample_count": 1
+    }
+  }
+}

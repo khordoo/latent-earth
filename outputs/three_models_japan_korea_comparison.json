@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "region": "japan_korea",
+    "resolution_degrees": 0.5,
+    "total_points": 2112,
+    "coastal_threshold_km": 100.0,
+    "ground_truth": "Natural Earth 1:10m Land"
+  },
+  "metrics": {
+    "jev": {
+      "model": "jev-latest",
+      "total_points": 2112,
+      "grid_accuracy": 0.3253,
+      "area_weighted_accuracy": 0.3133,
+      "grid_brier": 0.3562,
+      "area_weighted_brier": 0.3603,
+      "coastal_accuracy": 0.334,
+      "coastal_brier": 0.3649,
+      "land_precision": 0.2555,
+      "land_recall": 1.0,
+      "confusion_matrix": {
+        "true_positive_land": 489,
+        "true_negative_water": 198,
+        "false_positive_land": 1425,
+        "false_negative_water": 0
+      }
+    },
+    "liquid_d1": {
+      "model": "liquid/d1",
+      "total_points": 2112,
+      "grid_accuracy": 0.34,
+      "area_weighted_accuracy": 0.3298,
+      "grid_brier": 0.4166,
+      "area_weighted_brier": 0.4189,
+      "coastal_accuracy": 0.3482,
+      "coastal_brier": 0.4421,
+      "land_precision": 0.2594,
+      "land_recall": 0.998,
+      "confusion_matrix": {
+        "true_positive_land": 488,
+        "true_negative_water": 230,
+        "false_positive_land": 1393,
+        "false_negative_water": 1
+      }
+    },
+    "fastino": {
+      "model": "GLiNER-2.5-Decide",
+      "total_points": 2112,
+      "grid_accuracy": 0.2315,
+      "area_weighted_accuracy": 0.2151,
+      "grid_brier": 0.7679,
+      "area_weighted_brier": 0.7844,
+      "coastal_accuracy": 0.2945,
+      "coastal_brier": 0.705,
+      "land_precision": 0.2315,
+      "land_recall": 1.0,
+      "confusion_matrix": {
+        "true_positive_land": 489,
+        "true_negative_water": 0,
+        "false_positive_land": 1623,
+        "false_negative_water": 0
+      }
+    }
+  },
+  "sea_of_japan_inspection": {
+    "total_water_probes": 226,
+    "breakdown": {
+      "jev": {
+        "model": "jev-latest",
+        "correct_water_count": 6,
+        "correct_water_pct": 2.65,
+        "false_land_count": 220
+      },
+      "liquid_d1": {
+        "model": "liquid/d1",
+        "correct_water_count": 0,
+        "correct_water_pct": 0.0,
+        "false_land_count": 226
+      },
+      "fastino": {
+        "model": "GLiNER-2.5-Decide",
+        "correct_water_count": 0,
+        "correct_water_pct": 0.0,
+        "false_land_count": 226
+      }
+    }
+  }
+}

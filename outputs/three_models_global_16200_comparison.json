@@ -1,0 +1,147 @@
+{
+  "benchmark": "Global Earth 16,200-Point Benchmark",
+  "resolution_deg": 2.0,
+  "total_coordinates": 16200,
+  "metrics": {
+    "jev": {
+      "model": "jev-latest",
+      "total_points": 16200,
+      "grid_accuracy": 0.763,
+      "area_weighted_accuracy": 0.7548,
+      "grid_brier": 0.1572,
+      "area_weighted_brier": 0.1601,
+      "coastal_accuracy": 0.5418,
+      "coastal_brier": 0.2647,
+      "land_precision": 0.588,
+      "land_recall": 0.9563,
+      "f1": 0.7282,
+      "tp": 5144,
+      "tn": 7216,
+      "fp": 3605,
+      "fn": 235,
+      "confusion_matrix": {
+        "true_positive_land": 5144,
+        "true_negative_water": 7216,
+        "false_positive_land": 3605,
+        "false_negative_water": 235
+      }
+    },
+    "liquid_d1": {
+      "model": "liquid/d1",
+      "total_points": 16200,
+      "grid_accuracy": 0.6366,
+      "area_weighted_accuracy": 0.6609,
+      "grid_brier": 0.2355,
+      "area_weighted_brier": 0.221,
+      "coastal_accuracy": 0.4904,
+      "coastal_brier": 0.3659,
+      "land_precision": 0.4773,
+      "land_recall": 0.9946,
+      "f1": 0.6451,
+      "tp": 5350,
+      "tn": 4963,
+      "fp": 5858,
+      "fn": 29,
+      "confusion_matrix": {
+        "true_positive_land": 5350,
+        "true_negative_water": 4963,
+        "false_positive_land": 5858,
+        "false_negative_water": 29
+      }
+    },
+    "fastino_glide": {
+      "model": "fastino/glide",
+      "total_points": 16200,
+      "grid_accuracy": 0.8515,
+      "area_weighted_accuracy": 0.885,
+      "grid_brier": 0.1259,
+      "area_weighted_brier": 0.1094,
+      "coastal_accuracy": 0.6454,
+      "coastal_brier": 0.2275,
+      "land_precision": 0.8325,
+      "land_recall": 0.692,
+      "f1": 0.7557,
+      "tp": 3722,
+      "tn": 10072,
+      "fp": 749,
+      "fn": 1657,
+      "confusion_matrix": {
+        "true_positive_land": 3722,
+        "true_negative_water": 10072,
+        "false_positive_land": 749,
+        "false_negative_water": 1657
+      }
+    }
+  },
+  "pairwise_disagreements": {
+    "jev_vs_fastino_glide": {
+      "counts": {
+        "both_correct": 10691,
+        "both_wrong": 737,
+        "jev_correct_fastino_glide_wrong": 1669,
+        "fastino_glide_correct_jev_wrong": 3103
+      },
+      "percentages": {
+        "both_correct": 65.99,
+        "both_wrong": 4.55,
+        "jev_correct_fastino_glide_wrong": 10.3,
+        "fastino_glide_correct_jev_wrong": 19.15
+      }
+    },
+    "liquid_d1_vs_fastino_glide": {
+      "counts": {
+        "both_correct": 8673,
+        "both_wrong": 766,
+        "liquid_d1_correct_fastino_glide_wrong": 1640,
+        "fastino_glide_correct_liquid_d1_wrong": 5121
+      },
+      "percentages": {
+        "both_correct": 53.54,
+        "both_wrong": 4.73,
+        "liquid_d1_correct_fastino_glide_wrong": 10.12,
+        "fastino_glide_correct_liquid_d1_wrong": 31.61
+      }
+    },
+    "jev_vs_liquid_d1": {
+      "counts": {
+        "both_correct": 9887,
+        "both_wrong": 3414,
+        "jev_correct_liquid_d1_wrong": 2473,
+        "liquid_d1_correct_jev_wrong": 426
+      },
+      "percentages": {
+        "both_correct": 61.03,
+        "both_wrong": 21.07,
+        "jev_correct_liquid_d1_wrong": 15.27,
+        "liquid_d1_correct_jev_wrong": 2.63
+      }
+    }
+  },
+  "provider_performance": {
+    "fastino_glide": {
+      "wall_clock_time_seconds": 3247.09,
+      "queries_executed": 16200,
+      "queries_cached": 0,
+      "total_benchmark_points": 16200,
+      "retries_count": 5,
+      "failures_count": 0,
+      "effective_throughput_req_per_sec": 4.99,
+      "latency_stats": {
+        "median_seconds": 1.1637,
+        "p90_seconds": 11.0694,
+        "p95_seconds": 12.4418,
+        "p99_seconds": 12.9914,
+        "min_seconds": 0.3962,
+        "max_seconds": 60.8248,
+        "sample_count": 16200
+      },
+      "thinking_token_stats": {
+        "mean_tokens": 155.3,
+        "median_tokens": 1.0,
+        "p90_tokens": 887.0,
+        "p95_tokens": 1026.0,
+        "sample_count": 16200
+      }
+    }
+  }
+}
