@@ -1,6 +1,25 @@
 import React from 'react';
-import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCw, Globe, Map, Eye, Layers, FastForward } from 'lucide-react';
 import { ProjectionType, RenderMode } from '../types';
+
+// Custom Zoom Reset Icon: Magnifying glass lens with Home House inside
+const ZoomResetIcon: React.FC<{ className?: string }> = ({ className = 'w-3.5 h-3.5' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    <path d="M7.5 11 11 8l3.5 3" strokeWidth="1.8" />
+    <path d="M8.5 10.5V14h5v-3.5" strokeWidth="1.8" />
+  </svg>
+);
 
 interface ControlsProps {
   projectionType: ProjectionType;
@@ -136,9 +155,9 @@ export const Controls: React.FC<ControlsProps> = ({
           <button
             onClick={onRecenterView}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border bg-slate-900/60 text-slate-400 border-slate-800 hover:text-cyan-300 hover:border-cyan-500/40 hover:bg-slate-800/80 transition-all shadow-sm"
-            title="Reset Zoom & Extents (Double-click canvas also resets zoom)"
+            title="Reset Zoom to Home Extents (Double-click canvas also resets zoom)"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+            <ZoomResetIcon className="w-3.5 h-3.5 text-cyan-400" />
             <span className="hidden sm:inline font-medium">Reset Zoom</span>
           </button>
         </div>
