@@ -1,0 +1,11 @@
+{
+  "run_id": "openrouter_cloudflare_clef_japan_korea_2112",
+  "provider": "openrouter",
+  "model": "cloudflare/clef",
+  "prompt_version": "land-water-v1",
+  "region_name": "japan_korea",
+  "grid_resolution": 0.5,
+  "step_degrees": 0.5,
+  "point_count": 2112,
+  "wall_clock_seconds": 70.53
+}

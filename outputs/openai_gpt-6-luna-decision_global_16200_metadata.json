@@ -1,0 +1,11 @@
+{
+  "run_id": "openai_gpt-6-luna-decision_global_16200",
+  "provider": "openai",
+  "model": "gpt-6-luna-decision",
+  "prompt_version": "land-water-v1",
+  "region_name": "global",
+  "grid_resolution": 2.0,
+  "step_degrees": 2.0,
+  "point_count": 16200,
+  "wall_clock_seconds": 188.83
+}
