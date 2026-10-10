@@ -252,7 +252,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         .scale(zoomScale)
         .translate([centerX, centerY])
         .rotate([rotation[0], rotation[1], 0])
-        .clipAngle(90);
+        .clipAngle(90 - 1e-4);
     } else if (projectionType === 'equirectangular') {
       projection = d3.geoEquirectangular()
         .scale(zoomScale * 0.8)
@@ -473,7 +473,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         .scale(zoomScale)
         .translate([centerX, centerY])
         .rotate([rotation[0], rotation[1], 0])
-        .clipAngle(90);
+        .clipAngle(90 - 1e-4);
     } else if (projectionType === 'equirectangular') {
       currentScale = zoomScale * 0.8;
       projection = d3.geoEquirectangular()
