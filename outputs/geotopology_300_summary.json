@@ -1,0 +1,125 @@
+{
+  "benchmark_name": "GeoTopology: 3D Relief & Border Connectivity Benchmark",
+  "sample_size": 300,
+  "seed": 42,
+  "timestamp": "2026-10-11T17:38:06Z",
+  "models": {
+    "clef": {
+      "name": "Cloudflare Clef (27B)",
+      "provider": "openrouter",
+      "model_id": "cloudflare/clef",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.93,
+        "balanced_accuracy": 0.93,
+        "brier_score": 0.0534,
+        "categories": {
+          "border_adjacency": {
+            "count": 100,
+            "accuracy": 0.89,
+            "balanced_accuracy": 0.89
+          },
+          "landlocked_maritime": {
+            "count": 100,
+            "accuracy": 0.97,
+            "balanced_accuracy": 0.97
+          },
+          "elevation_hypsometry": {
+            "count": 100,
+            "accuracy": 0.93,
+            "balanced_accuracy": 0.93
+          }
+        },
+        "confusion_matrix": {
+          "tp": 139,
+          "tn": 140,
+          "fp": 10,
+          "fn": 11
+        },
+        "median_latency_seconds": 2.1907,
+        "p90_latency_seconds": 3.7625,
+        "total_cost_usd": 0.01197,
+        "wall_clock_time_seconds": 5.43,
+        "effective_throughput_req_sec": 55.21
+      }
+    },
+    "pplx": {
+      "name": "Perplexity Pplx-Decider",
+      "provider": "openrouter",
+      "model_id": "perplexity/pplx-decider-v1.1-27b",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.9433,
+        "balanced_accuracy": 0.9433,
+        "brier_score": 0.0445,
+        "categories": {
+          "border_adjacency": {
+            "count": 100,
+            "accuracy": 0.88,
+            "balanced_accuracy": 0.88
+          },
+          "landlocked_maritime": {
+            "count": 100,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0
+          },
+          "elevation_hypsometry": {
+            "count": 100,
+            "accuracy": 0.95,
+            "balanced_accuracy": 0.95
+          }
+        },
+        "confusion_matrix": {
+          "tp": 144,
+          "tn": 139,
+          "fp": 11,
+          "fn": 6
+        },
+        "median_latency_seconds": 1.7752,
+        "p90_latency_seconds": 3.0804,
+        "total_cost_usd": 0.000728,
+        "wall_clock_time_seconds": 3.53,
+        "effective_throughput_req_sec": 85.02
+      }
+    },
+    "msft": {
+      "name": "Microsoft Decision-1",
+      "provider": "openrouter",
+      "model_id": "microsoft/microsoft-decision-1",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.9167,
+        "balanced_accuracy": 0.9167,
+        "brier_score": 0.0603,
+        "categories": {
+          "border_adjacency": {
+            "count": 100,
+            "accuracy": 0.79,
+            "balanced_accuracy": 0.79
+          },
+          "landlocked_maritime": {
+            "count": 100,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0
+          },
+          "elevation_hypsometry": {
+            "count": 100,
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96
+          }
+        },
+        "confusion_matrix": {
+          "tp": 143,
+          "tn": 132,
+          "fp": 18,
+          "fn": 7
+        },
+        "median_latency_seconds": 1.8255,
+        "p90_latency_seconds": 3.0955,
+        "total_cost_usd": 0.000923,
+        "wall_clock_time_seconds": 4.68,
+        "effective_throughput_req_sec": 64.05
+      }
+    }
+  }
+}

@@ -76,6 +76,33 @@ export interface GeoReasonBenchmarkInfo {
   models: GeoReasonModelEntry[];
 }
 
+export interface GeoTopologyModelEntry {
+  id: string;
+  name: string;
+  provider: string;
+  architecture: string;
+  rank: number;
+  balancedAccuracy: number;
+  overallAccuracy: number;
+  brierScore: number;
+  p90LatencySeconds: number;
+  totalCostUsd: number;
+  categories: {
+    border_adjacency: GeoReasonCategoryScore;
+    landlocked_maritime: GeoReasonCategoryScore;
+    elevation_hypsometry: GeoReasonCategoryScore;
+  };
+  keyTakeaway: string;
+}
+
+export interface GeoTopologyBenchmarkInfo {
+  id: string;
+  name: string;
+  description: string;
+  sampleSize: number;
+  models: GeoTopologyModelEntry[];
+}
+
 export interface BenchmarkDatasetInfo {
   id: string;
   name: string;
@@ -786,8 +813,72 @@ export const GEOREASON_BENCHMARK_1200: GeoReasonBenchmarkInfo = {
   ],
 };
 
+export const GEOTOPOLOGY_BENCHMARK_1200: GeoTopologyBenchmarkInfo = {
+  id: 'geotopology_1200',
+  name: 'GeoTopology: 3D Relief & Border Connectivity (1,200 Qs)',
+  description: 'Empirical benchmark evaluating whether models understand 3D physical elevation (hypsometry, mountain summits, sub-sea depressions), sovereign land border adjacency graphs, and landlocked maritime access.',
+  sampleSize: 1200,
+  models: [
+    {
+      id: 'pplx-geotopology',
+      name: 'Perplexity Pplx-Decider',
+      provider: 'Perplexity / OpenRouter',
+      architecture: '27B System-1 Decision Fine-Tune',
+      rank: 1,
+      balancedAccuracy: 95.58,
+      overallAccuracy: 95.58,
+      brierScore: 0.0357,
+      p90LatencySeconds: 8.12,
+      totalCostUsd: 0.0029,
+      categories: {
+        border_adjacency: { count: 400, accuracy: 89.50, balancedAccuracy: 89.50 },
+        landlocked_maritime: { count: 400, accuracy: 100.00, balancedAccuracy: 100.00 },
+        elevation_hypsometry: { count: 400, accuracy: 97.25, balancedAccuracy: 97.25 },
+      },
+      keyTakeaway: '#1 Planetary Topological Champion: Flawless 100.0% on landlocked status and 97.25% on 3D elevation comparisons. Reaches 0.0357 Brier score at 96.1 req/s throughput for $0.0029 total.',
+    },
+    {
+      id: 'clef-geotopology',
+      name: 'Cloudflare Clef (27B)',
+      provider: 'Cloudflare / OpenRouter',
+      architecture: '27B Multimodal Decision Fine-Tune',
+      rank: 2,
+      balancedAccuracy: 93.67,
+      overallAccuracy: 93.67,
+      brierScore: 0.0482,
+      p90LatencySeconds: 8.19,
+      totalCostUsd: 0.0478,
+      categories: {
+        border_adjacency: { count: 400, accuracy: 88.25, balancedAccuracy: 88.25 },
+        landlocked_maritime: { count: 400, accuracy: 99.00, balancedAccuracy: 99.00 },
+        elevation_hypsometry: { count: 400, accuracy: 93.75, balancedAccuracy: 93.75 },
+      },
+      keyTakeaway: '#2 Multimodal Runner-Up: 99.0% on landlocked access and 93.75% on 3D hypsometry. Confirms that 27B open weights encode extensive 3D Earth terrain knowledge.',
+    },
+    {
+      id: 'msft-geotopology',
+      name: 'Microsoft Decision-1',
+      provider: 'Microsoft / OpenRouter',
+      architecture: '9B System-1 Decision Fine-Tune',
+      rank: 3,
+      balancedAccuracy: 84.67,
+      overallAccuracy: 77.17,
+      brierScore: 0.0897,
+      p90LatencySeconds: 8.16,
+      totalCostUsd: 0.0031,
+      categories: {
+        border_adjacency: { count: 400, accuracy: 69.50, balancedAccuracy: 76.75 },
+        landlocked_maritime: { count: 400, accuracy: 82.50, balancedAccuracy: 90.50 },
+        elevation_hypsometry: { count: 400, accuracy: 79.50, balancedAccuracy: 86.75 },
+      },
+      keyTakeaway: '+20.3% Jump over Continuous Coordinates: 9B architecture achieves 90.5% balanced accuracy on landlocked nations and 86.8% on elevation comparisons, far surpassing its 64.4% coordinate score.',
+    },
+  ],
+};
+
 export const ALL_BENCHMARK_DATASETS: BenchmarkDatasetInfo[] = [
   REGIONAL_JAPAN_KOREA_2112,
   GLOBAL_EARTH_16200,
 ];
+
 

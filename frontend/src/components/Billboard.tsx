@@ -24,6 +24,7 @@ import {
   ALL_BENCHMARK_DATASETS,
   BenchmarkDatasetInfo,
   GEOREASON_BENCHMARK_1200,
+  GEOTOPOLOGY_BENCHMARK_1200,
 } from '../data/billboardData';
 
 interface BillboardProps {
@@ -163,9 +164,23 @@ export const Billboard: React.FC<BillboardProps> = ({
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <Compass className="w-3.5 h-3.5 text-purple-300" />
               <span>GeoReason (Spatial Relational)</span>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold">
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-purple-400/20 text-purple-300 border border-purple-400/30 font-bold">
+                1,200 Qs
+              </span>
+            </button>
+            <button
+              onClick={() => setSelectedDatasetId('geotopology_1200')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                selectedDatasetId === 'geotopology_1200'
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 shadow-md shadow-emerald-500/20 font-extrabold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <Globe2 className="w-3.5 h-3.5 text-teal-300" />
+              <span>GeoTopology (3D Relief & Borders)</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 font-bold">
                 1,200 Qs • NEW
               </span>
             </button>
@@ -173,7 +188,89 @@ export const Billboard: React.FC<BillboardProps> = ({
         </div>
 
         {/* Hero KPI Cards */}
-        {selectedDatasetId === 'georeason_1200' ? (
+        {selectedDatasetId === 'geotopology_1200' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-emerald-400" />
+                  #1 Topological Champion
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                  95.6% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Pplx-Decider (27B)</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>100.0% Landlocked</strong> • 97.3% Elevation • <strong>$0.0029 total</strong>
+              </div>
+              <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
+                Flawless maritime isolation & 3D relief at 96.1 req/s
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-sky-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-sky-400" />
+                  #2 Multimodal Runner-Up
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                  93.7% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Cloudflare Clef</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>99.0% Landlocked</strong> • 93.8% Elevation • <strong>88.3% Borders</strong>
+              </div>
+              <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
+                High 3D hypsometric precision across all 6 continents
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="w-4 h-4 text-amber-400" />
+                  Small Model Recovery
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                  +20.3% Jump
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">MSFT Decision-1</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>84.7% Bal Acc</strong> • 90.5% Landlocked • <strong>86.8% Elevation</strong>
+              </div>
+              <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
+                9B architecture achieves 90.5% on topological graphs
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Globe2 className="w-4 h-4 text-purple-400" />
+                  Topological Grounding
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
+                  3D & Graphs
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">UNCLOS & EGM</div>
+              <div className="text-xs text-slate-400 mt-1">
+                1,200 Questions • <strong>50% True / 50% False</strong>
+              </div>
+              <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
+                Physical terrain elevations, sovereign borders & enclaves
+              </div>
+            </div>
+          </div>
+        ) : selectedDatasetId === 'georeason_1200' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
             <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
@@ -339,7 +436,189 @@ export const Billboard: React.FC<BillboardProps> = ({
           </div>
         )}
 
-        {selectedDatasetId === 'georeason_1200' ? (
+        {selectedDatasetId === 'geotopology_1200' ? (
+          <div className="mt-8 space-y-6">
+            {/* GeoTopology Context Banner */}
+            <div className="bg-slate-900/60 p-6 rounded-2xl border border-teal-500/30 shadow-xl backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                    <Globe2 className="w-5 h-5 text-teal-300" />
+                  </span>
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-100">
+                      GeoTopology: 3D Hypsometry &amp; Border Connectivity Benchmark
+                    </h2>
+                    <p className="text-xs text-teal-300/80 font-mono">
+                      1,200 Verified Questions • Balanced 50% True / 50% False • Physical Topography &amp; Sovereignty
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-bold">
+                    ✓ Hypothesis Confirmed
+                  </span>
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                    Total Run Cost: $0.054
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed max-w-4xl mt-2">
+                Evaluates whether models possess genuine 3D physical elevation awareness and sovereign topological boundary connectivity.
+                Instead of testing float coordinate polygon lookups, <strong>GeoTopology isolates three fundamental GIS structures</strong>:
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-teal-300 flex items-center gap-1.5">
+                      <Globe2 className="w-3.5 h-3.5 text-teal-400" />
+                      1. Sovereign Borders (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Graph Adjacency</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates sovereign land border adjacency and non-adjacency. e.g., <em>&ldquo;Does France share a direct sovereign land border with Spain?&rdquo;</em> (True)
+                  </p>
+                </div>
+
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      2. Landlocked / Coast (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">UNCLOS Isolation</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates landlocked sovereignty vs. open ocean coastline access. e.g., <em>&ldquo;Is Bolivia a landlocked nation lacking ocean coastlines?&rdquo;</em> (True)
+                  </p>
+                </div>
+
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
+                      3. 3D Hypsometry (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Vertical Relief</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates vertical 3D elevation (summits, cities &gt;250m delta, sub-sea depressions). e.g., <em>&ldquo;Is Kilimanjaro higher than Mont Blanc?&rdquo;</em> (True)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* GeoTopology Leaderboard Table */}
+            <div className="bg-slate-900/70 rounded-2xl border border-slate-800/80 overflow-hidden shadow-2xl">
+              <div className="p-4 sm:p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-teal-400" />
+                    GeoTopology &amp; 3D Relief Leaderboard (N = 1,200)
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Empirical topological &amp; elevation evaluation across OpenRouter System-1 Decision models
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+                  <span className="w-2.5 h-2.5 rounded-full bg-teal-400 inline-block" />
+                  <span>100% Balanced Ground Truth</span>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-slate-950/90 border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                      <th className="p-4">Rank</th>
+                      <th className="p-4">Model &amp; Architecture</th>
+                      <th className="p-4 text-center">Balanced Acc</th>
+                      <th className="p-4">Border Adjacency (400)</th>
+                      <th className="p-4">Landlocked Access (400)</th>
+                      <th className="p-4">3D Hypsometry (400)</th>
+                      <th className="p-4 text-right">P90 Lat</th>
+                      <th className="p-4 text-right">Run Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60 font-sans">
+                    {GEOTOPOLOGY_BENCHMARK_1200.models.map((m) => (
+                      <tr key={m.id} className="hover:bg-slate-800/30 transition-colors">
+                        <td className="p-4 font-mono font-bold text-slate-300">
+                          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                            m.rank === 1 ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' :
+                            m.rank === 2 ? 'bg-slate-400/20 text-slate-200 border border-slate-400/30' :
+                            'bg-amber-700/20 text-amber-400 border border-amber-700/30'
+                          }`}>
+                            #{m.rank}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <div className="font-bold text-slate-100 text-sm">{m.name}</div>
+                          <div className="text-[11px] text-slate-400 font-mono mt-0.5">{m.architecture}</div>
+                          <div className="text-[11px] text-teal-300/90 mt-1 max-w-sm">{m.keyTakeaway}</div>
+                        </td>
+                        <td className="p-4 text-center whitespace-nowrap">
+                          <span className="font-mono font-extrabold text-sm text-emerald-400">
+                            {m.balancedAccuracy.toFixed(2)}%
+                          </span>
+                          <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                            Brier: {m.brierScore.toFixed(4)}
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1">
+                            <span>{m.categories.border_adjacency.accuracy.toFixed(1)}%</span>
+                            <span className="text-slate-500">{m.categories.border_adjacency.count} Qs</span>
+                          </div>
+                          <div className="w-32 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div
+                              className="bg-teal-400 h-full rounded-full"
+                              style={{ width: `${m.categories.border_adjacency.accuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1">
+                            <span>{m.categories.landlocked_maritime.accuracy.toFixed(1)}%</span>
+                            <span className="text-slate-500">{m.categories.landlocked_maritime.count} Qs</span>
+                          </div>
+                          <div className="w-32 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div
+                              className="bg-emerald-400 h-full rounded-full"
+                              style={{ width: `${m.categories.landlocked_maritime.accuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center justify-between text-[11px] font-mono text-slate-300 mb-1">
+                            <span>{m.categories.elevation_hypsometry.accuracy.toFixed(1)}%</span>
+                            <span className="text-slate-500">{m.categories.elevation_hypsometry.count} Qs</span>
+                          </div>
+                          <div className="w-32 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                            <div
+                              className="bg-cyan-400 h-full rounded-full"
+                              style={{ width: `${m.categories.elevation_hypsometry.accuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4 text-right font-mono text-slate-300 whitespace-nowrap">
+                          {m.p90LatencySeconds.toFixed(2)}s
+                        </td>
+                        <td className="p-4 text-right font-mono text-slate-300 whitespace-nowrap">
+                          ${m.totalCostUsd.toFixed(4)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        ) : selectedDatasetId === 'georeason_1200' ? (
           <div className="mt-8 space-y-6">
             {/* GeoReason Context Banner */}
             <div className="bg-slate-900/60 p-6 rounded-2xl border border-purple-500/30 shadow-xl backdrop-blur-sm relative overflow-hidden">
