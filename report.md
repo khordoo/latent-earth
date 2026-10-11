@@ -161,6 +161,8 @@ Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% contine
 * **Regional 6-Model Visualization:** [`six_models_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/six_models_japan_korea_2112_comparison.png)
 * **GeoReason 1,200 Benchmark Summary:** [`georeason_1200_summary.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/georeason_1200_summary.json)
 * **GeoTopology 1,200 Benchmark Summary:** [`geotopology_1200_summary.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/geotopology_1200_summary.json)
+* **Liquid D1 GeoReason (1,200 Qs):** [`georeason_1200_liquid_d1.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/georeason_1200_liquid_d1.json)
+* **Liquid D1 GeoTopology (1,200 Qs):** [`geotopology_1200_liquid_d1.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/geotopology_1200_liquid_d1.json)
 * **TypeSafe Jev GeoReason (1,200 Qs):** [`georeason_1200_jev.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/georeason_1200_jev.json)
 * **TypeSafe Jev GeoTopology (1,200 Qs):** [`geotopology_1200_jev.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/geotopology_1200_jev.json)
 * **Distance Stratification & Selective Summary:** [`distance_and_selective_metrics_summary.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/distance_and_selective_metrics_summary.json)
@@ -205,24 +207,30 @@ To test true geographic intelligence without coordinate lookup memorization, we 
 | 🥇 #1 | **Perplexity Pplx-Decider** | Qwen3.8-27B | **94.08%** | **88.25%** | **94.00%** | **100.00%** | 7.88s | **$0.0029** |
 | 🥈 #2 | **OpenAI Decisions (Luna)** | GPT-6-Luna | **92.17%** | 86.25% | 92.00% | 98.25% | 7.57s | $0.0309 |
 | 🥉 #3 | **TypeSafe Jev** | 7B System-1 (Noul) | **91.92%** | **87.25%** | **93.50%** | 95.00% | **7.35s** | $0.0182 |
-| #4 | **Cloudflare Clef** | 27B Open-Weight | **84.00%** | 78.25% | 77.00% | 96.75% | 8.20s | $0.0479 |
-| #5 | **Microsoft Decision-1** | 9B Open-Weight | **79.33%** | 76.00% | 79.00% | 83.00% | 8.03s | **$0.0029** |
+| #4 | **Liquid D1** | Liquid Decision Arch | **91.75%** | 86.25% | 89.00% | **100.00%** | 8.18s | **$0.0037** |
+| #5 | **Cloudflare Clef** | 27B Open-Weight | **84.00%** | 78.25% | 77.00% | 96.75% | 8.20s | $0.0479 |
+| #6 | **Microsoft Decision-1** | 9B Open-Weight | **79.33%** | 76.00% | 79.00% | 83.00% | 8.03s | **$0.0029** |
 
 ### 9.2 Key Insights
 1. **Hypothesis Confirmed:** When freed from the float coordinate memorization bottleneck, smaller models jump dramatically:
+   * **Liquid D1** jumps from 63.8% on coordinates to **91.75%** (+27.95%).
    * **TypeSafe Jev** delivers **91.92% balanced accuracy**, taking 3rd place overall.
    * **Cloudflare Clef** jumps from 72.7% on coordinates to **84.00%** (+11.3%).
    * **Microsoft Decision-1** jumps from 64.4% on coordinates to **79.33%** (+14.95%).
-2. **TypeSafe Jev Outperforms OpenAI on Compass & Proximity:**
+2. **Liquid D1 Matches Frontier Precision at 1/8th the Cost:**
+   * Liquid D1 delivered a flawless **100.00% (400/400)** on Marine & Ocean Borders (tied with Perplexity for #1).
+   * Tied OpenAI Decisions on Compass Cardinal orientation (**86.25%**).
+   * Achieved a superior Brier calibration score of **0.0601** (beating OpenAI's 0.0622) for only **$0.0037** total spend (8.4x cheaper than OpenAI).
+3. **TypeSafe Jev Outperforms OpenAI on Compass & Proximity:**
    * At 7B parameters, Jev achieved **87.25% (349/400)** on Compass Cardinal Orientation (beating OpenAI's 86.25%).
    * Achieved **93.50% (374/400)** on Metric Space Proximity Triplets (beating OpenAI's 92.00%).
    * Ran at **146.2 req/s** throughput with native Noul probabilities, finishing all 1,200 questions in 8.2 seconds for just **$0.0182**.
-3. **Perplexity Pplx-Decider Beats Frontier Models at 1/10th Cost:**
+4. **Perplexity Pplx-Decider Beats Frontier Models at 1/10th Cost:**
    * Achieved **100.00% (400/400)** on Marine/Ocean Adjacency.
    * Achieved **94.00%** on Metric Space Proximity.
    * Surpasses OpenAI's flagship Decisions API (94.08% vs 92.17%) while costing only **$0.0029** for all 1,200 questions (10.6x cheaper).
-4. **Total Benchmark Cost:**
-   * Total OpenRouter expenditure: **$0.0537** (well under the $5 budget).
+5. **Total Benchmark Cost:**
+   * Total OpenRouter expenditure across all models: **$0.0574** (well under the $5 budget).
    * Total OpenAI expenditure: **$0.0309** (well under the $2 budget).
    * TypeSafe API expenditure: **$0.0182**.
 
@@ -252,35 +260,41 @@ Prior to scaling, a representative pilot test ($N=300$, 100 questions per catego
 
 | Rank | Model | Architecture | Balanced Acc | Overall Acc | Sovereign Borders (400) | Landlocked Access (400) | 3D Hypsometry (400) | Brier Score | P90 Latency | Total Cost |
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🥇 #1 | **Perplexity Pplx-Decider** | 27B System-1 | **95.58%** | **95.58%** | **89.50%** | **100.00%** | 97.25% | **0.0357** | 8.12s | **$0.0029** |
-| 🥈 #2 | **TypeSafe Jev** | 7B System-1 (Noul) | **95.50%** | **95.50%** | 87.75% | **100.00%** | **98.75%** | 0.0401 | **7.04s** | $0.0181 |
-| 🥉 #3 | **Cloudflare Clef** | 27B Multimodal | **93.67%** | **93.67%** | 88.25% | 99.00% | 93.75% | 0.0482 | 8.19s | $0.0478 |
-| #4 | **Microsoft Decision-1** | 9B System-1 | **84.67%** | 77.17% | 76.75% | 90.50% | 86.75% | 0.0897 | 8.16s | $0.0031 |
+| 🥇 #1 | **Liquid D1** | Liquid Decision Arch | **96.67%** | **96.67%** | **93.75%** | 99.75% | 96.50% | **0.0252** | 8.12s | **$0.0036** |
+| 🥈 #2 | **Perplexity Pplx-Decider** | 27B System-1 | **95.58%** | **95.58%** | 89.50% | **100.00%** | 97.25% | 0.0357 | 8.12s | **$0.0029** |
+| 🥉 #3 | **TypeSafe Jev** | 7B System-1 (Noul) | **95.50%** | **95.50%** | 87.75% | **100.00%** | **98.75%** | 0.0401 | **7.04s** | $0.0181 |
+| #4 | **Cloudflare Clef** | 27B Multimodal | **93.67%** | **93.67%** | 88.25% | 99.00% | 93.75% | 0.0482 | 8.19s | $0.0478 |
+| #5 | **Microsoft Decision-1** | 9B System-1 | **84.67%** | 77.17% | 76.75% | 90.50% | 86.75% | 0.0897 | 8.16s | $0.0031 |
 
 ---
 
 ### 10.4 Empirical Takeaways & Discoveries
 
-1. **Flawless Topological Knowledge in 27B Weights:**
+1. **Liquid D1 Crowned #1 Planetary Topological Champion (96.67% Balanced Acc):**
+   * **Liquid D1** took **1st Place overall**, outperforming all 27B models and frontier benchmarks.
+   * Shattered the sovereign land border graph benchmark with an unprecedented **93.75% (375/400)** (the highest border adjacency score in the project).
+   * Scored **99.75% (399/400)** on UNCLOS landlocked nations and **96.50% (386/400)** on 3D Hypsometry & Elevation.
+   * Delivered the single lowest Brier error score (**0.0252**) across the entire project for just **$0.0036** total run cost at 91.1 req/s.
+2. **Flawless Topological Knowledge in 27B Weights:**
    * **Perplexity Pplx-Decider** scored **100.00% (400/400)** on Landlocked & Maritime Access and **97.25% (389/400)** on 3D Hypsometry, yielding a stellar Brier score of **0.0357**.
    * Cost was **$0.0029** for all 1,200 queries, running at **96.1 req/s** effective throughput.
-2. **TypeSafe Jev Takes #2 Podium and Sets Project Summit Record on 3D Elevation:**
-   * **TypeSafe Jev** surged to **95.50% balanced accuracy**, taking 2nd place overall and knocking Cloudflare Clef down to 3rd.
+3. **TypeSafe Jev Takes #3 Podium and Sets Project Summit Record on 3D Elevation:**
+   * **TypeSafe Jev** achieved **95.50% balanced accuracy**, taking 3rd place overall.
    * Most remarkably, Jev achieved **98.75% (395/400)** on 3D Hypsometry & Elevation—the single highest elevation accuracy of any model tested in the entire project.
    * Achieved a flawless **100.00% (400/400)** on UNCLOS Landlocked & Maritime Access.
    * Executed at **153.1 req/s** throughput with native Noul probabilities, finishing in 7.8 seconds for **$0.0181**.
-3. **Cloudflare Clef Encodes Deep 3D Physical Geography:**
+4. **Cloudflare Clef Encodes Deep 3D Physical Geography:**
    * Clef achieved **93.67% balanced accuracy**, with **99.0%** on landlocked status and **93.75%** on 3D elevation comparisons.
    * This proves that Clef's multimodal pretraining successfully anchors geographic concepts into physical reality.
-4. **Microsoft Decision-1 Surges +20.3% over Coordinate Grid:**
+5. **Microsoft Decision-1 Surges +20.3% over Coordinate Grid:**
    * On raw floating-point coordinates, MSFT Decision-1 scored only 64.4% (near random on complex coastlines).
    * On GeoTopology, it reached **84.67% balanced accuracy** (90.5% on landlocked status and 86.8% on elevation).
-5. **Cumulative Cost Accounting:**
+6. **Cumulative Cost Accounting:**
    * GeoTopology Pilot ($N=300$): **$0.0136**
-   * GeoTopology Full ($N=1,200$ across OpenRouter): **$0.0538**
+   * GeoTopology Full ($N=1,200$ across OpenRouter): **$0.0574**
    * TypeSafe Jev GeoTopology ($N=1,200$): **$0.0181**
-   * Total GeoTopology Spend: **$0.0855**
-   * OpenRouter Balance Headroom Remaining: **$4.87** (well below the $5.00 limit).
+   * Total GeoTopology Spend: **$0.0891**
+   * OpenRouter Balance Headroom Remaining: **$4.86** (well below the $5.00 limit).
 
 
 

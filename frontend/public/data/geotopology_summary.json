@@ -159,6 +159,45 @@
         "wall_clock_time_seconds": 7.84,
         "effective_throughput_req_sec": 153.11
       }
+    },
+    "liquid_d1": {
+      "name": "Liquid D1",
+      "provider": "openrouter",
+      "model_id": "liquid/d1",
+      "metrics": {
+        "total_questions": 1200,
+        "accuracy": 0.9667,
+        "balanced_accuracy": 0.9667,
+        "brier_score": 0.0252,
+        "categories": {
+          "border_adjacency": {
+            "count": 400,
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375
+          },
+          "landlocked_maritime": {
+            "count": 400,
+            "accuracy": 0.9975,
+            "balanced_accuracy": 0.9975
+          },
+          "elevation_hypsometry": {
+            "count": 400,
+            "accuracy": 0.965,
+            "balanced_accuracy": 0.965
+          }
+        },
+        "confusion_matrix": {
+          "tp": 588,
+          "tn": 572,
+          "fp": 28,
+          "fn": 12
+        },
+        "median_latency_seconds": 4.4595,
+        "p90_latency_seconds": 8.1765,
+        "total_cost_usd": 0.00363,
+        "wall_clock_time_seconds": 13.18,
+        "effective_throughput_req_sec": 91.06
+      }
     }
   }
 }

@@ -190,14 +190,34 @@ export const Billboard: React.FC<BillboardProps> = ({
         {/* Hero KPI Cards */}
         {selectedDatasetId === 'geotopology_1200' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-            <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/40 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
               <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-2">
                 <span className="flex items-center gap-1.5">
                   <Trophy className="w-4 h-4 text-emerald-400" />
                   #1 Topological Champion
                 </span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold">
+                  96.7% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Liquid D1</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>93.8% Borders</strong> (Grid #1!) • <strong>99.8% Landlocked</strong> • <strong>$0.0036 total</strong>
+              </div>
+              <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
+                Lowest Brier score (0.0252) &amp; unmatched sovereign border graph adjacency
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-teal-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-teal-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-teal-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-teal-400" />
+                  #2 Decider Runner-Up
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300">
                   95.6% Bal Acc
                 </span>
               </div>
@@ -205,8 +225,8 @@ export const Billboard: React.FC<BillboardProps> = ({
               <div className="text-xs text-slate-400 mt-1">
                 <strong>100.0% Landlocked</strong> • 97.3% Elevation • <strong>$0.0029 total</strong>
               </div>
-              <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
-                Flawless maritime isolation & 3D relief at 96.1 req/s
+              <div className="text-[11px] text-teal-300/80 mt-2 font-medium">
+                Flawless maritime isolation &amp; 3D relief at 96.1 req/s
               </div>
             </div>
 
@@ -215,7 +235,7 @@ export const Billboard: React.FC<BillboardProps> = ({
               <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
                 <span className="flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-purple-400" />
-                  #2 High-Speed Runner-Up
+                  #3 Summit Master
                 </span>
                 <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-extrabold">
                   95.5% Bal Acc
@@ -235,7 +255,7 @@ export const Billboard: React.FC<BillboardProps> = ({
               <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
                 <span className="flex items-center gap-1.5">
                   <Globe2 className="w-4 h-4 text-sky-400" />
-                  #3 Multimodal Foundation
+                  #4 Multimodal Foundation
                 </span>
                 <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
                   93.7% Bal Acc
@@ -246,27 +266,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                 <strong>99.0% Landlocked</strong> • 93.8% Elevation • <strong>88.3% Borders</strong>
               </div>
               <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
-                High 3D hypsometric precision across all 6 continents ($0.0029 total)
-              </div>
-            </div>
-
-            <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
-                <span className="flex items-center gap-1.5">
-                  <TrendingUp className="w-4 h-4 text-amber-400" />
-                  Small Model Recovery
-                </span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
-                  +20.3% Jump
-                </span>
-              </div>
-              <div className="text-xl font-extrabold text-slate-100">MSFT Decision-1</div>
-              <div className="text-xs text-slate-400 mt-1">
-                <strong>84.7% Bal Acc</strong> • 90.5% Landlocked • <strong>86.8% Elevation</strong>
-              </div>
-              <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
-                9B architecture achieves 90.5% on topological graphs
+                High 3D hypsometric precision across all 6 continents ($0.0478 total)
               </div>
             </div>
           </div>
@@ -332,23 +332,23 @@ export const Billboard: React.FC<BillboardProps> = ({
               </div>
             </div>
 
-            <div className="bg-slate-900/60 p-4 rounded-2xl border border-orange-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div className="flex items-center justify-between text-xs font-bold text-orange-400 mb-2">
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-teal-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-teal-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-teal-400 mb-2">
                 <span className="flex items-center gap-1.5">
-                  <Zap className="w-4 h-4 text-orange-400" />
-                  Open-Weight Leap
+                  <Zap className="w-4 h-4 text-teal-400" />
+                  #4 Flawless Maritime
                 </span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300">
-                  +11.3% Leap
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-300 font-extrabold">
+                  91.8% Bal Acc
                 </span>
               </div>
-              <div className="text-xl font-extrabold text-slate-100">Cloudflare Clef</div>
+              <div className="text-xl font-extrabold text-slate-100">Liquid D1</div>
               <div className="text-xs text-slate-400 mt-1">
-                <strong>84.0% Bal Acc</strong> • 96.8% Marine • <strong>$0.0029 total</strong>
+                <strong>100% Marine</strong> • 86.3% Compass • <strong>$0.0037 total</strong>
               </div>
-              <div className="text-[11px] text-orange-300/80 mt-2 font-medium">
-                Jumps from 72.7% on coordinates to 84.0% on relations
+              <div className="text-[11px] text-teal-300/80 mt-2 font-medium">
+                Ties OpenAI on Compass Cardinal and achieves 100% oceanic precision
               </div>
             </div>
           </div>
@@ -460,7 +460,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                     ✓ Hypothesis Confirmed
                   </span>
                   <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                    Total Run Cost: $0.072
+                    Total Run Cost: $0.076
                   </span>
                 </div>
               </div>
@@ -642,7 +642,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                     ✓ Hypothesis Confirmed
                   </span>
                   <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                    Total Run Cost: $0.103
+                    Total Run Cost: $0.107
                   </span>
                 </div>
               </div>
@@ -894,6 +894,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                 const isGlide = m.id.includes('glide');
                 const isMsft = m.id.includes('microsoft');
                 const isJev = m.id.includes('jev');
+                const isLiquid = m.id.includes('liquid');
 
                 const isHovered = hoveredScatterModel?.id === m.id;
 
@@ -907,6 +908,8 @@ export const Billboard: React.FC<BillboardProps> = ({
                   ? '#f97316'
                   : isJev
                   ? '#a855f7'
+                  : isLiquid
+                  ? '#14b8a6'
                   : isGlide
                   ? '#f43f5e'
                   : isMsft

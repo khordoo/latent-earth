@@ -51,6 +51,7 @@ MODELS = [
     {"id": "clef", "name": "Cloudflare Clef (27B)", "provider": "openrouter", "model_id": "cloudflare/clef"},
     {"id": "pplx", "name": "Perplexity Pplx-Decider", "provider": "openrouter", "model_id": "perplexity/pplx-decider-v1.1-27b"},
     {"id": "msft", "name": "Microsoft Decision-1", "provider": "openrouter", "model_id": "microsoft/microsoft-decision-1"},
+    {"id": "liquid_d1", "name": "Liquid D1", "provider": "openrouter", "model_id": "liquid/d1"},
     {"id": "jev", "name": "TypeSafe Jev", "provider": "typesafe", "model_id": "jev-latest"},
     {"id": "openai", "name": "OpenAI Decisions (Luna)", "provider": "openai", "model_id": "gpt-6-luna"},
 ]
