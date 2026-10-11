@@ -23,6 +23,7 @@ import {
   BillboardModelEntry,
   ALL_BENCHMARK_DATASETS,
   BenchmarkDatasetInfo,
+  GEOREASON_BENCHMARK_1200,
 } from '../data/billboardData';
 
 interface BillboardProps {
@@ -136,7 +137,7 @@ export const Billboard: React.FC<BillboardProps> = ({
           </div>
 
           {/* Dataset Switcher Pill */}
-          <div className="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-xl self-start md:self-auto">
+          <div className="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 shadow-xl self-start md:self-auto flex-wrap gap-1">
             {ALL_BENCHMARK_DATASETS.map((dataset) => (
               <button
                 key={dataset.id}
@@ -154,94 +155,387 @@ export const Billboard: React.FC<BillboardProps> = ({
                 </span>
               </button>
             ))}
+            <button
+              onClick={() => setSelectedDatasetId('georeason_1200')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                selectedDatasetId === 'georeason_1200'
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md shadow-purple-500/20 font-extrabold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>GeoReason (Spatial Relational)</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold">
+                1,200 Qs • NEW
+              </span>
+            </button>
           </div>
         </div>
 
-        {/* 4 Hero KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-2">
-              <span className="flex items-center gap-1.5">
-                <Trophy className="w-4 h-4 text-emerald-400" />
-                #1 Pareto Decision Winner
-              </span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                0.35s Median
-              </span>
+        {/* Hero KPI Cards */}
+        {selectedDatasetId === 'georeason_1200' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-emerald-400" />
+                  #1 Spatial Champion
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                  94.1% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Pplx-Decider (27B)</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>100% Ocean Borders</strong> • 94.0% Proximity • <strong>$0.0029 total</strong>
+              </div>
+              <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
+                Beats frontier models on spatial geometry at 1/10th the cost
+              </div>
             </div>
-            <div className="text-xl font-extrabold text-slate-100">Perplexity Pplx-Decider</div>
-            <div className="text-xs text-slate-400 mt-1">
-              <strong>83.57% Acc</strong> • 79.09% Balanced • <strong>$0.02 / 1M</strong> tokens
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-sky-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-sky-400" />
+                  #2 Frontier Runner-Up
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                  92.2% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">OpenAI Decisions</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>98.3% Marine</strong> • 92.0% Proximity • <strong>0.062 Brier</strong>
+              </div>
+              <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
+                High metric precision across all continents ($0.0309)
+              </div>
             </div>
-            <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
-              Single-pass System-1 without reasoning latency penalty
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-orange-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-orange-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="w-4 h-4 text-orange-400" />
+                  Open-Weight Leap
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300">
+                  +11.3% Leap
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Cloudflare Clef</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>84.0% Bal Acc</strong> • 96.8% Marine • <strong>78.3% Compass</strong>
+              </div>
+              <div className="text-[11px] text-orange-300/80 mt-2 font-medium">
+                Jumps from 72.7% on coordinates to 84.0% on relations
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Zap className="w-4 h-4 text-amber-400" />
+                  Small Model Recovery
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                  +11.7% Jump
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">MSFT Decision-1</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>79.3% Bal Acc</strong> • 83.0% Marine • <strong>$0.0029 total</strong>
+              </div>
+              <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
+                At 9B params, relational reasoning far exceeds float lookup
+              </div>
             </div>
           </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-emerald-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-emerald-400" />
+                  #1 Pareto Decision Winner
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                  0.35s Median
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Perplexity Pplx-Decider</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>83.57% Acc</strong> • 79.09% Balanced • <strong>$0.02 / 1M</strong> tokens
+              </div>
+              <div className="text-[11px] text-emerald-300/80 mt-2 font-medium">
+                Single-pass System-1 without reasoning latency penalty
+              </div>
+            </div>
 
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-sky-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-sky-400" />
-                Frontier Accuracy Ceiling
-              </span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
-                97.6% Acc
-              </span>
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-sky-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-sky-400" />
+                  Frontier Accuracy Ceiling
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                  97.6% Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">GPT-6-Luna</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>96.67% Bal Acc</strong> • 0.0196 Brier • <strong>95.3% Coastal</strong>
+              </div>
+              <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
+                Near-perfect coastline fidelity, but requires 3.4s latency
+              </div>
             </div>
-            <div className="text-xl font-extrabold text-slate-100">GPT-6-Luna</div>
-            <div className="text-xs text-slate-400 mt-1">
-              <strong>96.67% Bal Acc</strong> • 0.0196 Brier • <strong>95.3% Coastal</strong>
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Zap className="w-4 h-4 text-amber-400" />
+                  Fastest Edge Inference
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                  69 ms
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Julia-1 (144M)</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>54.9 req/s</strong> throughput • Zero API cost • Local Metal
+              </div>
+              <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
+                Ultra-light edge, but exhibits integer longitude plaid striping
+              </div>
             </div>
-            <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
-              Near-perfect coastline fidelity, but requires 3.4s latency
+
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-purple-400" />
+                  The Latency Disqualification
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
+                  12.7s P90
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">Fastino GLiDE</div>
+              <div className="text-xs text-slate-400 mt-1">
+                88.9% Acc • <strong>12.68s P90 Tail</strong> • 1,026 CoT tokens
+              </div>
+              <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
+                Deranked from #2 because coasts trigger slow autoregressive CoT
+              </div>
             </div>
           </div>
+        )}
 
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
-              <span className="flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-amber-400" />
-                Fastest Edge Inference
-              </span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
-                69 ms
-              </span>
+        {selectedDatasetId === 'georeason_1200' ? (
+          <div className="mt-8 space-y-6">
+            {/* GeoReason Context Banner */}
+            <div className="bg-slate-900/60 p-6 rounded-2xl border border-purple-500/30 shadow-xl backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                    <Sparkles className="w-5 h-5 text-purple-300" />
+                  </span>
+                  <div>
+                    <h2 className="text-lg font-bold text-slate-100">
+                      GeoReason: Qualitative Spatial Relational Reasoning Benchmark
+                    </h2>
+                    <p className="text-xs text-purple-300/80 font-mono">
+                      1,200 Verified Questions • Balanced 50% True / 50% False • 6 Continents
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-bold">
+                    ✓ Hypothesis Confirmed
+                  </span>
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                    Total Run Cost: $0.085
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed max-w-4xl mt-2">
+                Continuous coordinate rasterization forces models to act as high-precision GIS polygon lookup tables, heavily biasing against smaller models that lack the parameter budget to memorize millions of fractal boundary vertices.
+                <strong> GeoReason removes the coordinate lookup tax</strong> and evaluates whether models possess true topological and spatial intelligence across 3 core geometric dimensions:
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-cyan-300 flex items-center gap-1.5">
+                      <Compass className="w-3.5 h-3.5 text-cyan-400" />
+                      1. Compass Cardinal (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Orientation</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates relative 2D manifold orientation (North, South, East, West). e.g., <em>&ldquo;Is Cairo predominantly North of Nairobi?&rdquo;</em> (True)
+                  </p>
+                </div>
+
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                      2. Proximity Triplets (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Metric Space</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates great-circle distance geometry with &ge;500km margin. e.g., <em>&ldquo;Is Paris closer to London than New York City?&rdquo;</em> (True)
+                  </p>
+                </div>
+
+                <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                      <Globe2 className="w-3.5 h-3.5 text-amber-400" />
+                      3. Marine Adjacency (400 Qs)
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Boundaries</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Evaluates ocean and sea border containment and hemispheres. e.g., <em>&ldquo;Does Chile border the Pacific Ocean?&rdquo;</em> (True)
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="text-xl font-extrabold text-slate-100">Julia-1 (144M)</div>
-            <div className="text-xs text-slate-400 mt-1">
-              <strong>54.9 req/s</strong> throughput • Zero API cost • Local Metal
-            </div>
-            <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
-              Ultra-light edge, but exhibits integer longitude plaid striping
+
+            {/* GeoReason Leaderboard Table */}
+            <div className="bg-slate-900/70 rounded-2xl border border-slate-800/80 overflow-hidden shadow-2xl">
+              <div className="p-4 sm:p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-amber-400" />
+                    Spatial Intelligence Leaderboard (N = 1,200)
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Live benchmark results executed via OpenRouter &amp; OpenAI Decisions APIs
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" />
+                  <span>100% Balanced Ground Truth</span>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-slate-950/90 border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                      <th className="p-4">Rank</th>
+                      <th className="p-4">Model &amp; Architecture</th>
+                      <th className="p-4 text-center">Balanced Acc</th>
+                      <th className="p-4">Compass Cardinal (400)</th>
+                      <th className="p-4">Proximity Triplets (400)</th>
+                      <th className="p-4">Marine Borders (400)</th>
+                      <th className="p-4 text-right">P90 Lat</th>
+                      <th className="p-4 text-right">Run Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60 font-sans">
+                    {GEOREASON_BENCHMARK_1200.models.map((m) => (
+                      <tr key={m.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="p-4 font-bold font-mono">
+                          <span className={`px-2.5 py-1 rounded text-xs inline-block ${
+                            m.rank === 1
+                              ? 'bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/40'
+                              : m.rank === 2
+                              ? 'bg-sky-500/20 text-sky-300 font-bold border border-sky-500/30'
+                              : 'bg-slate-800 text-slate-300'
+                          }`}>
+                            #{m.rank}
+                          </span>
+                        </td>
+                        <td className="p-4 max-w-sm">
+                          <div className="font-bold text-slate-100 text-sm flex items-center gap-2">
+                            <span>{m.name}</span>
+                            {m.rank === 1 && (
+                              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                                WINNER
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                            {m.architecture} • {m.provider}
+                          </div>
+                          <div className="text-[11px] text-emerald-400/90 mt-1.5 leading-snug">
+                            {m.keyTakeaway}
+                          </div>
+                        </td>
+                        <td className="p-4 text-center font-mono">
+                          <span className="text-lg font-extrabold text-slate-100">
+                            {m.balancedAccuracy.toFixed(1)}%
+                          </span>
+                          <div className="text-[10px] text-slate-400 mt-0.5">Brier: {m.brierScore.toFixed(4)}</div>
+                        </td>
+                        <td className="p-4 w-44">
+                          <div className="flex items-center justify-between text-xs font-mono mb-1">
+                            <span className="text-slate-400 text-[11px]">Accuracy</span>
+                            <span className="font-bold text-cyan-300">{m.categories.compass_cardinal.balancedAccuracy.toFixed(1)}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="bg-cyan-400 h-full rounded-full transition-all"
+                              style={{ width: `${m.categories.compass_cardinal.balancedAccuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4 w-44">
+                          <div className="flex items-center justify-between text-xs font-mono mb-1">
+                            <span className="text-slate-400 text-[11px]">Accuracy</span>
+                            <span className="font-bold text-emerald-300">{m.categories.proximity_triplets.balancedAccuracy.toFixed(1)}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="bg-emerald-400 h-full rounded-full transition-all"
+                              style={{ width: `${m.categories.proximity_triplets.balancedAccuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4 w-44">
+                          <div className="flex items-center justify-between text-xs font-mono mb-1">
+                            <span className="text-slate-400 text-[11px]">Accuracy</span>
+                            <span className="font-bold text-amber-300">{m.categories.marine_coastal_borders.balancedAccuracy.toFixed(1)}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="bg-amber-400 h-full rounded-full transition-all"
+                              style={{ width: `${m.categories.marine_coastal_borders.balancedAccuracy}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-4 text-right font-mono text-slate-300 whitespace-nowrap">
+                          {m.p90LatencySeconds.toFixed(2)}s
+                        </td>
+                        <td className="p-4 text-right font-mono text-slate-300 whitespace-nowrap">
+                          ${m.totalCostUsd.toFixed(4)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-
-          <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
-            <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
-              <span className="flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4 text-purple-400" />
-                The Latency Disqualification
-              </span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
-                12.7s P90
-              </span>
-            </div>
-            <div className="text-xl font-extrabold text-slate-100">Fastino GLiDE</div>
-            <div className="text-xs text-slate-400 mt-1">
-              88.9% Acc • <strong>12.68s P90 Tail</strong> • 1,026 CoT tokens
-            </div>
-            <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
-              Deranked from #2 because coasts trigger slow autoregressive CoT
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Pareto Scatter Visualizer */}
-        <div className="mt-8 bg-slate-900/50 p-5 sm:p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
+        ) : (
+          <>
+            {/* Interactive Pareto Scatter Visualizer */}
+            <div className="mt-8 bg-slate-900/50 p-5 sm:p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-100 flex items-center gap-2">
@@ -446,6 +740,244 @@ export const Billboard: React.FC<BillboardProps> = ({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Fairer Geospatial Metrics: Distance-to-Coast & Selective Abstention */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* Panel 1: Distance-to-Coast Stratification */}
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <Compass className="w-4 h-4 text-cyan-400" />
+                Distance-to-Coast Stratification (Boundary vs. Deep Interior)
+              </h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 font-bold">
+                Fairness Metric
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              Models with fewer parameters lack the capacity to memorize Earth&apos;s fractal coastline vertices (0–50km),
+              but exhibit strong spatial understanding in continental interiors and open oceans (&gt;500km).
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr className="border-b border-slate-800 text-[10px] text-slate-400 uppercase">
+                    <th className="pb-2 font-bold">Model</th>
+                    <th className="pb-2 text-right">0–50km (Coast)</th>
+                    <th className="pb-2 text-right">50–200km</th>
+                    <th className="pb-2 text-right">200–500km</th>
+                    <th className="pb-2 text-right text-emerald-400 font-bold">&gt;500km (Deep)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {selectedDatasetId === 'global_earth_16200' ? (
+                    <>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                          OpenAI Dec
+                        </td>
+                        <td className="py-2 text-right text-slate-400">60.1%</td>
+                        <td className="py-2 text-right text-slate-300">80.8%</td>
+                        <td className="py-2 text-right text-slate-200">90.4%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">96.3%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          Pplx-Decider
+                        </td>
+                        <td className="py-2 text-right text-slate-400">55.0%</td>
+                        <td className="py-2 text-right text-slate-300">71.8%</td>
+                        <td className="py-2 text-right text-slate-200">83.1%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">90.9%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-orange-400" />
+                          Clef (27B)
+                        </td>
+                        <td className="py-2 text-right text-slate-400">53.4%</td>
+                        <td className="py-2 text-right text-slate-300">66.8%</td>
+                        <td className="py-2 text-right text-slate-200">75.0%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">84.8%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-amber-400" />
+                          MSFT Dec-1
+                        </td>
+                        <td className="py-2 text-right text-slate-400">50.3%</td>
+                        <td className="py-2 text-right text-slate-300">60.3%</td>
+                        <td className="py-2 text-right text-slate-200">69.6%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">77.8%</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                          OpenAI Dec
+                        </td>
+                        <td className="py-2 text-right text-slate-400">79.9%</td>
+                        <td className="py-2 text-right text-slate-300">97.9%</td>
+                        <td className="py-2 text-right text-slate-200">99.7%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">100.0%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          Pplx-Decider
+                        </td>
+                        <td className="py-2 text-right text-slate-400">65.7%</td>
+                        <td className="py-2 text-right text-slate-300">85.7%</td>
+                        <td className="py-2 text-right text-slate-200">98.1%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">100.0%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-orange-400" />
+                          Clef (27B)
+                        </td>
+                        <td className="py-2 text-right text-slate-400">62.8%</td>
+                        <td className="py-2 text-right text-slate-300">78.3%</td>
+                        <td className="py-2 text-right text-slate-200">95.8%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">100.0%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-purple-400" />
+                          Gemma-4 (31B)
+                        </td>
+                        <td className="py-2 text-right text-slate-400">66.7%</td>
+                        <td className="py-2 text-right text-slate-300">82.9%</td>
+                        <td className="py-2 text-right text-slate-200">88.6%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">75.0%</td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-3 text-[11px] text-cyan-300/80 font-medium">
+              💡 Clef &amp; Pplx jump by <strong>+31% to +36%</strong> between the fractal coastline and continental interior.
+            </div>
+          </div>
+
+          {/* Panel 2: Selective Abstention */}
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                Selective Classification (Abstaining on Uncertain Coasts)
+              </h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-bold">
+                System-1 Gateway
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              When models are allowed to abstain on their bottom 20% most uncertain coordinates (where probability is near 0.5), accuracy dramatically surges across the board.
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr className="border-b border-slate-800 text-[10px] text-slate-400 uppercase">
+                    <th className="pb-2 font-bold">Model</th>
+                    <th className="pb-2 text-right">100% (No Abstain)</th>
+                    <th className="pb-2 text-right">90% Coverage</th>
+                    <th className="pb-2 text-right text-emerald-400 font-bold">80% Coverage</th>
+                    <th className="pb-2 text-right">50% High-Conf</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {selectedDatasetId === 'global_earth_16200' ? (
+                    <>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                          OpenAI Dec
+                        </td>
+                        <td className="py-2 text-right text-slate-400">88.1%</td>
+                        <td className="py-2 text-right text-slate-300">91.5%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">94.4%</td>
+                        <td className="py-2 text-right text-sky-300">99.0%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          Pplx-Decider
+                        </td>
+                        <td className="py-2 text-right text-slate-400">81.7%</td>
+                        <td className="py-2 text-right text-slate-300">84.8%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">87.6%</td>
+                        <td className="py-2 text-right text-sky-300">95.2%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-orange-400" />
+                          Clef (27B)
+                        </td>
+                        <td className="py-2 text-right text-slate-400">75.8%</td>
+                        <td className="py-2 text-right text-slate-300">78.3%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">80.7%</td>
+                        <td className="py-2 text-right text-sky-300">90.4%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-amber-400" />
+                          MSFT Dec-1
+                        </td>
+                        <td className="py-2 text-right text-slate-400">69.7%</td>
+                        <td className="py-2 text-right text-slate-300">71.5%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">73.3%</td>
+                        <td className="py-2 text-right text-sky-300">81.0%</td>
+                      </tr>
+                    </>
+                  ) : (
+                    <>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                          OpenAI Dec
+                        </td>
+                        <td className="py-2 text-right text-slate-400">93.3%</td>
+                        <td className="py-2 text-right text-slate-300">96.7%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">98.6%</td>
+                        <td className="py-2 text-right text-sky-300">99.5%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                          Pplx-Decider
+                        </td>
+                        <td className="py-2 text-right text-slate-400">83.6%</td>
+                        <td className="py-2 text-right text-slate-300">86.8%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">90.1%</td>
+                        <td className="py-2 text-right text-sky-300">97.0%</td>
+                      </tr>
+                      <tr className="hover:bg-slate-800/30">
+                        <td className="py-2 text-slate-200 font-sans font-bold flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-orange-400" />
+                          Clef (27B)
+                        </td>
+                        <td className="py-2 text-right text-slate-400">78.9%</td>
+                        <td className="py-2 text-right text-slate-300">81.9%</td>
+                        <td className="py-2 text-right text-emerald-400 font-bold">86.3%</td>
+                        <td className="py-2 text-right text-sky-300">95.6%</td>
+                      </tr>
+                    </>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-3 text-[11px] text-emerald-300/80 font-medium">
+              🚀 Clef reaches <strong>86.3%</strong> and Pplx reaches <strong>90.1%</strong> accuracy on their top 80% confident predictions.
+            </div>
           </div>
         </div>
 
@@ -826,6 +1358,8 @@ export const Billboard: React.FC<BillboardProps> = ({
             </table>
           </div>
         </div>
+        </>
+        )}
 
         {/* Footer Methodology Notes */}
         <div className="mt-8 pt-6 border-t border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">

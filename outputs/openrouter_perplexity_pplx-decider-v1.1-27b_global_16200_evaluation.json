@@ -66,5 +66,112 @@
       "max_seconds": 5.2983,
       "sample_count": 16200
     }
-  }
+  },
+  "distance_stratification": {
+    "coastal_0_50km": {
+      "cell_count": 1771,
+      "cell_fraction": 0.1093,
+      "accuracy": 0.55,
+      "balanced_accuracy": 0.5541,
+      "true_positive": 487,
+      "true_negative": 487,
+      "false_positive": 475,
+      "false_negative": 322
+    },
+    "near_coastal_50_200km": {
+      "cell_count": 2929,
+      "cell_fraction": 0.1808,
+      "accuracy": 0.718,
+      "balanced_accuracy": 0.715,
+      "true_positive": 759,
+      "true_negative": 1344,
+      "false_positive": 506,
+      "false_negative": 320
+    },
+    "intermediate_200_500km": {
+      "cell_count": 3868,
+      "cell_fraction": 0.2388,
+      "accuracy": 0.8307,
+      "balanced_accuracy": 0.8229,
+      "true_positive": 1050,
+      "true_negative": 2163,
+      "false_positive": 390,
+      "false_negative": 265
+    },
+    "deep_interior_gt_500km": {
+      "cell_count": 7632,
+      "cell_fraction": 0.4711,
+      "accuracy": 0.9093,
+      "balanced_accuracy": 0.9109,
+      "true_positive": 1990,
+      "true_negative": 4950,
+      "false_positive": 506,
+      "false_negative": 186
+    }
+  },
+  "selective_classification": [
+    {
+      "coverage_percent": 100,
+      "cell_count": 16200,
+      "accuracy": 0.8167,
+      "balanced_accuracy": 0.8117,
+      "min_confidence_threshold": 0.0002
+    },
+    {
+      "coverage_percent": 95,
+      "cell_count": 15390,
+      "accuracy": 0.8303,
+      "balanced_accuracy": 0.8254,
+      "min_confidence_threshold": 0.0881
+    },
+    {
+      "coverage_percent": 90,
+      "cell_count": 14580,
+      "accuracy": 0.8472,
+      "balanced_accuracy": 0.8416,
+      "min_confidence_threshold": 0.1825
+    },
+    {
+      "coverage_percent": 85,
+      "cell_count": 13770,
+      "accuracy": 0.8621,
+      "balanced_accuracy": 0.8557,
+      "min_confidence_threshold": 0.2706
+    },
+    {
+      "coverage_percent": 80,
+      "cell_count": 12960,
+      "accuracy": 0.8765,
+      "balanced_accuracy": 0.8689,
+      "min_confidence_threshold": 0.3641
+    },
+    {
+      "coverage_percent": 75,
+      "cell_count": 12150,
+      "accuracy": 0.8918,
+      "balanced_accuracy": 0.8839,
+      "min_confidence_threshold": 0.4567
+    },
+    {
+      "coverage_percent": 70,
+      "cell_count": 11340,
+      "accuracy": 0.9073,
+      "balanced_accuracy": 0.8995,
+      "min_confidence_threshold": 0.5494
+    },
+    {
+      "coverage_percent": 60,
+      "cell_count": 9720,
+      "accuracy": 0.9352,
+      "balanced_accuracy": 0.926,
+      "min_confidence_threshold": 0.682
+    },
+    {
+      "coverage_percent": 50,
+      "cell_count": 8100,
+      "accuracy": 0.9648,
+      "balanced_accuracy": 0.9505,
+      "min_confidence_threshold": 0.7757
+    }
+  ]
 }

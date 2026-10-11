@@ -1,0 +1,164 @@
+{
+  "benchmark_name": "GeoReason: Spatial Relational Intelligence Benchmark",
+  "sample_size": 300,
+  "seed": 42,
+  "timestamp": "2026-10-11T03:48:44Z",
+  "models": {
+    "clef": {
+      "name": "Cloudflare Clef (27B)",
+      "provider": "openrouter",
+      "model_id": "cloudflare/clef",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.8433,
+        "balanced_accuracy": 0.8433,
+        "brier_score": 0.1074,
+        "categories": {
+          "compass_cardinal": {
+            "count": 100,
+            "accuracy": 0.78,
+            "balanced_accuracy": 0.78
+          },
+          "proximity_triplets": {
+            "count": 100,
+            "accuracy": 0.79,
+            "balanced_accuracy": 0.79
+          },
+          "marine_coastal_borders": {
+            "count": 100,
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96
+          }
+        },
+        "confusion_matrix": {
+          "tp": 108,
+          "tn": 145,
+          "fp": 5,
+          "fn": 42
+        },
+        "median_latency_seconds": 2.8237,
+        "p90_latency_seconds": 4.6845,
+        "total_cost_usd": 0.011978,
+        "wall_clock_time_seconds": 5.24,
+        "effective_throughput_req_sec": 57.2
+      }
+    },
+    "pplx": {
+      "name": "Perplexity Pplx-Decider",
+      "provider": "openrouter",
+      "model_id": "perplexity/pplx-decider-v1.1-27b",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.9467,
+        "balanced_accuracy": 0.9467,
+        "brier_score": 0.0436,
+        "categories": {
+          "compass_cardinal": {
+            "count": 100,
+            "accuracy": 0.89,
+            "balanced_accuracy": 0.89
+          },
+          "proximity_triplets": {
+            "count": 100,
+            "accuracy": 0.95,
+            "balanced_accuracy": 0.95
+          },
+          "marine_coastal_borders": {
+            "count": 100,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0
+          }
+        },
+        "confusion_matrix": {
+          "tp": 139,
+          "tn": 145,
+          "fp": 5,
+          "fn": 11
+        },
+        "median_latency_seconds": 2.108,
+        "p90_latency_seconds": 3.5103,
+        "total_cost_usd": 0.000728,
+        "wall_clock_time_seconds": 19.71,
+        "effective_throughput_req_sec": 15.22
+      }
+    },
+    "msft": {
+      "name": "Microsoft Decision-1",
+      "provider": "openrouter",
+      "model_id": "microsoft/microsoft-decision-1",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.8833,
+        "balanced_accuracy": 0.8833,
+        "brier_score": 0.0872,
+        "categories": {
+          "compass_cardinal": {
+            "count": 100,
+            "accuracy": 0.82,
+            "balanced_accuracy": 0.82
+          },
+          "proximity_triplets": {
+            "count": 100,
+            "accuracy": 0.89,
+            "balanced_accuracy": 0.89
+          },
+          "marine_coastal_borders": {
+            "count": 100,
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94
+          }
+        },
+        "confusion_matrix": {
+          "tp": 132,
+          "tn": 133,
+          "fp": 17,
+          "fn": 18
+        },
+        "median_latency_seconds": 1.9731,
+        "p90_latency_seconds": 3.3569,
+        "total_cost_usd": 0.000929,
+        "wall_clock_time_seconds": 3.68,
+        "effective_throughput_req_sec": 81.43
+      }
+    },
+    "openai": {
+      "name": "OpenAI Decisions (Luna)",
+      "provider": "openai",
+      "model_id": "gpt-6-luna",
+      "metrics": {
+        "total_questions": 300,
+        "accuracy": 0.93,
+        "balanced_accuracy": 0.93,
+        "brier_score": 0.0576,
+        "categories": {
+          "compass_cardinal": {
+            "count": 100,
+            "accuracy": 0.87,
+            "balanced_accuracy": 0.87
+          },
+          "proximity_triplets": {
+            "count": 100,
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94
+          },
+          "marine_coastal_borders": {
+            "count": 100,
+            "accuracy": 0.98,
+            "balanced_accuracy": 0.98
+          }
+        },
+        "confusion_matrix": {
+          "tp": 142,
+          "tn": 137,
+          "fp": 13,
+          "fn": 8
+        },
+        "median_latency_seconds": 1.5173,
+        "p90_latency_seconds": 2.3807,
+        "total_cost_usd": 0.007719,
+        "wall_clock_time_seconds": 2.6,
+        "effective_throughput_req_sec": 115.49
+      }
+    }
+  }
+}

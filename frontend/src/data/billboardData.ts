@@ -34,6 +34,46 @@ export interface BillboardModelEntry {
   seaOfJapanCorrectPct?: number;
   keyInsight: string;
   pathologyTag?: string;
+  distanceStratification?: {
+    coastal_0_50km: { accuracy: number; balancedAccuracy: number; count: number };
+    near_coastal_50_200km: { accuracy: number; balancedAccuracy: number; count: number };
+    intermediate_200_500km: { accuracy: number; balancedAccuracy: number; count: number };
+    deep_interior_gt_500km: { accuracy: number; balancedAccuracy: number; count: number };
+  };
+  selectiveAccuracy80Pct?: number;
+}
+
+export interface GeoReasonCategoryScore {
+  count: number;
+  accuracy: number;
+  balancedAccuracy: number;
+}
+
+export interface GeoReasonModelEntry {
+  id: string;
+  name: string;
+  provider: string;
+  architecture: string;
+  rank: number;
+  balancedAccuracy: number;
+  overallAccuracy: number;
+  brierScore: number;
+  p90LatencySeconds: number;
+  totalCostUsd: number;
+  categories: {
+    compass_cardinal: GeoReasonCategoryScore;
+    proximity_triplets: GeoReasonCategoryScore;
+    marine_coastal_borders: GeoReasonCategoryScore;
+  };
+  keyTakeaway: string;
+}
+
+export interface GeoReasonBenchmarkInfo {
+  id: string;
+  name: string;
+  description: string;
+  sampleSize: number;
+  models: GeoReasonModelEntry[];
 }
 
 export interface BenchmarkDatasetInfo {
@@ -665,7 +705,89 @@ export const GLOBAL_EARTH_16200: BenchmarkDatasetInfo = {
   ],
 };
 
+export const GEOREASON_BENCHMARK_1200: GeoReasonBenchmarkInfo = {
+  id: 'georeason_1200',
+  name: 'GeoReason: Spatial Relational Intelligence (1,200 Qs)',
+  description: 'Empirical benchmark evaluating whether models understand real spatial relations (cardinal orientation, metric space proximity, oceanic & marine borders) without relying on continuous float coordinate memorization.',
+  sampleSize: 1200,
+  models: [
+    {
+      id: 'pplx-georeason',
+      name: 'Perplexity Pplx-Decider',
+      provider: 'Perplexity / OpenRouter',
+      architecture: '27B System-1 Decision Fine-Tune',
+      rank: 1,
+      balancedAccuracy: 94.08,
+      overallAccuracy: 94.08,
+      brierScore: 0.0488,
+      p90LatencySeconds: 7.88,
+      totalCostUsd: 0.0029,
+      categories: {
+        compass_cardinal: { count: 400, accuracy: 88.25, balancedAccuracy: 88.25 },
+        proximity_triplets: { count: 400, accuracy: 94.00, balancedAccuracy: 94.00 },
+        marine_coastal_borders: { count: 400, accuracy: 100.00, balancedAccuracy: 100.00 },
+      },
+      keyTakeaway: '#1 Spatial Relational Champion: Flawless 100% accuracy on oceanic borders and 94.0% on metric proximity ranking. Edges out frontier models at 1/10th the cost ($0.0029 total).',
+    },
+    {
+      id: 'openai-georeason',
+      name: 'OpenAI Decisions (Luna)',
+      provider: 'OpenAI',
+      architecture: 'GPT-6-Luna Decision Predicate Engine',
+      rank: 2,
+      balancedAccuracy: 92.17,
+      overallAccuracy: 92.17,
+      brierScore: 0.0622,
+      p90LatencySeconds: 7.57,
+      totalCostUsd: 0.0309,
+      categories: {
+        compass_cardinal: { count: 400, accuracy: 86.25, balancedAccuracy: 86.25 },
+        proximity_triplets: { count: 400, accuracy: 92.00, balancedAccuracy: 92.00 },
+        marine_coastal_borders: { count: 400, accuracy: 98.25, balancedAccuracy: 98.25 },
+      },
+      keyTakeaway: '#2 Frontier Runner-Up: Exceptional metric space geometry (92% proximity, 98.25% marine), but narrowly surpassed by Perplexity on cardinal compass alignment.',
+    },
+    {
+      id: 'clef-georeason',
+      name: 'Cloudflare Clef (27B)',
+      provider: 'Cloudflare / OpenRouter',
+      architecture: '27B Multimodal Decision Fine-Tune',
+      rank: 3,
+      balancedAccuracy: 84.00,
+      overallAccuracy: 84.00,
+      brierScore: 0.1060,
+      p90LatencySeconds: 8.20,
+      totalCostUsd: 0.0479,
+      categories: {
+        compass_cardinal: { count: 400, accuracy: 78.25, balancedAccuracy: 78.25 },
+        proximity_triplets: { count: 400, accuracy: 77.00, balancedAccuracy: 77.00 },
+        marine_coastal_borders: { count: 400, accuracy: 96.75, balancedAccuracy: 96.75 },
+      },
+      keyTakeaway: '+11.3% Accuracy Leap: Demonstrates that 27B open weights encode deep geographic relationships (96.75% on marine borders) despite struggling with fractal float coordinate polygons.',
+    },
+    {
+      id: 'msft-georeason',
+      name: 'Microsoft Decision-1',
+      provider: 'Microsoft / OpenRouter',
+      architecture: '9B System-1 Decision Fine-Tune',
+      rank: 4,
+      balancedAccuracy: 79.33,
+      overallAccuracy: 68.67,
+      brierScore: 0.1260,
+      p90LatencySeconds: 8.03,
+      totalCostUsd: 0.0029,
+      categories: {
+        compass_cardinal: { count: 400, accuracy: 65.25, balancedAccuracy: 76.00 },
+        proximity_triplets: { count: 400, accuracy: 69.25, balancedAccuracy: 79.00 },
+        marine_coastal_borders: { count: 400, accuracy: 71.50, balancedAccuracy: 83.00 },
+      },
+      keyTakeaway: '+11.7% Jump over Continuous Grids: While 9B weights hovered near coin-flip on raw coordinates (51-64%), relational spatial reasoning reaches 79.3% balanced accuracy.',
+    },
+  ],
+};
+
 export const ALL_BENCHMARK_DATASETS: BenchmarkDatasetInfo[] = [
   REGIONAL_JAPAN_KOREA_2112,
   GLOBAL_EARTH_16200,
 ];
+

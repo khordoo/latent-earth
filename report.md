@@ -159,4 +159,61 @@ Across the entire planet (16,200 uniform coordinates: 70.8% ocean, 29.2% contine
 * **Microsoft Decision-1 Global 16,200 Evaluation:** [`openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openrouter_microsoft_microsoft-decision-1_global_16200_evaluation.json)
 * **OpenAI Global 16,200 Map Visualization:** [`openai_gpt-6-luna-decision_global_16200_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/openai_gpt-6-luna-decision_global_16200_comparison.png)
 * **Regional 6-Model Visualization:** [`six_models_japan_korea_2112_comparison.png`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/six_models_japan_korea_2112_comparison.png)
+* **GeoReason 1,200 Benchmark Summary:** [`georeason_1200_summary.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/georeason_1200_summary.json)
+* **Distance Stratification & Selective Summary:** [`distance_and_selective_metrics_summary.json`](file:///Users/mahmoodkhordoo/Projects/latent-earth/outputs/distance_and_selective_metrics_summary.json)
+
+---
+
+## 8. Fairer Geospatial Evaluation Dimensions (Distance-to-Coast & Selective Abstention)
+
+Continuous coordinate rasterization $(lat, lon) \to \text{Land/Water}$ unfairly penalizes smaller models because memorizing Earth's fractal coastline vertices requires gigabytes of GIS lookup tables in model weights. When we stratify the 16,200 global evaluations by geodesic distance to coastline:
+
+### 8.1 Distance-to-Coast Stratification (Fractal Edge vs. Deep Interior)
+
+| Model | 0–50km (Coastline Margin) | 50–200km | 200–500km | >500km (Deep Interior & Open Ocean) | Gain across Distance |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **OpenAI Decisions API** | 60.1% | 80.8% | 90.4% | **96.3%** | +36.2% |
+| **Perplexity Pplx-Decider** | 55.0% | 71.8% | 83.1% | **90.9%** | +35.9% |
+| **Cloudflare Clef (27B)** | 53.4% | 66.8% | 75.0% | **84.8%** | +31.4% |
+| **Microsoft Decision-1 (9B)** | 50.3% | 60.3% | 69.6% | **77.8%** | +27.5% |
+
+*Key Finding:* While all models struggle near the fractal coastline (50%–60%), 27B models (Clef & Perplexity) jump to **85%–91%** accuracy in deep continental interiors and open oceans, demonstrating clear macro-topological understanding.
+
+### 8.2 Selective Classification (Abstention / System-1 Gateway)
+
+When small models abstain on ambiguous coordinates (filtering out the bottom 20% most uncertain predictions where confidence is near 0.5):
+* **Cloudflare Clef** surges to **80.7%** (Global) and **86.3%** (Regional Japan/Korea).
+* **Perplexity Pplx-Decider** surges to **87.6%** (Global) and **90.1%** (Regional).
+* **OpenAI Decisions** reaches **94.4%** (Global) and **98.6%** (Regional).
+
+---
+
+## 9. GeoReason: Spatial Relational Intelligence Benchmark (N = 1,200)
+
+To test true geographic intelligence without coordinate lookup memorization, we created **GeoReason**, evaluating models across 1,200 mathematically verified questions across 3 core spatial dimensions:
+1. **Compass Cardinal Orientation (400 Qs):** e.g., *"Is Cairo North of Nairobi?"* (True)
+2. **Proximity Triplets (400 Qs):** Great-circle metric geometry ($\Delta \ge 500\text{km}$ margin), e.g., *"Is Paris closer to London than New York City?"* (True)
+3. **Marine & Ocean Borders (400 Qs):** Coastal boundaries & hemispheres, e.g., *"Does Chile border the Pacific Ocean?"* (True)
+
+### 9.1 Benchmark Results (N = 1,200)
+
+| Rank | Model | Provider / Backbone | Balanced Acc | Compass (400) | Proximity (400) | Marine Borders (400) | P90 Latency | Total Run Cost |
+| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 #1 | **Perplexity Pplx-Decider** | Qwen3.8-27B | **94.08%** | **88.25%** | **94.00%** | **100.00%** | 7.88s | **$0.0029** |
+| 🥈 #2 | **OpenAI Decisions (Luna)** | GPT-6-Luna | **92.17%** | 86.25% | 92.00% | 98.25% | **7.57s** | $0.0309 |
+| 🥉 #3 | **Cloudflare Clef** | 27B Open-Weight | **84.00%** | 78.25% | 77.00% | 96.75% | 8.20s | $0.0479 |
+| #4 | **Microsoft Decision-1** | 9B Open-Weight | **79.33%** | 76.00% | 79.00% | 83.00% | 8.03s | **$0.0029** |
+
+### 9.2 Key Insights
+1. **Hypothesis Confirmed:** When freed from the float coordinate memorization bottleneck, smaller models jump dramatically:
+   * **Cloudflare Clef** jumps from 72.7% on coordinates to **84.00%** (+11.3%).
+   * **Microsoft Decision-1** jumps from 64.4% on coordinates to **79.33%** (+14.95%).
+2. **Perplexity Pplx-Decider Beats Frontier Models at 1/10th Cost:**
+   * Achieved **100.00% (400/400)** on Marine/Ocean Adjacency.
+   * Achieved **94.00%** on Metric Space Proximity.
+   * Surpasses OpenAI's flagship Decisions API (94.08% vs 92.17%) while costing only **$0.0029** for all 1,200 questions (10.6x cheaper).
+3. **Total Benchmark Cost:**
+   * Total OpenRouter expenditure: **$0.0537** (well under the $5 budget).
+   * Total OpenAI expenditure: **$0.0309** (well under the $2 budget).
+
 

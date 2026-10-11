@@ -301,6 +301,70 @@ def evaluate_predictions(
         else None
     )
 
+    # Distance Stratification Analysis (0-50km, 50-200km, 200-500km, >500km)
+    dist_bins_spec = [
+        ("coastal_0_50km", 0.0, 50.0),
+        ("near_coastal_50_200km", 50.0, 200.0),
+        ("intermediate_200_500km", 200.0, 500.0),
+        ("deep_interior_gt_500km", 500.0, 1e9),
+    ]
+    distance_stratification: dict[str, Any] = {}
+    for b_name, min_d, max_d in dist_bins_spec:
+        b_preds = [
+            p for p in predictions
+            if min_d <= (getattr(p, "distance_to_coastline_km", None) or getattr(p, "distance_to_coastline", 0.0) or 0.0) < max_d
+        ]
+        if b_preds:
+            b_tp = sum(1 for p in b_preds if p.is_land and p.actual_land)
+            b_tn = sum(1 for p in b_preds if not p.is_land and not p.actual_land)
+            b_fp = sum(1 for p in b_preds if p.is_land and not p.actual_land)
+            b_fn = sum(1 for p in b_preds if not p.is_land and p.actual_land)
+            b_acc = (b_tp + b_tn) / len(b_preds)
+            b_tpr = b_tp / (b_tp + b_fn) if (b_tp + b_fn) > 0 else 0.0
+            b_tnr = b_tn / (b_tn + b_fp) if (b_tn + b_fp) > 0 else 0.0
+            b_bal = (b_tpr + b_tnr) / 2.0
+            distance_stratification[b_name] = {
+                "cell_count": len(b_preds),
+                "cell_fraction": round(len(b_preds) / total, 4),
+                "accuracy": round(b_acc, 4),
+                "balanced_accuracy": round(b_bal, 4),
+                "true_positive": b_tp,
+                "true_negative": b_tn,
+                "false_positive": b_fp,
+                "false_negative": b_fn,
+            }
+
+    # Selective Classification / Risk-Coverage (Abstention) Curve
+    selective_curve: list[dict[str, Any]] = []
+    scored_pts = []
+    for p in predictions:
+        if p.probability_land is not None:
+            conf = abs(p.probability_land - 0.5) * 2.0
+            corr = (p.is_land == p.actual_land)
+            scored_pts.append((conf, p.is_land, p.actual_land, corr))
+
+    if scored_pts:
+        scored_pts.sort(key=lambda x: x[0], reverse=True)
+        for cov_pct in [100, 95, 90, 85, 80, 75, 70, 60, 50]:
+            take_n = max(1, int(len(scored_pts) * (cov_pct / 100.0)))
+            sub = scored_pts[:take_n]
+            sub_acc = sum(x[3] for x in sub) / len(sub)
+            s_tp = sum(1 for x in sub if x[1] and x[2])
+            s_tn = sum(1 for x in sub if not x[1] and not x[2])
+            s_fp = sum(1 for x in sub if x[1] and not x[2])
+            s_fn = sum(1 for x in sub if not x[1] and x[2])
+            s_tpr = s_tp / (s_tp + s_fn) if (s_tp + s_fn) > 0 else 0.0
+            s_tnr = s_tn / (s_tn + s_fp) if (s_tn + s_fp) > 0 else 0.0
+            s_bal = (s_tpr + s_tnr) / 2.0
+            min_conf = sub[-1][0]
+            selective_curve.append({
+                "coverage_percent": cov_pct,
+                "cell_count": take_n,
+                "accuracy": round(sub_acc, 4),
+                "balanced_accuracy": round(s_bal, 4),
+                "min_confidence_threshold": round(min_conf, 4),
+            })
+
     # Sort analysis lists
     confidently_wrong.sort(key=lambda x: x["confidence_in_error"], reverse=True)
     uncertain_coords.sort(key=lambda x: abs(x["probability_land"] - 0.5))
@@ -365,6 +429,8 @@ def evaluate_predictions(
             "area_weighted_accuracy": round(coastal_weighted_acc, 4) if coastal_weighted_acc is not None else None,
             "area_weighted_brier_score": round(coastal_weighted_brier, 4) if coastal_weighted_brier is not None else None,
         },
+        "distance_stratification": distance_stratification,
+        "selective_classification": selective_curve,
         "confusion_matrix": {
             "true_positive_land": tp,
             "true_negative_water": tn,
