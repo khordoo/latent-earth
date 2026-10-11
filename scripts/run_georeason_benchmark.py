@@ -35,9 +35,11 @@ logger = logging.getLogger("georeason")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+TYPESAFE_API_KEY = os.getenv("TYPESAFE_API_KEY")
 
 OPENROUTER_DECISIONS_URL = "https://openrouter.ai/api/alpha/decisions"
 OPENAI_DECISIONS_URL = "https://api.openai.com/v1/decisions"
+TYPESAFE_JEV_URL = "https://api.typesafe.ai/v1/systemone"
 
 OUTPUTS_DIR = Path("outputs")
 OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -49,6 +51,7 @@ MODELS = [
     {"id": "clef", "name": "Cloudflare Clef (27B)", "provider": "openrouter", "model_id": "cloudflare/clef"},
     {"id": "pplx", "name": "Perplexity Pplx-Decider", "provider": "openrouter", "model_id": "perplexity/pplx-decider-v1.1-27b"},
     {"id": "msft", "name": "Microsoft Decision-1", "provider": "openrouter", "model_id": "microsoft/microsoft-decision-1"},
+    {"id": "jev", "name": "TypeSafe Jev", "provider": "typesafe", "model_id": "jev-latest"},
     {"id": "openai", "name": "OpenAI Decisions (Luna)", "provider": "openai", "model_id": "gpt-6-luna"},
 ]
 
@@ -70,6 +73,27 @@ async def query_model_single(
             "Content-Type": "application/json",
             "HTTP-Referer": "https://github.com/latent-earth",
             "X-Title": "GeoReason Benchmark",
+        }
+        payload = {
+            "model": model_id,
+            "state": q.context,
+            "questions": {
+                "statement_is_true": {
+                    "type": "noul",
+                    "instructions": q.question,
+                    "criteria": {
+                        "true": "The statement is geographically correct, factual, and accurate.",
+                        "false": "The statement is geographically false, incorrect, or contradictory.",
+                    },
+                }
+            },
+        }
+    elif provider == "typesafe":
+        url = TYPESAFE_JEV_URL
+        headers = {
+            "Authorization": f"Bearer {TYPESAFE_API_KEY}",
+            "Content-Type": "application/json",
+            "User-Agent": "LatentEarth/0.1.0",
         }
         payload = {
             "model": model_id,
@@ -121,6 +145,14 @@ async def query_model_single(
                     if p is not None:
                         prob = float(p)
                     cost = data.get("usage", {}).get("cost", 0.0)
+                elif provider == "typesafe":
+                    ans = data.get("answers", {}).get("statement_is_true", {})
+                    p = ans.get("noul", ans.get("probability"))
+                    if p is not None:
+                        prob = float(p)
+                    usage = data.get("usage", {})
+                    toks = usage.get("input_tokens", 0) + usage.get("output_tokens", 0)
+                    cost = toks * 0.042 / 1e6
                 else:  # openai
                     ans_list = data.get("answers", [])
                     if ans_list and isinstance(ans_list, list):
@@ -265,22 +297,42 @@ async def main():
     parser.add_argument("--size", type=int, default=300, help="Benchmark dataset size (e.g. 300 or 1200)")
     parser.add_argument("--concurrency", type=int, default=25, help="Concurrent request limit")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
+    parser.add_argument("--models", type=str, default="all", help="Comma-separated model ids or 'all'")
     args = parser.parse_args()
 
     questions = generate_georeason_dataset(total_count=args.size, seed=args.seed)
     logger.info("Generated %d GeoReason benchmark questions.", len(questions))
 
-    summary: dict[str, Any] = {
-        "benchmark_name": "GeoReason: Spatial Relational Intelligence Benchmark",
-        "sample_size": len(questions),
-        "seed": args.seed,
-        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "models": {},
-    }
+    summary_path = OUTPUTS_DIR / f"georeason_{args.size}_summary.json"
+    if summary_path.exists():
+        try:
+            with open(summary_path, "r", encoding="utf-8") as f:
+                summary = json.load(f)
+        except Exception:
+            summary = {
+                "benchmark_name": "GeoReason: Spatial Relational Intelligence Benchmark",
+                "sample_size": len(questions),
+                "seed": args.seed,
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "models": {},
+            }
+    else:
+        summary = {
+            "benchmark_name": "GeoReason: Spatial Relational Intelligence Benchmark",
+            "sample_size": len(questions),
+            "seed": args.seed,
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "models": {},
+        }
 
     all_detailed = {}
 
-    for spec in MODELS:
+    selected_models = MODELS
+    if args.models != "all":
+        ids = [x.strip() for x in args.models.split(",")]
+        selected_models = [m for m in MODELS if m["id"] in ids]
+
+    for spec in selected_models:
         m_id = spec["id"]
         metrics, results = await run_benchmark_for_model(spec, questions, concurrency=args.concurrency)
         summary["models"][m_id] = {
@@ -302,11 +354,12 @@ async def main():
         json.dump(summary, f, indent=2)
     logger.info("Saved benchmark summary to %s", summary_path)
 
-    # Also save to frontend
-    frontend_summary_path = FRONTEND_DATA_DIR / "georeason_summary.json"
-    with open(frontend_summary_path, "w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2)
-    logger.info("Exported frontend summary to %s", frontend_summary_path)
+    # Also save to frontend if full benchmark
+    if args.size >= 1200:
+        frontend_summary_path = FRONTEND_DATA_DIR / "georeason_summary.json"
+        with open(frontend_summary_path, "w", encoding="utf-8") as f:
+            json.dump(summary, f, indent=2)
+        logger.info("Exported frontend summary to %s", frontend_summary_path)
 
     # Print clean Markdown comparison table
     print("\n" + "=" * 88)

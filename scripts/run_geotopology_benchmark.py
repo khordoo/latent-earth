@@ -35,9 +35,11 @@ logger = logging.getLogger("geotopology")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+TYPESAFE_API_KEY = os.getenv("TYPESAFE_API_KEY")
 
 OPENROUTER_DECISIONS_URL = "https://openrouter.ai/api/alpha/decisions"
 OPENAI_DECISIONS_URL = "https://api.openai.com/v1/decisions"
+TYPESAFE_JEV_URL = "https://api.typesafe.ai/v1/systemone"
 
 OUTPUTS_DIR = Path("outputs")
 OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -49,6 +51,7 @@ MODELS = [
     {"id": "clef", "name": "Cloudflare Clef (27B)", "provider": "openrouter", "model_id": "cloudflare/clef"},
     {"id": "pplx", "name": "Perplexity Pplx-Decider", "provider": "openrouter", "model_id": "perplexity/pplx-decider-v1.1-27b"},
     {"id": "msft", "name": "Microsoft Decision-1", "provider": "openrouter", "model_id": "microsoft/microsoft-decision-1"},
+    {"id": "jev", "name": "TypeSafe Jev", "provider": "typesafe", "model_id": "jev-latest"},
     {"id": "openai", "name": "OpenAI Decisions (Luna)", "provider": "openai", "model_id": "gpt-6-luna"},
 ]
 
@@ -70,6 +73,27 @@ async def query_model_single(
             "Content-Type": "application/json",
             "HTTP-Referer": "https://github.com/latent-earth",
             "X-Title": "GeoTopology Benchmark",
+        }
+        payload = {
+            "model": model_id,
+            "state": q.context,
+            "questions": {
+                "statement_is_true": {
+                    "type": "noul",
+                    "instructions": q.question,
+                    "criteria": {
+                        "true": "The statement is geographically correct, factual, and accurate.",
+                        "false": "The statement is geographically false, incorrect, or contradictory.",
+                    },
+                }
+            },
+        }
+    elif provider == "typesafe":
+        url = TYPESAFE_JEV_URL
+        headers = {
+            "Authorization": f"Bearer {TYPESAFE_API_KEY}",
+            "Content-Type": "application/json",
+            "User-Agent": "LatentEarth/0.1.0",
         }
         payload = {
             "model": model_id,
@@ -121,6 +145,14 @@ async def query_model_single(
                     if p is not None:
                         prob = float(p)
                     cost = data.get("usage", {}).get("cost", 0.0)
+                elif provider == "typesafe":
+                    ans = data.get("answers", {}).get("statement_is_true", {})
+                    p = ans.get("noul", ans.get("probability"))
+                    if p is not None:
+                        prob = float(p)
+                    usage = data.get("usage", {})
+                    toks = usage.get("input_tokens", 0) + usage.get("output_tokens", 0)
+                    cost = toks * 0.042 / 1e6
                 else:  # openai
                     ans_list = data.get("answers", [])
                     if ans_list and isinstance(ans_list, list):
@@ -271,13 +303,27 @@ async def main():
     questions = generate_geotopology_dataset(total_count=args.size, seed=args.seed)
     logger.info("Generated %d GeoTopology benchmark questions.", len(questions))
 
-    summary: dict[str, Any] = {
-        "benchmark_name": "GeoTopology: 3D Relief & Border Connectivity Benchmark",
-        "sample_size": len(questions),
-        "seed": args.seed,
-        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "models": {},
-    }
+    summary_path = OUTPUTS_DIR / f"geotopology_{args.size}_summary.json"
+    if summary_path.exists():
+        try:
+            with open(summary_path, "r", encoding="utf-8") as f:
+                summary = json.load(f)
+        except Exception:
+            summary = {
+                "benchmark_name": "GeoTopology: 3D Relief & Border Connectivity Benchmark",
+                "sample_size": len(questions),
+                "seed": args.seed,
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "models": {},
+            }
+    else:
+        summary = {
+            "benchmark_name": "GeoTopology: 3D Relief & Border Connectivity Benchmark",
+            "sample_size": len(questions),
+            "seed": args.seed,
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "models": {},
+        }
 
     all_detailed = {}
 

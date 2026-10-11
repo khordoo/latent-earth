@@ -210,12 +210,32 @@ export const Billboard: React.FC<BillboardProps> = ({
               </div>
             </div>
 
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-purple-400" />
+                  #2 High-Speed Runner-Up
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-extrabold">
+                  95.5% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">TypeSafe Jev</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>100.0% Landlocked</strong> • <strong>98.8% Elevation</strong> (Summit Peak!)
+              </div>
+              <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
+                Highest 3D hypsometric precision across all models at 153.1 req/s
+              </div>
+            </div>
+
             <div className="bg-slate-900/60 p-4 rounded-2xl border border-sky-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
               <div className="flex items-center justify-between text-xs font-bold text-sky-400 mb-2">
                 <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-sky-400" />
-                  #2 Multimodal Runner-Up
+                  <Globe2 className="w-4 h-4 text-sky-400" />
+                  #3 Multimodal Foundation
                 </span>
                 <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
                   93.7% Bal Acc
@@ -226,7 +246,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                 <strong>99.0% Landlocked</strong> • 93.8% Elevation • <strong>88.3% Borders</strong>
               </div>
               <div className="text-[11px] text-sky-300/80 mt-2 font-medium">
-                High 3D hypsometric precision across all 6 continents
+                High 3D hypsometric precision across all 6 continents ($0.0029 total)
               </div>
             </div>
 
@@ -247,26 +267,6 @@ export const Billboard: React.FC<BillboardProps> = ({
               </div>
               <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
                 9B architecture achieves 90.5% on topological graphs
-              </div>
-            </div>
-
-            <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
-                <span className="flex items-center gap-1.5">
-                  <Globe2 className="w-4 h-4 text-purple-400" />
-                  Topological Grounding
-                </span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
-                  3D & Graphs
-                </span>
-              </div>
-              <div className="text-xl font-extrabold text-slate-100">UNCLOS & EGM</div>
-              <div className="text-xs text-slate-400 mt-1">
-                1,200 Questions • <strong>50% True / 50% False</strong>
-              </div>
-              <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
-                Physical terrain elevations, sovereign borders & enclaves
               </div>
             </div>
           </div>
@@ -312,11 +312,31 @@ export const Billboard: React.FC<BillboardProps> = ({
               </div>
             </div>
 
+            <div className="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex items-center justify-between text-xs font-bold text-purple-400 mb-2">
+                <span className="flex items-center gap-1.5">
+                  <TrendingUp className="w-4 h-4 text-purple-400" />
+                  #3 High-Speed Noul
+                </span>
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-extrabold">
+                  91.9% Bal Acc
+                </span>
+              </div>
+              <div className="text-xl font-extrabold text-slate-100">TypeSafe Jev</div>
+              <div className="text-xs text-slate-400 mt-1">
+                <strong>87.3% Compass</strong> • <strong>93.5% Proximity</strong> • <strong>146.2 req/s</strong>
+              </div>
+              <div className="text-[11px] text-purple-300/80 mt-2 font-medium">
+                Beats OpenAI Decisions on compass orientation and great-circle proximity
+              </div>
+            </div>
+
             <div className="bg-slate-900/60 p-4 rounded-2xl border border-orange-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl pointer-events-none" />
               <div className="flex items-center justify-between text-xs font-bold text-orange-400 mb-2">
                 <span className="flex items-center gap-1.5">
-                  <TrendingUp className="w-4 h-4 text-orange-400" />
+                  <Zap className="w-4 h-4 text-orange-400" />
                   Open-Weight Leap
                 </span>
                 <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300">
@@ -325,30 +345,10 @@ export const Billboard: React.FC<BillboardProps> = ({
               </div>
               <div className="text-xl font-extrabold text-slate-100">Cloudflare Clef</div>
               <div className="text-xs text-slate-400 mt-1">
-                <strong>84.0% Bal Acc</strong> • 96.8% Marine • <strong>78.3% Compass</strong>
+                <strong>84.0% Bal Acc</strong> • 96.8% Marine • <strong>$0.0029 total</strong>
               </div>
               <div className="text-[11px] text-orange-300/80 mt-2 font-medium">
                 Jumps from 72.7% on coordinates to 84.0% on relations
-              </div>
-            </div>
-
-            <div className="bg-slate-900/60 p-4 rounded-2xl border border-amber-500/30 shadow-lg backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
-              <div className="flex items-center justify-between text-xs font-bold text-amber-400 mb-2">
-                <span className="flex items-center gap-1.5">
-                  <Zap className="w-4 h-4 text-amber-400" />
-                  Small Model Recovery
-                </span>
-                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
-                  +11.7% Jump
-                </span>
-              </div>
-              <div className="text-xl font-extrabold text-slate-100">MSFT Decision-1</div>
-              <div className="text-xs text-slate-400 mt-1">
-                <strong>79.3% Bal Acc</strong> • 83.0% Marine • <strong>$0.0029 total</strong>
-              </div>
-              <div className="text-[11px] text-amber-300/80 mt-2 font-medium">
-                At 9B params, relational reasoning far exceeds float lookup
               </div>
             </div>
           </div>
@@ -460,7 +460,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                     ✓ Hypothesis Confirmed
                   </span>
                   <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                    Total Run Cost: $0.054
+                    Total Run Cost: $0.072
                   </span>
                 </div>
               </div>
@@ -642,7 +642,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                     ✓ Hypothesis Confirmed
                   </span>
                   <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                    Total Run Cost: $0.085
+                    Total Run Cost: $0.103
                   </span>
                 </div>
               </div>
@@ -893,6 +893,7 @@ export const Billboard: React.FC<BillboardProps> = ({
                 const isClef = m.id.includes('clef');
                 const isGlide = m.id.includes('glide');
                 const isMsft = m.id.includes('microsoft');
+                const isJev = m.id.includes('jev');
 
                 const isHovered = hoveredScatterModel?.id === m.id;
 
@@ -904,6 +905,8 @@ export const Billboard: React.FC<BillboardProps> = ({
                   ? '#10b981'
                   : isClef
                   ? '#f97316'
+                  : isJev
+                  ? '#a855f7'
                   : isGlide
                   ? '#f43f5e'
                   : isMsft

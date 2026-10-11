@@ -159,6 +159,45 @@
         "wall_clock_time_seconds": 9.24,
         "effective_throughput_req_sec": 129.87
       }
+    },
+    "jev": {
+      "name": "TypeSafe Jev",
+      "provider": "typesafe",
+      "model_id": "jev-latest",
+      "metrics": {
+        "total_questions": 1200,
+        "accuracy": 0.9192,
+        "balanced_accuracy": 0.9192,
+        "brier_score": 0.0606,
+        "categories": {
+          "compass_cardinal": {
+            "count": 400,
+            "accuracy": 0.8725,
+            "balanced_accuracy": 0.8725
+          },
+          "proximity_triplets": {
+            "count": 400,
+            "accuracy": 0.935,
+            "balanced_accuracy": 0.935
+          },
+          "marine_coastal_borders": {
+            "count": 400,
+            "accuracy": 0.95,
+            "balanced_accuracy": 0.95
+          }
+        },
+        "confusion_matrix": {
+          "tp": 556,
+          "tn": 547,
+          "fp": 53,
+          "fn": 44
+        },
+        "median_latency_seconds": 4.2375,
+        "p90_latency_seconds": 7.3476,
+        "total_cost_usd": 0.018152,
+        "wall_clock_time_seconds": 8.21,
+        "effective_throughput_req_sec": 146.17
+      }
     }
   }
 }

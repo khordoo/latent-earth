@@ -120,6 +120,45 @@
         "wall_clock_time_seconds": 37.63,
         "effective_throughput_req_sec": 31.89
       }
+    },
+    "jev": {
+      "name": "TypeSafe Jev",
+      "provider": "typesafe",
+      "model_id": "jev-latest",
+      "metrics": {
+        "total_questions": 1200,
+        "accuracy": 0.955,
+        "balanced_accuracy": 0.955,
+        "brier_score": 0.0368,
+        "categories": {
+          "border_adjacency": {
+            "count": 400,
+            "accuracy": 0.8775,
+            "balanced_accuracy": 0.8775
+          },
+          "landlocked_maritime": {
+            "count": 400,
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0
+          },
+          "elevation_hypsometry": {
+            "count": 400,
+            "accuracy": 0.9875,
+            "balanced_accuracy": 0.9875
+          }
+        },
+        "confusion_matrix": {
+          "tp": 581,
+          "tn": 565,
+          "fp": 35,
+          "fn": 19
+        },
+        "median_latency_seconds": 3.9421,
+        "p90_latency_seconds": 7.0422,
+        "total_cost_usd": 0.01813,
+        "wall_clock_time_seconds": 7.84,
+        "effective_throughput_req_sec": 153.11
+      }
     }
   }
 }
