@@ -8,6 +8,10 @@ import { RunData, RunSummary, ProjectionType, RenderMode, PredictionPoint } from
 import { Loader2, Globe, Trophy, Sparkles } from 'lucide-react';
 import { REGIONAL_JAPAN_KOREA_2112, GLOBAL_EARTH_16200 } from './data/billboardData';
 
+const DEFAULT_RUN_ID = 'openrouter_cloudflare_clef_global_16200';
+const defaultRunId = (runs: RunSummary[]) =>
+  runs.find((run) => run.run_id === DEFAULT_RUN_ID)?.run_id ?? runs[0]?.run_id ?? '';
+
 export const App: React.FC = () => {
   // Navigation: 'globe' or 'billboard'
   const [activeTab, setActiveTab] = useState<'globe' | 'billboard'>('globe');
@@ -94,17 +98,17 @@ export const App: React.FC = () => {
       .then((data: RunSummary[]) => {
         if (data && data.length > 0) {
           setRunsList(data);
-          setSelectedRunId(data[0].run_id);
+          setSelectedRunId(defaultRunId(data));
         } else {
           setRunsList(fallbackRuns);
-          setSelectedRunId(fallbackRuns[0].run_id);
+          setSelectedRunId(defaultRunId(fallbackRuns));
         }
       })
       .catch(() => {
         // Vercel serverless / static fallback
         setRunsList(fallbackRuns);
         if (fallbackRuns.length > 0) {
-          setSelectedRunId(fallbackRuns[0].run_id);
+          setSelectedRunId(defaultRunId(fallbackRuns));
         } else {
           setLoading(false);
         }
